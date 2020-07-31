@@ -15,7 +15,8 @@
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
         "php-pm/httpkernel-adapter": "^2.0",
-        "php-pm/php-pm": "^2.1"
+        "php-pm/php-pm": "^2.1",
+        "webmozart/assert": "^1.9"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exceptions\LoginFailedException;
 use App\Http\Controllers\Controller;
+use App\Services\UserAuthService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ApiAuthController extends Controller
 {
-    public function login(Request $request)
+    public function login(Request $request, UserAuthService $userAuthService)
     {
         $request->validate($request->all(), [
             'email' => 'email',
@@ -18,18 +20,15 @@ class ApiAuthController extends Controller
         $screen_name = $request->post('screen_name');
         $password = $request->post('password');
 
-        if (Auth::attempt([
-            'email' => $email,
-            'screen_name' => $screen_name,
-            'password' => $password,
-        ])) {
+        try {
+            $user = $userAuthService->attemptLogin($screen_name, $email, $password, 'api');
             return [
-                'api_token' => Auth::user()->api_token,
+                'api_token' => $user->api_token,
             ];
+        } catch (LoginFailedException $ex) {
+            return response([
+                'error' => 'Invalid password or user.',
+            ])->setStatusCode(400);
         }
-
-        return response([
-            'error' => 'Invalid password or user.',
-        ])->setStatusCode(400);
     }
 }
