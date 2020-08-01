@@ -17,13 +17,13 @@ class ApiAuthController extends Controller
             'password' => 'required',
         ]);
         $email = $request->post('email');
-        $screen_name = $request->post('screen_name');
+        $user_name = $request->post('user_name');
         $password = $request->post('password');
 
         try {
-            $user = $userAuthService->attemptLogin($screen_name, $email, $password, 'api');
+            $user = $userAuthService->attemptLogin($user_name, $email, $password, 'api');
             return [
-                'api_token' => $user->api_token,
+                'api_token' => $user->createToken('api_token')->accessToken,
             ];
         } catch (LoginFailedException $ex) {
             return response([

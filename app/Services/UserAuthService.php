@@ -14,18 +14,18 @@ class UserAuthService
      *
      * 認証成功時にはUserが返り、失敗時にはLoginFailedExceptionがスローされる
      *
-     * @param string|null $screen_name
+     * @param string|null $user_name
      * @param string|null $mail_address
      * @param string $password
      * @param string|null $guard_name
      * @return User
      * @throws LoginFailedException
      */
-    public function attemptLogin(?string $screen_name, ?string $mail_address, string $password, ?string $guard_name): User
+    public function attemptLogin(?string $user_name, ?string $mail_address, string $password, ?string $guard_name): User
     {
         $user_identifier_satisfied = false;
-        if ($screen_name !== null) {
-            Assert::stringNotEmpty($screen_name);
+        if ($user_name !== null) {
+            Assert::stringNotEmpty($user_name);
             $user_identifier_satisfied = true;
         }
         if ($mail_address !== null) {
@@ -37,7 +37,7 @@ class UserAuthService
 
         if (Auth::guard($guard_name)->attempt([
             'email' => $mail_address,
-            'screen_name' => $screen_name,
+            'user_name' => $user_name,
             'password' => $password,
         ])) {
             return Auth::user();

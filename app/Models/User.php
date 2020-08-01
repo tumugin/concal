@@ -4,16 +4,16 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use HasApiTokens, Notifiable;
 
     protected $primaryKey = 'user_id';
 
     protected $hidden = [
         'password',
-        'api_token',
     ];
 
     public function isAdmin(): bool
