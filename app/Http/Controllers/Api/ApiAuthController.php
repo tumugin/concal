@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Exceptions\LoginFailedException;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Services\UserAuthService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +29,22 @@ class ApiAuthController extends Controller
         } catch (LoginFailedException $ex) {
             return response([
                 'error' => 'Invalid password or user.',
-            ])->setStatusCode(400);
+            ])->setStatusCode(401);
         }
+    }
+
+    public function revokeTokens()
+    {
+        $user = Auth::guard('api')->user();
+        if (!$user instanceof User) {
+            throw new \Exception('invalid User class.');
+        }
+        $tokens = $user->tokens();
+        foreach ($tokens as $token) {
+            $token->revoke();
+        }
+        return [
+            'success' => true,
+        ];
     }
 }
