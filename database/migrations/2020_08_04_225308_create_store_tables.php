@@ -13,18 +13,18 @@ class CreateStoreTables extends Migration
      */
     public function up()
     {
-        Schema::create('store_group', function (Blueprint $table) {
+        Schema::create('store_groups', function (Blueprint $table) {
             $table->id('store_group_id');
             $table->string('group_name', 100);
         });
-        Schema::create('store', function (Blueprint $table) {
+        Schema::create('stores', function (Blueprint $table) {
             $table->id('store_id');
             $table->string('store_name', 100);
             $table->integer('store_group_id', false, true);
             $table->boolean('store_disabled');
             $table->timestamps();
         });
-        Schema::create('store_cast', function (Blueprint $table) {
+        Schema::create('store_casts', function (Blueprint $table) {
             $table->integer('store_id', false, true);
             $table->integer('cast_id', false, true);
             $table->timestamps();
@@ -39,8 +39,8 @@ class CreateStoreTables extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('store_group');
-        Schema::dropIfExists('store');
-        Schema::dropIfExists('store_cast');
+        Schema::dropIfExists('store_groups');
+        Schema::dropIfExists('stores');
+        Schema::dropIfExists('store_casts');
     }
 }

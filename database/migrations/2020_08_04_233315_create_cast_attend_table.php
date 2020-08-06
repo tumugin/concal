@@ -13,8 +13,8 @@ class CreateCastAttendTable extends Migration
      */
     public function up()
     {
-        Schema::create('cast_attend', function (Blueprint $table) {
-            $table->id('attend_id');
+        Schema::create('cast_attends', function (Blueprint $table) {
+            $table->id('cast_attend_id');
             $table->integer('cast_id', false, true);
             $table->integer('store_id', false, true);
             $table->dateTimeTz('start_time');
@@ -35,6 +35,6 @@ class CreateCastAttendTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cast_attend');
+        Schema::dropIfExists('cast_attends');
     }
 }
