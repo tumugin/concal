@@ -10,6 +10,24 @@ use Webmozart\Assert\Assert;
 class UserAuthService
 {
     /**
+     * Auth::guardから現在ログイン中のユーザを取得する
+     *
+     * @param string|null $guard_name
+     * @return User
+     */
+    public static function getCurrentUser($guard_name): User
+    {
+        $user = Auth::guard($guard_name)->user();
+        if ($user === null) {
+            throw new \Exception('Must be logged in to get current user.');
+        }
+        if (!$user instanceof User) {
+            throw new \Exception('Invalid User class.');
+        }
+        return $user;
+    }
+
+    /**
      * スクリーンネームもしくはメールアドレスをIDとしてパスワード認証を行う
      *
      * 認証成功時にはUserが返り、失敗時にはLoginFailedExceptionがスローされる

@@ -16,10 +16,10 @@ class CreateCastsTable extends Migration
         Schema::create('casts', function (Blueprint $table) {
             $table->id('cast_id');
             $table->string('cast_name', 100);
-            $table->string('cast_short_name', 50);
-            $table->string('cast_twitter_id', 50);
+            $table->string('cast_short_name', 50)->nullable();
+            $table->string('cast_twitter_id', 50)->nullable();
             $table->string('cast_description');
-            $table->string('cast_color', 10);
+            $table->string('cast_color', 10)->nullable();
             $table->boolean('cast_disabled');
             $table->timestamps();
         });

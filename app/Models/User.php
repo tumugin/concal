@@ -52,4 +52,21 @@ class User extends Authenticatable
     {
         return $this->user_privilege === 'admin';
     }
+
+    /**
+     * ユーザが所有している全ての認証トークンを失効させる
+     */
+    public function revokeAllPersonalAccessTokens()
+    {
+        $personal_access_token_client_ids = $this->clients->filter(function ($client) {
+            return !!$client->personal_access_client;
+        })->map(function ($client) {
+            return $client->id;
+        });
+        foreach ($this->tokens as $token) {
+            if ($personal_access_token_client_ids->contains($token->client_id)) {
+                $token->revoke();
+            }
+        }
+    }
 }
