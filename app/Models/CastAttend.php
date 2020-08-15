@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Webmozart\Assert\Assert;
 
 /**
  * App\Models\CastAttend
@@ -33,4 +35,33 @@ use Illuminate\Database\Eloquent\Model;
 class CastAttend extends Model
 {
     protected $primaryKey = 'cast_attend_id';
+
+    /**
+     * キャストの出勤情報を登録する
+     *
+     * @param int $cast_id
+     * @param int $store_id
+     * @param int $added_by_user_id
+     * @param Carbon $start_time
+     * @param Carbon $end_time
+     * @param string $attend_info
+     * @return int 出勤情報のID
+     */
+    public static function addAttendance(
+        int $cast_id, int $store_id, int $added_by_user_id, Carbon $start_time, Carbon $end_time, string $attend_info
+    )
+    {
+        Assert::false($start_time->unix() > $end_time->unix(), '開始時間が終了時間より未来は不正');
+
+        $cast_attend = new CastAttend();
+        $cast_attend->cast_id = $cast_id;
+        $cast_attend->store_id = $store_id;
+        $cast_attend->start_time = $start_time->toDateTimeString();
+        $cast_attend->end_time = $end_time->toDateTimeString();
+        $cast_attend->added_by_user_id = $added_by_user_id;
+        $cast_attend->attend_info = $attend_info;
+        $cast_attend->save();
+
+        return $cast_attend->cast_attend_id;
+    }
 }

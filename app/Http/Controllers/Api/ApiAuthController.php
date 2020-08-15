@@ -4,10 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Exceptions\LoginFailedException;
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use App\Services\UserAuthService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class ApiAuthController extends Controller
 {
@@ -33,16 +31,10 @@ class ApiAuthController extends Controller
         }
     }
 
-    public function revokeTokens()
+    public function revokeTokens(UserAuthService $userAuthService)
     {
-        $user = Auth::guard('api')->user();
-        if (!$user instanceof User) {
-            throw new \Exception('invalid User class.');
-        }
-        $tokens = $user->tokens();
-        foreach ($tokens as $token) {
-            $token->revoke();
-        }
+        $user = $userAuthService::getCurrentUser('api');
+        $user->revokeAllPersonalAccessTokens();
         return [
             'success' => true,
         ];
