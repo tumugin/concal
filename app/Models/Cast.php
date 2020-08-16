@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\DB;
 use Webmozart\Assert\Assert;
 
 /**
@@ -63,6 +65,28 @@ class Cast extends Model
         return $cast->cast_id;
     }
 
+    public function getAttends(): HasMany
+    {
+        return $this->hasMany('App\Models\CastAttend');
+    }
+
+    public function getStoreCasts(): HasMany
+    {
+        return $this->hasMany('App\Models\StoreCast');
+    }
+
+    /**
+     * キャストを永久追放(物理削除)する
+     */
+    public function deleteCast(): void
+    {
+        DB::transaction(function () {
+            self::getAttends()->delete();
+            self::getStoreCasts()->delete();
+            self::delete();
+        });
+    }
+
     /**
      * キャストを卒業させる
      */
@@ -73,7 +97,18 @@ class Cast extends Model
     }
 
     /**
+     * キャストを店舗に在籍させる
+     *
+     * @param Store $store 在籍させる店舗
+     */
+    public function enrollToStore(Store $store): void
+    {
+        $store->enrollCast($this);
+    }
+
+    /**
      * キャストの出勤情報を登録する
+     *
      * @param int $store_id
      * @param int $added_by_user_id
      * @param Carbon $start_time

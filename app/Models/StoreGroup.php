@@ -19,4 +19,16 @@ use Illuminate\Database\Eloquent\Model;
 class StoreGroup extends Model
 {
     protected $primaryKey = 'store_group_id';
+
+    /**
+     * 店舗グループを作成する
+     *
+     * @param string $group_name 店舗グループ名
+     */
+    public function addStoreGroup(string $group_name)
+    {
+        $store_group = new StoreGroup();
+        $store_group->group_name = $group_name;
+        $store_group->save();
+    }
 }
