@@ -67,12 +67,12 @@ class Cast extends Model
 
     public function getAttends(): HasMany
     {
-        return $this->hasMany('App\Models\CastAttend');
+        return $this->hasMany(CastAttend::class);
     }
 
     public function getStoreCasts(): HasMany
     {
-        return $this->hasMany('App\Models\StoreCast');
+        return $this->hasMany(StoreCast::class);
     }
 
     /**
