@@ -48,7 +48,7 @@ class Store extends Model
      */
     public function getBelongingCasts(): BelongsToMany
     {
-        return $this->belongsToMany(Cast::class, StoreCast::class);
+        return $this->belongsToMany(Cast::class, StoreCast::class, 'store_id');
     }
 
     /**
@@ -69,7 +69,7 @@ class Store extends Model
      */
     public function getBelongingStoreGroup(): HasOne
     {
-        return $this->hasOne(StoreGroup::class);
+        return $this->hasOne(StoreGroup::class, 'store_id');
     }
 
     /**

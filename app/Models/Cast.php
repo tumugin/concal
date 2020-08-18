@@ -45,12 +45,12 @@ class Cast extends Model
      */
     public static function addCast(array $cast_info): int
     {
-        Assert::string($cast_info['cast_name']);
-        Assert::nullOrString($cast_info['cast_short_name'] ?? null);
-        Assert::nullOrString($cast_info['cast_twitter_id'] ?? null);
+        Assert::stringNotEmpty($cast_info['cast_name']);
+        Assert::nullOrStringNotEmpty($cast_info['cast_short_name'] ?? null);
+        Assert::nullOrStringNotEmpty($cast_info['cast_twitter_id'] ?? null);
         Assert::string($cast_info['cast_description']);
         if (isset($cast_info['cast_color'])) {
-            Assert::regex($cast_info['cast_color'], '^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$');
+            Assert::regex($cast_info['cast_color'], '/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/');
         }
 
         $cast = new Cast();
@@ -67,12 +67,12 @@ class Cast extends Model
 
     public function getAttends(): HasMany
     {
-        return $this->hasMany(CastAttend::class);
+        return $this->hasMany(CastAttend::class, 'cast_id');
     }
 
     public function getStoreCasts(): HasMany
     {
-        return $this->hasMany(StoreCast::class);
+        return $this->hasMany(StoreCast::class, 'cast_id');
     }
 
     /**
