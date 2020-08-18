@@ -3,6 +3,7 @@
 namespace Tests\Unit\Cast;
 
 use App\Models\Cast;
+use App\Models\Store;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -38,6 +39,17 @@ class CastTest extends TestCase
         $this->assertDatabaseCount('casts', 1);
         $this->assertDatabaseHas('casts', [
             'cast_disabled' => 1,
+        ]);
+    }
+
+    public function testEnrollToStore(): void
+    {
+        $store = factory(Store::class)->create();
+        $cast = factory(Cast::class)->create();
+        $cast->enrollToStore($store);
+        $this->assertDatabaseHas('store_casts', [
+            'store_id' => $store->store_id,
+            'cast_id' => $cast->cast_id,
         ]);
     }
 }

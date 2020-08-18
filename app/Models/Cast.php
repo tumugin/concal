@@ -109,21 +109,21 @@ class Cast extends Model
     /**
      * キャストの出勤情報を登録する
      *
-     * @param int $store_id
-     * @param int $added_by_user_id
+     * @param Store $store
+     * @param User $added_by_user
      * @param Carbon $start_time
      * @param Carbon $end_time
      * @param string $attend_info
      * @return int 出勤情報のID
      */
     public function addAttendance(
-        int $store_id, int $added_by_user_id, Carbon $start_time, Carbon $end_time, string $attend_info
+        Store $store, User $added_by_user, Carbon $start_time, Carbon $end_time, string $attend_info
     ): int
     {
         return CastAttend::addAttendance(
             $this->cast_id,
-            $store_id,
-            $added_by_user_id,
+            $store->store_id,
+            $added_by_user->user_id,
             $start_time,
             $end_time,
             $attend_info
