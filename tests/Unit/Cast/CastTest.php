@@ -48,8 +48,8 @@ class CastTest extends TestCase
         $cast = factory(Cast::class)->create();
         $cast->enrollToStore($store);
         $this->assertDatabaseHas('store_casts', [
-            'store_id' => $store->store_id,
-            'cast_id' => $cast->cast_id,
+            'store_id' => $store->id,
+            'cast_id' => $cast->id,
         ]);
     }
 }

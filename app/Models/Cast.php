@@ -60,7 +60,7 @@ class Cast extends Model
         $cast->cast_disabled = 0;
         $cast->save();
 
-        return $cast->cast_id;
+        return $cast->id;
     }
 
     public function getAttends(): HasMany
