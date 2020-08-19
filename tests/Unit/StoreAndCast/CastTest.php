@@ -4,6 +4,8 @@ namespace Tests\Unit\Cast;
 
 use App\Models\Cast;
 use App\Models\Store;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -50,6 +52,31 @@ class CastTest extends TestCase
         $this->assertDatabaseHas('store_casts', [
             'store_id' => $store->id,
             'cast_id' => $cast->id,
+        ]);
+    }
+
+    public function testAddAttendance(): void
+    {
+        $cast = factory(Cast::class)->create();
+        $store = factory(Store::class)->create();
+        $user = factory(User::class)->create();
+        $start_time = Carbon::parse('2020/08/20 17:00');
+        $end_time = Carbon::parse('2020/08/20 23:00');
+        $attend_info = 'カウンター屋さん';
+        $cast->addAttendance(
+            $store,
+            $user,
+            $start_time,
+            $end_time,
+            $attend_info
+        );
+        $this->assertDatabaseHas('cast_attends', [
+            'cast_id' => $cast->id,
+            'store_id' => $store->id,
+            'start_time' => $start_time->toDateTimeString(),
+            'end_time' => $end_time->toDateTimeString(),
+            'added_by_user_id' => $user->id,
+            'attend_info' => $attend_info,
         ]);
     }
 }

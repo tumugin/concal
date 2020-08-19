@@ -4,7 +4,9 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\HasApiTokens;
+use Webmozart\Assert\Assert;
 
 /**
  * App\Models\User
@@ -46,6 +48,13 @@ class User extends Authenticatable
         'password',
     ];
 
+    const USER_PRIVILEGE_ADMIN = 'admin';
+    const USER_PRIVILEGE_USER = 'user';
+    const USER_PRIVILEGES = [
+        self::USER_PRIVILEGE_ADMIN,
+        self::USER_PRIVILEGE_USER,
+    ];
+
     public function isAdmin(): bool
     {
         return $this->user_privilege === 'admin';
@@ -54,17 +63,40 @@ class User extends Authenticatable
     /**
      * ユーザが所有している全ての認証トークンを失効させる
      */
-    public function revokeAllPersonalAccessTokens()
+    public function revokeAllPersonalAccessTokens(): void
     {
-        $personal_access_token_client_ids = $this->clients->filter(function ($client) {
-            return !!$client->personal_access_client;
-        })->map(function ($client) {
-            return $client->id;
-        });
         foreach ($this->tokens as $token) {
-            if ($personal_access_token_client_ids->contains($token->client_id)) {
-                $token->revoke();
-            }
+            $token->revoke();
         }
+    }
+
+    /**
+     * ユーザを作成する
+     *
+     * @param string $user_name
+     * @param string $name
+     * @param string $password
+     * @param string $email
+     * @param string $user_privilege
+     * @return User
+     */
+    public static function createUser(string $user_name, string $name, string $password, string $email, string $user_privilege): User
+    {
+        Assert::stringNotEmpty($user_name);
+        Assert::regex($user_name, '/^[a-zA-Z0-9_\-]+$/');
+        Assert::stringNotEmpty($name);
+        Assert::stringNotEmpty($password);
+        Assert::email($email);
+        Assert::inArray($user_privilege, self::USER_PRIVILEGES);
+
+        $user = new User();
+        $user->user_name = $user_name;
+        $user->name = $name;
+        $user->password = Hash::make($password);
+        $user->email = $email;
+        $user->user_privilege = $user_privilege;
+        $user->save();
+
+        return $user;
     }
 }

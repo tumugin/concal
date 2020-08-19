@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Webmozart\Assert\Assert;
 
 /**
  * App\Models\Store
@@ -63,11 +64,11 @@ class Store extends Model
     /**
      * 所属している店舗のグループを取得する
      *
-     * @return StoreGroup|HasOne
+     * @return StoreGroup
      */
-    public function getBelongingStoreGroup(): HasOne
+    public function getBelongingStoreGroup(): StoreGroup
     {
-        return $this->hasOne(StoreGroup::class);
+        return StoreGroup::whereId($this->store_group_id)->firstOrFail();
     }
 
     /**
@@ -79,6 +80,8 @@ class Store extends Model
      */
     public static function createStore(string $store_name, StoreGroup $store_group): Store
     {
+        Assert::stringNotEmpty($store_name);
+
         $store = new Store();
         $store->store_name = $store_name;
         $store->store_group_id = $store_group->id;
