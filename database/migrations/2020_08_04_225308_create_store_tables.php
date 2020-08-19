@@ -16,6 +16,7 @@ class CreateStoreTables extends Migration
         Schema::create('store_groups', function (Blueprint $table) {
             $table->id();
             $table->string('group_name', 100);
+            $table->timestamps();
         });
         Schema::create('stores', function (Blueprint $table) {
             $table->id();
