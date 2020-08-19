@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Cast;
+namespace Tests\Unit\StoreAndCast;
 
 use App\Models\Cast;
 use App\Models\Store;
