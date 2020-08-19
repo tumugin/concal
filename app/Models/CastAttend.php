@@ -9,7 +9,7 @@ use Webmozart\Assert\Assert;
 /**
  * App\Models\CastAttend
  *
- * @property int $cast_attend_id
+ * @property int $id
  * @property int $cast_id
  * @property int $store_id
  * @property string $start_time
@@ -23,10 +23,10 @@ use Webmozart\Assert\Assert;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend whereAddedByUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend whereAttendInfo($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend whereCastAttendId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend whereCastId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend whereEndTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend whereStartTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend whereStoreId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend whereUpdatedAt($value)
@@ -34,8 +34,6 @@ use Webmozart\Assert\Assert;
  */
 class CastAttend extends Model
 {
-    protected $primaryKey = 'cast_attend_id';
-
     /**
      * キャストの出勤情報を登録する
      *
@@ -62,6 +60,6 @@ class CastAttend extends Model
         $cast_attend->attend_info = $attend_info;
         $cast_attend->save();
 
-        return $cast_attend->cast_attend_id;
+        return $cast_attend->id;
     }
 }

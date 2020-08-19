@@ -14,7 +14,7 @@ class CreateCastAttendTable extends Migration
     public function up()
     {
         Schema::create('cast_attends', function (Blueprint $table) {
-            $table->id('cast_attend_id');
+            $table->id();
             $table->integer('cast_id', false, true);
             $table->integer('store_id', false, true);
             $table->dateTimeTz('start_time');

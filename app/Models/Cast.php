@@ -11,7 +11,7 @@ use Webmozart\Assert\Assert;
 /**
  * App\Models\Cast
  *
- * @property int $cast_id
+ * @property int $id
  * @property string $cast_name
  * @property string|null $cast_short_name
  * @property string|null $cast_twitter_id
@@ -26,18 +26,16 @@ use Webmozart\Assert\Assert;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCastColor($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCastDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCastDisabled($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCastId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCastName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCastShortName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCastTwitterId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Cast extends Model
 {
-    protected $primaryKey = 'cast_id';
-
     /**
      * キャストを追加する
      * @param array $cast_info
@@ -67,12 +65,12 @@ class Cast extends Model
 
     public function getAttends(): HasMany
     {
-        return $this->hasMany(CastAttend::class, 'cast_id');
+        return $this->hasMany(CastAttend::class);
     }
 
     public function getStoreCasts(): HasMany
     {
-        return $this->hasMany(StoreCast::class, 'cast_id');
+        return $this->hasMany(StoreCast::class);
     }
 
     /**
@@ -121,9 +119,9 @@ class Cast extends Model
     ): int
     {
         return CastAttend::addAttendance(
-            $this->cast_id,
-            $store->store_id,
-            $added_by_user->user_id,
+            $this->id,
+            $store->id,
+            $added_by_user->id,
             $start_time,
             $end_time,
             $attend_info
