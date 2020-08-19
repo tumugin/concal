@@ -9,7 +9,7 @@ use Laravel\Passport\HasApiTokens;
 /**
  * App\Models\User
  *
- * @property int $user_id
+ * @property int $id
  * @property string $user_name
  * @property string $name
  * @property string $password
@@ -29,11 +29,11 @@ use Laravel\Passport\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUserName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUserPrivilege($value)
  * @mixin \Eloquent
@@ -41,8 +41,6 @@ use Laravel\Passport\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
-
-    protected $primaryKey = 'user_id';
 
     protected $hidden = [
         'password',

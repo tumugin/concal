@@ -11,7 +11,7 @@ use Webmozart\Assert\Assert;
 /**
  * App\Models\Cast
  *
- * @property int $cast_id
+ * @property int $id
  * @property string $cast_name
  * @property string|null $cast_short_name
  * @property string|null $cast_twitter_id
@@ -26,18 +26,16 @@ use Webmozart\Assert\Assert;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCastColor($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCastDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCastDisabled($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCastId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCastName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCastShortName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCastTwitterId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Cast extends Model
 {
-    protected $primaryKey = 'cast_id';
-
     /**
      * キャストを追加する
      * @param array $cast_info
@@ -45,12 +43,12 @@ class Cast extends Model
      */
     public static function addCast(array $cast_info): int
     {
-        Assert::string($cast_info['cast_name']);
-        Assert::nullOrString($cast_info['cast_short_name'] ?? null);
-        Assert::nullOrString($cast_info['cast_twitter_id'] ?? null);
+        Assert::stringNotEmpty($cast_info['cast_name']);
+        Assert::nullOrStringNotEmpty($cast_info['cast_short_name'] ?? null);
+        Assert::nullOrStringNotEmpty($cast_info['cast_twitter_id'] ?? null);
         Assert::string($cast_info['cast_description']);
         if (isset($cast_info['cast_color'])) {
-            Assert::regex($cast_info['cast_color'], '^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$');
+            Assert::regex($cast_info['cast_color'], '/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/');
         }
 
         $cast = new Cast();
@@ -62,7 +60,7 @@ class Cast extends Model
         $cast->cast_disabled = 0;
         $cast->save();
 
-        return $cast->cast_id;
+        return $cast->id;
     }
 
     public function getAttends(): HasMany
@@ -109,21 +107,21 @@ class Cast extends Model
     /**
      * キャストの出勤情報を登録する
      *
-     * @param int $store_id
-     * @param int $added_by_user_id
+     * @param Store $store
+     * @param User $added_by_user
      * @param Carbon $start_time
      * @param Carbon $end_time
      * @param string $attend_info
      * @return int 出勤情報のID
      */
     public function addAttendance(
-        int $store_id, int $added_by_user_id, Carbon $start_time, Carbon $end_time, string $attend_info
+        Store $store, User $added_by_user, Carbon $start_time, Carbon $end_time, string $attend_info
     ): int
     {
         return CastAttend::addAttendance(
-            $this->cast_id,
-            $store_id,
-            $added_by_user_id,
+            $this->id,
+            $store->id,
+            $added_by_user->id,
             $start_time,
             $end_time,
             $attend_info

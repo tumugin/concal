@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 /**
  * App\Models\Store
  *
- * @property int $store_id
+ * @property int $id
  * @property string $store_name
  * @property int $store_group_id
  * @property int $store_disabled
@@ -19,17 +19,15 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Store newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Store query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Store whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Store whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Store whereStoreDisabled($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Store whereStoreGroupId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Store whereStoreId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Store whereStoreName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Store whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Store extends Model
 {
-    protected $primaryKey = 'store_id';
-
     /**
      * キャストをこの店舗に在籍させる
      *
@@ -38,8 +36,8 @@ class Store extends Model
     public function enrollCast(Cast $cast): void
     {
         $store_cast = new StoreCast();
-        $store_cast->cast_id = $cast->cast_id;
-        $store_cast->store_id = $this->store_id;
+        $store_cast->cast_id = $cast->id;
+        $store_cast->store_id = $this->id;
         $store_cast->save();
     }
 
@@ -83,7 +81,7 @@ class Store extends Model
     {
         $store = new Store();
         $store->store_name = $store_name;
-        $store->store_group_id = $store_group->store_group_id;
+        $store->store_group_id = $store_group->id;
         $store->store_disabled = 0;
         $store->save();
 

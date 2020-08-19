@@ -14,11 +14,11 @@ class CreateStoreTables extends Migration
     public function up()
     {
         Schema::create('store_groups', function (Blueprint $table) {
-            $table->id('store_group_id');
+            $table->id();
             $table->string('group_name', 100);
         });
         Schema::create('stores', function (Blueprint $table) {
-            $table->id('store_id');
+            $table->id();
             $table->string('store_name', 100);
             $table->integer('store_group_id', false, true);
             $table->boolean('store_disabled');
