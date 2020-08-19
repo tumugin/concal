@@ -12,7 +12,7 @@ class UserTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testCreateUser()
+    public function testCreateUser(): void
     {
         $test_user_data = [
             'user_name' => 'erusa',
