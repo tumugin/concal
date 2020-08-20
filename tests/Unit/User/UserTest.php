@@ -11,6 +11,12 @@ class UserTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->artisan('passport:client --personal --no-interaction --name=test_client');
+    }
+
     public function testCreateUser(): void
     {
         $test_user_data = [
@@ -36,5 +42,12 @@ class UserTest extends TestCase
                 'user_privilege',
             ])
         );
+    }
+
+    public function testCreateApiToken()
+    {
+        $user = factory(User::class)->create();
+        $apiToken = $user->createApiToken();
+        $this->assertNotEmpty($apiToken);
     }
 }

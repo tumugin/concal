@@ -20,9 +20,9 @@ class ApiAuthController extends Controller
         $password = $request->post('password');
 
         try {
-            $user = $userAuthService->attemptLogin($user_name, $email, $password, 'api');
+            $user = $userAuthService->attemptLogin($user_name, $email, $password, 'web');
             return [
-                'api_token' => $user->createToken('api_token')->accessToken,
+                'api_token' => $user->createApiToken(),
             ];
         } catch (LoginFailedException $ex) {
             return response([
