@@ -44,7 +44,28 @@ class UserTest extends TestCase
         );
     }
 
-    public function testCreateApiToken()
+    public function testUpdateUserInfo(): void
+    {
+        $test_user_data = [
+            'user_name' => 'erusa',
+            'name' => 'エルサ',
+            'password' => 'erusa_erusa_erusa',
+            'email' => 'erusa@example.com',
+        ];
+        $user = factory(User::class)->create();
+        $user->updateUserInfo($test_user_data);
+        $this->assertDatabaseHas(
+            'users',
+            Arr::only($test_user_data, [
+                'user_name',
+                'name',
+                'email',
+                'user_privilege',
+            ])
+        );
+    }
+
+    public function testCreateApiToken(): void
     {
         $user = factory(User::class)->create();
         $apiToken = $user->createApiToken();

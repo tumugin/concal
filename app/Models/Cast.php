@@ -36,12 +36,7 @@ use Webmozart\Assert\Assert;
  */
 class Cast extends Model
 {
-    /**
-     * キャストを追加する
-     * @param array $cast_info
-     * @return int 追加されたキャストのID
-     */
-    public static function addCast(array $cast_info): int
+    private static function assertCastInfo(array $cast_info): void
     {
         Assert::stringNotEmpty($cast_info['cast_name']);
         Assert::nullOrStringNotEmpty($cast_info['cast_short_name'] ?? null);
@@ -50,6 +45,17 @@ class Cast extends Model
         if (isset($cast_info['cast_color'])) {
             Assert::regex($cast_info['cast_color'], '/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/');
         }
+    }
+
+    /**
+     * キャストを追加する
+     *
+     * @param array $cast_info
+     * @return Cast 追加されたキャスト
+     */
+    public static function addCast(array $cast_info): Cast
+    {
+        self::assertCastInfo($cast_info);
 
         $cast = new Cast();
         $cast->cast_name = $cast_info['cast_name'];
@@ -60,7 +66,24 @@ class Cast extends Model
         $cast->cast_disabled = 0;
         $cast->save();
 
-        return $cast->id;
+        return $cast;
+    }
+
+    /**
+     * キャスト情報を更新する
+     *
+     * @param array $cast_info
+     */
+    public function updateCast(array $cast_info): void
+    {
+        self::assertCastInfo($cast_info);
+
+        $this->cast_name = $cast_info['cast_name'];
+        $this->cast_short_name = $cast_info['cast_short_name'] ?? null;
+        $this->cast_twitter_id = $cast_info['cast_twitter_id'] ?? null;
+        $this->cast_description = $cast_info['cast_description'];
+        $this->cast_color = $cast_info['cast_color'] ?? null;
+        $this->save();
     }
 
     public function getAttends(): HasMany
@@ -112,11 +135,11 @@ class Cast extends Model
      * @param Carbon $start_time
      * @param Carbon $end_time
      * @param string $attend_info
-     * @return int 出勤情報のID
+     * @return CastAttend 出勤情報
      */
     public function addAttendance(
         Store $store, User $added_by_user, Carbon $start_time, Carbon $end_time, string $attend_info
-    ): int
+    ): CastAttend
     {
         return CastAttend::addAttendance(
             $this->id,
