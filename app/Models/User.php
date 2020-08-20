@@ -55,9 +55,24 @@ class User extends Authenticatable
         self::USER_PRIVILEGE_USER,
     ];
 
+    /**
+     * ユーザが管理者権限を持っているかどうか返す
+     *
+     * @return bool
+     */
     public function isAdmin(): bool
     {
-        return $this->user_privilege === 'admin';
+        return $this->user_privilege === self::USER_PRIVILEGE_ADMIN;
+    }
+
+    /**
+     * 新しくAPIトークンを発行して発行されたトークンを返す
+     *
+     * @return string
+     */
+    public function createApiToken(): string
+    {
+        return $this->createToken('api_token')->accessToken;
     }
 
     /**
