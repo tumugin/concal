@@ -11,7 +11,7 @@ class AuthTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testAttemptLoginWithUserName()
+    public function testAttemptLoginWithUserName(): void
     {
         $test_user = factory(User::class)->create();
         $auth_user = UserAuthService::attemptLogin(
@@ -30,7 +30,7 @@ class AuthTest extends TestCase
         );
     }
 
-    public function testAttemptLoginWithEMail()
+    public function testAttemptLoginWithEMail(): void
     {
         $test_user = factory(User::class)->create();
         $auth_user = UserAuthService::attemptLogin(

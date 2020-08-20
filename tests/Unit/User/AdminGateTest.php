@@ -17,7 +17,7 @@ class AdminGateTest extends TestCase
      * @param bool $is_admin
      * @dataProvider adminGateTestDataProvider
      */
-    public function testAdminGate(array $test_user_data, bool $is_admin)
+    public function testAdminGate(array $test_user_data, bool $is_admin): void
     {
         $created_user = User::createUser(
             $test_user_data['user_name'],
@@ -31,7 +31,7 @@ class AdminGateTest extends TestCase
         $this->assertEquals(Gate::allows('has-admin-privilege'), $is_admin);
     }
 
-    public function adminGateTestDataProvider()
+    public function adminGateTestDataProvider(): array
     {
         return [
             // 管理者ユーザ

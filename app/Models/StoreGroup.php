@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Webmozart\Assert\Assert;
 
 /**
  * App\Models\StoreGroup
@@ -27,10 +28,38 @@ class StoreGroup extends Model
      *
      * @param string $group_name 店舗グループ名
      */
-    public function addStoreGroup(string $group_name)
+    public function addStoreGroup(string $group_name): StoreGroup
     {
+        Assert::stringNotEmpty($group_name);
+
         $store_group = new StoreGroup();
         $store_group->group_name = $group_name;
         $store_group->save();
+
+        return $store_group;
+    }
+
+    /**
+     * 店舗グループ情報を更新する
+     *
+     * @param string $group_name 店舗グループ名
+     */
+    public function updateStoreInfo(string $group_name): void
+    {
+        Assert::stringNotEmpty($group_name);
+
+        $this->group_name = $group_name;
+        $this->save();
+    }
+
+    /**
+     * 店舗グループを削除する
+     *
+     * 所属している店舗が無い時のみ削除が行える
+     */
+    public function deleteStoreGroup(): void
+    {
+        Assert::eq(Store::whereStoreGroupId($this->id)->count(), 0);
+        $this->delete();
     }
 }

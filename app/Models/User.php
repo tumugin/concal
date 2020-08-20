@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\HasApiTokens;
 use Webmozart\Assert\Assert;
@@ -55,6 +56,8 @@ class User extends Authenticatable
         self::USER_PRIVILEGE_USER,
     ];
 
+    const USER_NAME_TEST_REGEX = '/^[a-zA-Z0-9_\-]+$/';
+
     /**
      * ユーザが管理者権限を持っているかどうか返す
      *
@@ -86,6 +89,78 @@ class User extends Authenticatable
     }
 
     /**
+     * パスワードを更新する。トランザクション内での使用を想定。
+     *
+     * @param string $new_password
+     */
+    private function updatePassword(string $new_password): void
+    {
+        Assert::stringNotEmpty($new_password);
+        $this->password = Hash::make($new_password);
+    }
+
+    /**
+     * メールアドレスを更新する。トランザクション内での使用を想定。
+     *
+     * @param string $new_email
+     */
+    private function updateEmailAddress(string $new_email): void
+    {
+        Assert::email($new_email);
+
+        // 変更後のメールアドレスを所有しているユーザが0人であることを確認する
+        Assert::eq(self::whereEmail($new_email)->count(), 0);
+
+        $this->email = $new_email;
+    }
+
+    /**
+     * ユーザ名を更新する。トランザクション内での使用を想定。
+     *
+     * @param string $new_user_name
+     */
+    private function updateUserName(string $new_user_name): void
+    {
+        Assert::stringNotEmpty($new_user_name);
+        Assert::regex($new_user_name, self::USER_NAME_TEST_REGEX);
+
+        // 変更後のユーザ名を所有しているユーザが0人であることを確認する
+        Assert::eq(self::whereUserName($new_user_name)->count(), 0);
+
+        $this->user_name = $new_user_name;
+    }
+
+    private function updateName(string $new_name): void
+    {
+        Assert::stringNotEmpty($new_name);
+        $this->name = $new_name;
+    }
+
+    /**
+     * ユーザ情報を更新する
+     *
+     * @param array $updated_user_info
+     */
+    public function updateUserInfo(array $updated_user_info): void
+    {
+        DB::transaction(function () use ($updated_user_info) {
+            if ($updated_user_info['user_name'] !== null) {
+                $this->updateUserName($updated_user_info['user_name']);
+            }
+            if ($updated_user_info['name'] !== null) {
+                $this->updateName($updated_user_info['name']);
+            }
+            if ($updated_user_info['password'] !== null) {
+                $this->updatePassword($updated_user_info['password']);
+            }
+            if ($updated_user_info['email'] !== null) {
+                $this->updateEmailAddress($updated_user_info['email']);
+            }
+            $this->save();
+        });
+    }
+
+    /**
      * ユーザを作成する
      *
      * @param string $user_name
@@ -98,7 +173,7 @@ class User extends Authenticatable
     public static function createUser(string $user_name, string $name, string $password, string $email, string $user_privilege): User
     {
         Assert::stringNotEmpty($user_name);
-        Assert::regex($user_name, '/^[a-zA-Z0-9_\-]+$/');
+        Assert::regex($user_name, self::USER_NAME_TEST_REGEX);
         Assert::stringNotEmpty($name);
         Assert::stringNotEmpty($password);
         Assert::email($email);

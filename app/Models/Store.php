@@ -90,4 +90,19 @@ class Store extends Model
 
         return $store;
     }
+
+    /**
+     * 店舗情報を更新する
+     *
+     * @param string $store_name
+     * @param StoreGroup $store_group
+     */
+    public function updateStore(string $store_name, StoreGroup $store_group): void
+    {
+        Assert::stringNotEmpty($store_name);
+
+        $this->store_name = $store_name;
+        $this->store_group_id = $store_group->id;
+        $this->save();
+    }
 }
