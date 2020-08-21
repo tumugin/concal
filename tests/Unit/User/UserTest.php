@@ -5,6 +5,7 @@ namespace Tests\Unit\User;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class UserTest extends TestCase
@@ -22,7 +23,7 @@ class UserTest extends TestCase
         $test_user_data = [
             'user_name' => 'erusa',
             'name' => 'エルサ',
-            'password' => 'erusa_erusa_erusa',
+            'password' => 'Erusa_erusa_erusa_1',
             'email' => 'erusa@example.com',
             'user_privilege' => User::USER_PRIVILEGE_USER,
         ];
@@ -49,7 +50,7 @@ class UserTest extends TestCase
         $test_user_data = [
             'user_name' => 'erusa',
             'name' => 'エルサ',
-            'password' => 'erusa_erusa_erusa',
+            'password' => 'Erusa_erusa_erusa_1',
             'email' => 'erusa@example.com',
         ];
         $user = factory(User::class)->create();
@@ -70,5 +71,21 @@ class UserTest extends TestCase
         $user = factory(User::class)->create();
         $apiToken = $user->createApiToken();
         $this->assertNotEmpty($apiToken);
+    }
+
+    public function testRevokeAllPersonalAccessTokens(): void
+    {
+        $user = factory(User::class)->create();
+        $user->createApiToken();
+        $this->assertEquals(1, $user->tokens->count());
+        $user->revokeAllPersonalAccessTokens();
+        $this->assertEquals(
+            0,
+            $user->tokens->where('revoked', '=', false)->count()
+        );
+        $this->assertEquals(
+            1,
+            $user->tokens->where('revoked', '=', true)->count()
+        );
     }
 }

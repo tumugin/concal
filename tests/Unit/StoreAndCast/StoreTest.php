@@ -67,4 +67,16 @@ class StoreTest extends TestCase
             'store_name' => $store_name,
         ]);
     }
+
+    public function testUpdateStore(): void
+    {
+        $store = factory(Store::class)->create();
+        $store_group = factory(StoreGroup::class)->create();
+        $new_store_name = '都立アフィリア・グランド都庁S';
+        $store->updateStore($new_store_name, $store_group);
+        $this->assertDatabaseHas('stores', [
+            'store_group_id' => $store_group->id,
+            'store_name' => $new_store_name,
+        ]);
+    }
 }
