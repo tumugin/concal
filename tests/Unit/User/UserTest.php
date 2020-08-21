@@ -22,7 +22,7 @@ class UserTest extends TestCase
         $test_user_data = [
             'user_name' => 'erusa',
             'name' => 'エルサ',
-            'password' => 'erusa_erusa_erusa',
+            'password' => 'Erusa_erusa_erusa_1',
             'email' => 'erusa@example.com',
             'user_privilege' => User::USER_PRIVILEGE_USER,
         ];
@@ -49,7 +49,7 @@ class UserTest extends TestCase
         $test_user_data = [
             'user_name' => 'erusa',
             'name' => 'エルサ',
-            'password' => 'erusa_erusa_erusa',
+            'password' => 'Erusa_erusa_erusa_1',
             'email' => 'erusa@example.com',
         ];
         $user = factory(User::class)->create();

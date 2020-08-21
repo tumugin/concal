@@ -72,10 +72,9 @@ class User extends Authenticatable
         // すべてマルチバイト文字でない
         Assert::regex($password, '/^[[:ascii:]]+$/');
         // 制御文字を含まない
-        Assert::notRegex($password, '/[0x00-0x1F]/');
-        Assert::notRegex($password, '/[0x20]/');
-        Assert::notRegex($password, '/[0x21-0x7E]/');
-        Assert::notRegex($password, '[0x7F]/');
+        Assert::notRegex($password, '/[\x00-\x1F]/');
+        Assert::notRegex($password, '/[\x20]/');
+        Assert::notRegex($password, '/[\x7F]/');
     }
 
     /**

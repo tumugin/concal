@@ -39,7 +39,7 @@ class AdminGateTest extends TestCase
                 [
                     'user_name' => 'amina',
                     'name' => '東城アミナ',
-                    'password' => 'amina_amina_amina',
+                    'password' => 'Amina_12241224',
                     'email' => 'amina@example.com',
                     'user_privilege' => User::USER_PRIVILEGE_ADMIN,
                 ],
@@ -50,7 +50,7 @@ class AdminGateTest extends TestCase
                 [
                     'user_name' => 'kana',
                     'name' => '葉山カナ',
-                    'password' => 'kana_kana_kana',
+                    'password' => 'kana_kana_Kana_1210',
                     'email' => 'kana@example.com',
                     'user_privilege' => User::USER_PRIVILEGE_USER,
                 ],
