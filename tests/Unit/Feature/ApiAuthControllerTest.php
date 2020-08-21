@@ -23,7 +23,7 @@ class ApiAuthControllerTest extends TestCase
         'email' => 'erusa@example.com',
     ];
 
-    public function testLoginWithEMail()
+    public function testLoginWithEMail(): void
     {
         User::createUser(
             self::_TEST_USER_DATA['user_name'],
@@ -45,7 +45,7 @@ class ApiAuthControllerTest extends TestCase
         ]);
     }
 
-    public function testLoginWithUserName()
+    public function testLoginWithUserName(): void
     {
         User::createUser(
             self::_TEST_USER_DATA['user_name'],
@@ -67,7 +67,7 @@ class ApiAuthControllerTest extends TestCase
         ]);
     }
 
-    public function testLoginFailed()
+    public function testLoginFailed(): void
     {
         factory(User::class)->create();
         $response = $this->post(
@@ -83,7 +83,7 @@ class ApiAuthControllerTest extends TestCase
         ]);
     }
 
-    public function testRevokeTokens()
+    public function testRevokeTokens(): void
     {
         $user = factory(User::class)->create();
         $token = $user->createApiToken();
