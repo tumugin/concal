@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/login', '\App\Http\Controllers\Api\ApiAuthController@login');
+Route::post('/login', '\App\Http\Controllers\Api\ApiAuthController@login');
 
-Route::middleware('auth:api')->get('/token/revoke', '\App\Http\Controllers\Api\ApiAuthController@revokeTokens');
+Route::middleware('auth:api')
+    ->post('/token/revoke', '\App\Http\Controllers\Api\ApiAuthController@revokeTokens');
