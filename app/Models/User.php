@@ -59,6 +59,26 @@ class User extends Authenticatable
     const USER_NAME_TEST_REGEX = '/^[a-zA-Z0-9_\-]+$/';
 
     /**
+     * 十分に強力なパスワードかどうか検証する
+     *
+     * @param string $password
+     */
+    public static function assertStrongPassword(string $password)
+    {
+        Assert::minLength($password, 10);
+        Assert::regex($password, '/[a-z]/');
+        Assert::regex($password, '/[A-Z]/');
+        Assert::regex($password, '/[0-9]/');
+        // すべてマルチバイト文字でない
+        Assert::regex($password, '/^[[:ascii:]]+$/');
+        // 制御文字を含まない
+        Assert::notRegex($password, '/[0x00-0x1F]/');
+        Assert::notRegex($password, '/[0x20]/');
+        Assert::notRegex($password, '/[0x21-0x7E]/');
+        Assert::notRegex($password, '[0x7F]/');
+    }
+
+    /**
      * ユーザが管理者権限を持っているかどうか返す
      *
      * @return bool
@@ -96,6 +116,7 @@ class User extends Authenticatable
     private function updatePassword(string $new_password): void
     {
         Assert::stringNotEmpty($new_password);
+        self::assertStrongPassword($new_password);
         $this->password = Hash::make($new_password);
     }
 
@@ -176,6 +197,7 @@ class User extends Authenticatable
         Assert::regex($user_name, self::USER_NAME_TEST_REGEX);
         Assert::stringNotEmpty($name);
         Assert::stringNotEmpty($password);
+        self::assertStrongPassword($password);
         Assert::email($email);
         Assert::inArray($user_privilege, self::USER_PRIVILEGES);
 
