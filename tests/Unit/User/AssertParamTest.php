@@ -10,7 +10,7 @@ class AssertParamTest extends TestCase
     /**
      * @dataProvider dataProviderSuccessCase
      */
-    public function testAssertStrongPasswordSuccessPattern(string $test_password)
+    public function testAssertStrongPasswordSuccessPattern(string $test_password): void
     {
         User::assertStrongPassword($test_password);
         $this->assertTrue(true);
@@ -29,7 +29,7 @@ class AssertParamTest extends TestCase
      * @dataProvider dataProviderFailCase
      *
      */
-    public function testAssertStrongPasswordFailPattern(string $test_password)
+    public function testAssertStrongPasswordFailPattern(string $test_password): void
     {
         $this->expectException('InvalidArgumentException');
         User::assertStrongPassword($test_password);

@@ -79,4 +79,50 @@ class CastTest extends TestCase
             'attend_info' => $attend_info,
         ]);
     }
+
+    public function testUpdateAttendance(): void
+    {
+        $cast = factory(Cast::class)->create();
+        $added_attendance = $cast->addAttendance(
+            factory(Store::class)->create(),
+            factory(User::class)->create(),
+            Carbon::parse('2020/08/20 17:00'),
+            Carbon::parse('2020/08/20 23:00'),
+            'test'
+        );
+        $store = factory(Store::class)->create();
+        $user = factory(User::class)->create();
+        $start_time = Carbon::parse('2020/08/30 17:00');
+        $end_time = Carbon::parse('2020/08/30 23:00');
+        $attend_info = 'カウンター屋さん';
+        $added_attendance->updateAttendance(
+            $store->id,
+            $user->id,
+            $start_time,
+            $end_time,
+            $attend_info
+        );
+        $this->assertDatabaseHas('cast_attends', [
+            'cast_id' => $cast->id,
+            'store_id' => $store->id,
+            'start_time' => $start_time->toDateTimeString(),
+            'end_time' => $end_time->toDateTimeString(),
+            'added_by_user_id' => $user->id,
+            'attend_info' => $attend_info,
+        ]);
+    }
+
+    public function testUpdateCast(): void
+    {
+        $cast = factory(Cast::class)->create();
+        $cast_info = [
+            'cast_name' => 'ジェニファー・オブザ・ワールド',
+            'cast_short_name' => 'ジェニファー',
+            'cast_twitter_id' => 'jennifer_afilia',
+            'cast_description' => 'ジェニファー・オブザ・ワールドです♪',
+            'cast_color' => '#F69896',
+        ];
+        $cast->updateCast($cast_info);
+        $this->assertDatabaseHas('casts', $cast_info);
+    }
 }

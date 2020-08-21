@@ -28,7 +28,7 @@ class StoreGroup extends Model
      *
      * @param string $group_name 店舗グループ名
      */
-    public function addStoreGroup(string $group_name): StoreGroup
+    public static function addStoreGroup(string $group_name): StoreGroup
     {
         Assert::stringNotEmpty($group_name);
 
