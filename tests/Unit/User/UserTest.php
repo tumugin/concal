@@ -15,7 +15,7 @@ class UserTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->artisan('passport:client --personal --no-interaction --name=test_client');
+        $this->setupPassport();
     }
 
     public function testCreateUser(): void

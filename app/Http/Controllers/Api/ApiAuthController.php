@@ -11,12 +11,12 @@ class ApiAuthController extends Controller
 {
     public function login(Request $request, UserAuthService $userAuthService)
     {
-        $request->validate($request->all(), [
+        $request->validate([
             'email' => 'email',
             'password' => 'required',
         ]);
         $email = $request->post('email');
-        $user_name = $request->post('user_name');
+        $user_name = $request->post('userName');
         $password = $request->post('password');
 
         try {
@@ -33,7 +33,7 @@ class ApiAuthController extends Controller
 
     public function revokeTokens(UserAuthService $userAuthService)
     {
-        $user = $userAuthService::getCurrentUser('api');
+        $user = $userAuthService->getCurrentUser('api');
         $user->revokeAllPersonalAccessTokens();
         return [
             'success' => true,
