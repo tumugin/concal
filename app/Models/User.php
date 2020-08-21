@@ -63,7 +63,7 @@ class User extends Authenticatable
      *
      * @param string $password
      */
-    public static function assertStrongPassword(string $password)
+    public static function assertStrongPassword(string $password): void
     {
         Assert::minLength($password, 10);
         Assert::regex($password, '/[a-z]/');
