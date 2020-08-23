@@ -32,7 +32,7 @@ class ApiAuthControllerTest extends TestCase
             self::_TEST_USER_DATA['email'],
             User::USER_PRIVILEGE_USER
         );
-        $response = $this->post(
+        $response = $this->postJson(
             '/api/login',
             [
                 'email' => self::_TEST_USER_DATA['email'],
@@ -54,7 +54,7 @@ class ApiAuthControllerTest extends TestCase
             self::_TEST_USER_DATA['email'],
             User::USER_PRIVILEGE_USER
         );
-        $response = $this->post(
+        $response = $this->postJson(
             '/api/login',
             [
                 'userName' => self::_TEST_USER_DATA['user_name'],
@@ -70,7 +70,7 @@ class ApiAuthControllerTest extends TestCase
     public function testLoginFailed(): void
     {
         factory(User::class)->create();
-        $response = $this->post(
+        $response = $this->postJson(
             '/api/login',
             [
                 'userName' => 'hoge',
@@ -89,7 +89,7 @@ class ApiAuthControllerTest extends TestCase
         $token = $user->createApiToken();
         $response = $this
             ->withToken($token)
-            ->post(
+            ->postJson(
                 '/api/token/revoke',
                 []
             );
