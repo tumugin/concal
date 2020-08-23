@@ -192,19 +192,13 @@ class User extends Authenticatable
      */
     public static function createUser(string $user_name, string $name, string $password, string $email, string $user_privilege): User
     {
-        Assert::stringNotEmpty($user_name);
-        Assert::regex($user_name, self::USER_NAME_TEST_REGEX);
-        Assert::stringNotEmpty($name);
-        Assert::stringNotEmpty($password);
-        self::assertStrongPassword($password);
-        Assert::email($email);
         Assert::inArray($user_privilege, self::USER_PRIVILEGES);
 
         $user = new User();
-        $user->user_name = $user_name;
-        $user->name = $name;
-        $user->password = Hash::make($password);
-        $user->email = $email;
+        $user->updateUserName($user_name);
+        $user->updateName($name);
+        $user->updatePassword($password);
+        $user->updateEmailAddress($email);
         $user->user_privilege = $user_privilege;
         $user->save();
 
