@@ -48,7 +48,7 @@ class AdminUserController extends Controller
             $request->post('name'),
             $request->post('password'),
             $request->post('email'),
-            $request->post('userPrivilege'),
+            $request->post('userPrivilege')
         );
         return [
             'success' => true,
@@ -57,11 +57,67 @@ class AdminUserController extends Controller
 
     public function deleteUser(Request $request)
     {
-
+        $request->validate([
+            'userId' => 'required|integer',
+        ]);
+        $user = User::whereId($request->query('userId'))->first();
+        if ($user === null) {
+            return response([
+                'error' => 'User not found.',
+            ])->setStatusCode(404);
+        }
+        $user->delete();
+        return [
+            'success' => true,
+        ];
     }
 
-    public function editUser()
+    public function editUser(Request $request)
     {
+        $request->validate([
+            'userId' => 'required|integer',
+            'userName' => 'string',
+            'name' => 'string',
+            'password' => 'string',
+            'email' => 'email:rfc',
+        ]);
+        $user = User::whereId($request->query('userId'))->first();
+        if ($user === null) {
+            return response([
+                'error' => 'User not found.',
+            ])->setStatusCode(404);
+        }
+        $user->updateUserInfo([
+            'user_name' => $request->post('userName'),
+            'name' => $request->post('name'),
+            'password' => $request->post('password'),
+            'email' => $request->post('email'),
+        ]);
+        return [
+            'success' => true,
+        ];
+    }
 
+    public function getUser(Request $request)
+    {
+        $request->validate([
+            'userId' => 'required|integer',
+        ]);
+        $user = User::whereId($request->query('userId'))->first();
+        if ($user === null) {
+            return response([
+                'error' => 'User not found.',
+            ])->setStatusCode(404);
+        }
+        $user_info = [
+            'userName' => $user->user_name,
+            'name' => $user->name,
+            'email' => $user->email,
+            'userPrivilege' => $user->user_privilege,
+        ];
+        return [
+            'success' => true,
+            'user' => $user_info
+        ];
     }
 }
