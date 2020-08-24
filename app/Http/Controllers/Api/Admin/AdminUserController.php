@@ -22,6 +22,7 @@ class AdminUserController extends Controller
             ->getIterator();
         $users_result = collect($users)->map(function (User $user) {
             return [
+                'id' => $user->id,
                 'userName' => $user->user_name,
                 'name' => $user->name,
                 'email' => $user->email,
@@ -110,6 +111,7 @@ class AdminUserController extends Controller
             ])->setStatusCode(404);
         }
         $user_info = [
+            'id' => $user->id,
             'userName' => $user->user_name,
             'name' => $user->name,
             'email' => $user->email,
