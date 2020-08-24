@@ -39,4 +39,10 @@ Route::group(['middleware' => ['auth:api', 'can:has-admin-privilege']], function
     Route::get('/admin/stores/{userId}', '\App\Http\Controllers\Api\Admin\AdminStoreController@getStore');
     Route::delete('/admin/stores/{userId}', '\App\Http\Controllers\Api\Admin\AdminStoreController@deleteStore');
     Route::patch('/admin/stores/{userId}', '\App\Http\Controllers\Api\Admin\AdminStoreController@editStore');
+    // store group
+    Route::get('/admin/groups', '\App\Http\Controllers\Api\Admin\AdminStoreGroupController@getAllStoreGroups');
+    Route::post('/admin/groups', '\App\Http\Controllers\Api\Admin\AdminStoreGroupController@addStoreGroup');
+    Route::get('/admin/groups/{userId}', '\App\Http\Controllers\Api\Admin\AdminStoreGroupController@getStoreGroup');
+    Route::delete('/admin/groups/{userId}', '\App\Http\Controllers\Api\Admin\AdminStoreGroupController@deleteStoreGroup');
+    Route::patch('/admin/groups/{userId}', '\App\Http\Controllers\Api\Admin\AdminStoreGroupController@editStoreGroup');
 });
