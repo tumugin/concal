@@ -58,7 +58,7 @@ class AdminStoreController extends Controller
             'storeName' => 'required|string',
             'storeGroupId' => 'required|number',
         ]);
-        $store = Store::whereId($request->post('storeId'))->first();
+        $store = Store::whereId($request->query('storeId'))->first();
         if ($store === null) {
             return response([
                 'error' => 'Store not found.',
