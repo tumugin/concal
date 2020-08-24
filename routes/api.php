@@ -23,12 +23,20 @@ Route::group(['middleware' => ['auth:api']], function () {
 
 // admin apis
 Route::group(['middleware' => ['auth:api', 'can:has-admin-privilege']], function () {
+    // info
     Route::get('/admin/info', '\App\Http\Controllers\Api\Admin\AdminSystemInfoController@getSystemInfo')
         ->name('api.admin.info');
+    // users
     Route::get('/admin/users', '\App\Http\Controllers\Api\Admin\AdminUserController@getAllUsers')
         ->name('api.admin.users');
     Route::post('/admin/users', '\App\Http\Controllers\Api\Admin\AdminUserController@addUser');
     Route::get('/admin/users/{userId}', '\App\Http\Controllers\Api\Admin\AdminUserController@getUser');
     Route::delete('/admin/users/{userId}', '\App\Http\Controllers\Api\Admin\AdminUserController@deleteUser');
     Route::patch('/admin/users/{userId}', '\App\Http\Controllers\Api\Admin\AdminUserController@editUser');
+    // stores
+    Route::get('/admin/stores', '\App\Http\Controllers\Api\Admin\AdminStoreController@getAllStores');
+    Route::post('/admin/stores', '\App\Http\Controllers\Api\Admin\AdminStoreController@addStore');
+    Route::get('/admin/stores/{userId}', '\App\Http\Controllers\Api\Admin\AdminStoreController@getStore');
+    Route::delete('/admin/stores/{userId}', '\App\Http\Controllers\Api\Admin\AdminStoreController@deleteStore');
+    Route::patch('/admin/stores/{userId}', '\App\Http\Controllers\Api\Admin\AdminStoreController@editStore');
 });

@@ -93,4 +93,21 @@ class AdminStoreController extends Controller
             'store' => $store_info,
         ];
     }
+
+    public function deleteStore(Request $request)
+    {
+        $request->validate([
+            'storeId' => 'required|integer',
+        ]);
+        $store = Store::whereId($request->query('storeId'))->first();
+        if ($store === null) {
+            return response([
+                'error' => 'Store not found.',
+            ])->setStatusCode(404);
+        }
+        $store->delete();
+        return [
+            'success' => true,
+        ];
+    }
 }
