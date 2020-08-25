@@ -11,7 +11,7 @@ use Webmozart\Assert\Assert;
 /**
  * App\Models\Cast
  *
- * @property int $id
+ * @property int $cast_id
  * @property string $cast_name
  * @property string|null $cast_short_name
  * @property string|null $cast_twitter_id
@@ -20,17 +20,21 @@ use Webmozart\Assert\Assert;
  * @property int $cast_disabled
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CastAttend[] $castAttends
+ * @property-read int|null $cast_attends_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\StoreCast[] $storeCasts
+ * @property-read int|null $store_casts_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCastColor($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCastDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCastDisabled($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCastId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCastName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCastShortName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCastTwitterId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereUpdatedAt($value)
  * @mixin \Eloquent
  */
@@ -86,12 +90,12 @@ class Cast extends Model
         $this->save();
     }
 
-    public function getAttends(): HasMany
+    public function castAttends(): HasMany
     {
         return $this->hasMany(CastAttend::class);
     }
 
-    public function getStoreCasts(): HasMany
+    public function storeCasts(): HasMany
     {
         return $this->hasMany(StoreCast::class);
     }
@@ -102,8 +106,8 @@ class Cast extends Model
     public function deleteCast(): void
     {
         DB::transaction(function () {
-            self::getAttends()->delete();
-            self::getStoreCasts()->delete();
+            self::castAttends()->delete();
+            self::storeCasts()->delete();
             self::delete();
         });
     }
