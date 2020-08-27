@@ -34,7 +34,7 @@ class AdminCastController extends Controller
         $request->validate([
             'castId' => 'required|integer',
         ]);
-        $cast = Cast::whereCastId($request->query('castId'))->first();
+        $cast = Cast::whereId($request->query('castId'))->first();
         if ($cast === null) {
             return response([
                 'error' => 'Cast not found.',
