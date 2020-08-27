@@ -11,7 +11,7 @@ use Webmozart\Assert\Assert;
 /**
  * App\Models\Store
  *
- * @property int $store_id
+ * @property int $id
  * @property string $store_name
  * @property int $store_group_id
  * @property int $store_disabled
@@ -21,9 +21,9 @@ use Webmozart\Assert\Assert;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Store newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Store query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Store whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Store whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Store whereStoreDisabled($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Store whereStoreGroupId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Store whereStoreId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Store whereStoreName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Store whereUpdatedAt($value)
  * @mixin \Eloquent
@@ -34,7 +34,7 @@ class Store extends Model
     {
         return collect($this->getAttributes())
             ->only([
-                'store_id',
+                'id',
                 'store_name',
                 'store_group_id',
                 'store_disabled',

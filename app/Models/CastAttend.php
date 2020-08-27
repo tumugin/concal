@@ -11,7 +11,7 @@ use Webmozart\Assert\Assert;
 /**
  * App\Models\CastAttend
  *
- * @property int $cast_attend_id
+ * @property int $id
  * @property int $cast_id
  * @property int $store_id
  * @property string $start_time
@@ -26,10 +26,10 @@ use Webmozart\Assert\Assert;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend whereAddedByUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend whereAttendInfo($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend whereCastAttendId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend whereCastId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend whereEndTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend whereStartTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend whereStoreId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend whereUpdatedAt($value)
@@ -41,7 +41,7 @@ class CastAttend extends Model
     {
         return collect($this->getAttributes())
             ->only([
-                'cast_attend_id',
+                'id',
                 'cast_id',
                 'store_id',
                 'start_time',
@@ -59,7 +59,7 @@ class CastAttend extends Model
     {
         return collect($this->getAttributes())
             ->only([
-                'cast_attend_id',
+                'id',
                 'cast_id',
                 'store_id',
                 'start_time',

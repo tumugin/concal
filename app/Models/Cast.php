@@ -12,7 +12,7 @@ use Webmozart\Assert\Assert;
 /**
  * App\Models\Cast
  *
- * @property int $cast_id
+ * @property int $id
  * @property string $cast_name
  * @property string|null $cast_short_name
  * @property string|null $cast_twitter_id
@@ -31,11 +31,11 @@ use Webmozart\Assert\Assert;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCastColor($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCastDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCastDisabled($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCastId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCastName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCastShortName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCastTwitterId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast whereUpdatedAt($value)
  * @mixin \Eloquent
  */
@@ -45,7 +45,7 @@ class Cast extends Model
     {
         return collect($this->getAttributes())
             ->only([
-                'cast_id',
+                'id',
                 'cast_name',
                 'cast_short_name',
                 'cast_twitter_id',

@@ -13,7 +13,7 @@ use Webmozart\Assert\Assert;
 /**
  * App\Models\User
  *
- * @property int $user_id
+ * @property int $id
  * @property string $user_name
  * @property string $name
  * @property string $password
@@ -33,11 +33,11 @@ use Webmozart\Assert\Assert;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUserName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUserPrivilege($value)
  * @mixin \Eloquent
@@ -63,7 +63,7 @@ class User extends Authenticatable
     {
         return collect($this->getAttributes())
             ->only([
-                'user_id',
+                'id',
                 'user_name',
                 'name',
                 'email',
@@ -79,7 +79,7 @@ class User extends Authenticatable
     {
         return collect($this->getAttributes())
             ->only([
-                'user_id',
+                'id',
                 'user_name',
                 'name',
                 'user_privilege',

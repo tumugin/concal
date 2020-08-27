@@ -45,4 +45,16 @@ Route::group(['middleware' => ['auth:api', 'can:has-admin-privilege']], function
     Route::get('/admin/groups/{storeGroupId}', '\App\Http\Controllers\Api\Admin\AdminStoreGroupController@getStoreGroup');
     Route::delete('/admin/groups/{storeGroupId}', '\App\Http\Controllers\Api\Admin\AdminStoreGroupController@deleteStoreGroup');
     Route::patch('/admin/groups/{storeGroupId}', '\App\Http\Controllers\Api\Admin\AdminStoreGroupController@editStoreGroup');
+    // cast
+    Route::get('/admin/casts', '\App\Http\Controllers\Api\Admin\AdminCastController@getAllCasts');
+    Route::get('/admin/casts/{castId}', '\App\Http\Controllers\Api\Admin\AdminCastController@getCast');
+    Route::post('/admin/casts', '\App\Http\Controllers\Api\Admin\AdminCastController@addCast');
+    Route::patch('/admin/casts/{castId}', '\App\Http\Controllers\Api\Admin\AdminCastController@editCast');
+    Route::delete('/admin/casts/{castId}', '\App\Http\Controllers\Api\Admin\AdminCastController@deleteCast');
+    // cast attend
+    Route::get('/admin/casts/{castId}/attends', '\App\Http\Controllers\Api\Admin\AdminCastAttendController@getAttends');
+    Route::get('/admin/attends/{attendId}', '\App\Http\Controllers\Api\Admin\AdminCastAttendController@getAttend');
+    Route::post('/admin/casts/{castId}/attends', '\App\Http\Controllers\Api\Admin\AdminCastAttendController@addAttend');
+    Route::patch('/admin/attends/{attendId}', '\App\Http\Controllers\Api\Admin\AdminCastAttendController@editAttend');
+    Route::delete('/admin/attends/{attendId}', '\App\Http\Controllers\Api\Admin\AdminCastAttendController@deleteAttend');
 });

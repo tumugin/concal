@@ -34,7 +34,7 @@ class AdminCastController extends Controller
         $request->validate([
             'castId' => 'required|integer',
         ]);
-        $cast = Cast::whereId($request->query('castId'))->first();
+        $cast = Cast::whereCastId($request->query('castId'))->first();
         if ($cast === null) {
             return response([
                 'error' => 'Cast not found.',
@@ -90,6 +90,23 @@ class AdminCastController extends Controller
             'cast_description' => $request->post('castDescription'),
             'cast_color' => $request->post('cast_color'),
         ]);
+        return [
+            'success' => true,
+        ];
+    }
+
+    public function deleteCast(Request $request)
+    {
+        $request->validate([
+            'castId' => 'required|integer',
+        ]);
+        $cast = Cast::whereId($request->query('castId'))->first();
+        if ($cast === null) {
+            return response([
+                'error' => 'Cast not found.',
+            ])->setStatusCode(404);
+        }
+        $cast->delete();
         return [
             'success' => true,
         ];

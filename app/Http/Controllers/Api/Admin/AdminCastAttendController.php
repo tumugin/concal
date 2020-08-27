@@ -44,8 +44,8 @@ class AdminCastAttendController extends Controller
         $request->validate([
             'attendId' => 'required|integer',
         ]);
-        $attend_id = $request->get('attendid');
-        $cast_attend = CastAttend::whereCastAttendId($attend_id)
+        $attend_id = $request->query('attendId');
+        $cast_attend = CastAttend::whereId($attend_id)
             ->with('store')
             ->first();
         if ($cast_attend === null) {
@@ -95,7 +95,7 @@ class AdminCastAttendController extends Controller
             'endTime' => 'required|date',
             'attendInfo' => 'nullable|string',
         ]);
-        $cast_attend = CastAttend::whereCastAttendId($request->query('attendId'))->first();
+        $cast_attend = CastAttend::whereId($request->query('attendId'))->first();
         if ($cast_attend === null) {
             return response([
                 'error' => 'Cast attend not found.',
@@ -118,7 +118,7 @@ class AdminCastAttendController extends Controller
         $request->validate([
             'attendId' => 'required|integer',
         ]);
-        $cast_attend = CastAttend::whereCastAttendId($request->query('attendId'))->first();
+        $cast_attend = CastAttend::whereId($request->query('attendId'))->first();
         if ($cast_attend === null) {
             return response([
                 'error' => 'Cast attend not found.',
