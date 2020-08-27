@@ -23,12 +23,7 @@ class AdminStoreController extends Controller
             ->take(self::_PAGINATION_COUNT)
             ->getIterator();
         $stores_result = collect($stores)->map(function (Store $store) {
-            return [
-                'id' => $store->id,
-                'storeName' => $store->store_name,
-                'storeGroupId' => $store->store_group_id,
-                'isDisabled' => $store->store_disabled,
-            ];
+            return $store->getAdminAttributes();
         })->all();
         return [
             'success' => true,
@@ -84,20 +79,10 @@ class AdminStoreController extends Controller
             ])->setStatusCode(404);
         }
         $store_info = [
-            'id' => $store->id,
-            'storeName' => $store->store_name,
-            'storeGroupId' => $store->store_group_id,
-            'isDisabled' => $store->store_disabled,
+            ...$store->getAdminAttributes(),
             'casts' => collect($store->getBelongingCasts()->get()->all())
                 ->map(function (Cast $cast) {
-                    return [
-                        'id' => $cast->id,
-                        'castName' => $cast->cast_name,
-                        'castShortName' => $cast->cast_short_name,
-                        'castTwitterId' => $cast->cast_twitter_id,
-                        'castDescription' => $cast->cast_description,
-                        'castDisabled' => $cast->cast_disabled === 1,
-                    ];
+                    return $cast->getAdminAttributes();
                 }),
         ];
         return [

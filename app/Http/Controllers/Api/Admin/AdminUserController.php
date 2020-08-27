@@ -21,13 +21,7 @@ class AdminUserController extends Controller
             ->take(self::_PAGINATION_COUNT)
             ->getIterator();
         $users_result = collect($users)->map(function (User $user) {
-            return [
-                'id' => $user->id,
-                'userName' => $user->user_name,
-                'name' => $user->name,
-                'email' => $user->email,
-                'userPrivilege' => $user->user_privilege,
-            ];
+            return $user->getAdminAttributes();
         })->all();
         return [
             'success' => true,
@@ -110,16 +104,9 @@ class AdminUserController extends Controller
                 'error' => 'User not found.',
             ])->setStatusCode(404);
         }
-        $user_info = [
-            'id' => $user->id,
-            'userName' => $user->user_name,
-            'name' => $user->name,
-            'email' => $user->email,
-            'userPrivilege' => $user->user_privilege,
-        ];
         return [
             'success' => true,
-            'user' => $user_info
+            'user' => $user->getAdminAttributes(),
         ];
     }
 }

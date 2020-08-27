@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Webmozart\Assert\Assert;
 
 /**
@@ -40,6 +41,33 @@ use Webmozart\Assert\Assert;
  */
 class Cast extends Model
 {
+    public function getAdminAttributes(): array
+    {
+        return collect($this->getAttributes())
+            ->only([
+                'cast_id',
+                'cast_name',
+                'cast_short_name',
+                'cast_twitter_id',
+                'cast_description',
+                'cast_color',
+                'cast_disabled',
+            ])
+            ->mergeRecursive([
+                'cast_disbled' => $this->cast_disabled === 1,
+            ])
+            ->mapWithKeys(fn($value, string $key) => [
+                Str::camel($key) => $value
+            ])
+            ->all();
+    }
+
+    public function getUserAttributes(): array
+    {
+        // 隠す必要のある属性がないのでそのまま返す
+        return $this->getAdminAttributes();
+    }
+
     private static function assertCastInfo(array $cast_info): void
     {
         Assert::stringNotEmpty($cast_info['cast_name']);

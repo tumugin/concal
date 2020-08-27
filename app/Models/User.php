@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Laravel\Passport\HasApiTokens;
 use Webmozart\Assert\Assert;
 
@@ -57,6 +58,37 @@ class User extends Authenticatable
     ];
 
     const USER_NAME_TEST_REGEX = '/^[a-zA-Z0-9_\-]+$/';
+
+    public function getAdminAttributes(): array
+    {
+        return collect($this->getAttributes())
+            ->only([
+                'user_id',
+                'user_name',
+                'name',
+                'email',
+                'user_privilege',
+            ])
+            ->mapWithKeys(fn($value, string $key) => [
+                Str::camel($key) => $value
+            ])
+            ->all();
+    }
+
+    public function getUserAttributes(): array
+    {
+        return collect($this->getAttributes())
+            ->only([
+                'user_id',
+                'user_name',
+                'name',
+                'user_privilege',
+            ])
+            ->mapWithKeys(fn($value, string $key) => [
+                Str::camel($key) => $value
+            ])
+            ->all();
+    }
 
     /**
      * 十分に強力なパスワードかどうか検証する

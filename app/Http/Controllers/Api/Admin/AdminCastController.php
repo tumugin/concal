@@ -21,14 +21,7 @@ class AdminCastController extends Controller
             ->take(self::_PAGINATION_COUNT)
             ->getIterator();
         $casts_result = collect($casts)->map(function (Cast $cast) {
-            return [
-                'id' => $cast->id,
-                'castName' => $cast->cast_name,
-                'castShortName' => $cast->cast_short_name,
-                'castTwitterId' => $cast->cast_twitter_id,
-                'castDescription' => $cast->cast_description,
-                'castDisabled' => $cast->cast_disabled === 1,
-            ];
+            return $cast->getAdminAttributes();
         });
         return [
             'success' => true,
@@ -49,14 +42,7 @@ class AdminCastController extends Controller
         }
         return [
             'success' => true,
-            'castInfo' => [
-                'id' => $cast->id,
-                'castName' => $cast->cast_name,
-                'castShortName' => $cast->cast_short_name,
-                'castTwitterId' => $cast->cast_twitter_id,
-                'castDescription' => $cast->cast_description,
-                'castDisabled' => $cast->cast_disabled === 1,
-            ]
+            'castInfo' => $cast->getAdminAttributes(),
         ];
     }
 

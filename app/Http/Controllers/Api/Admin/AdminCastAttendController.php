@@ -29,15 +29,7 @@ class AdminCastAttendController extends Controller
             ->with('store')
             ->get();
         $attends_result = collect($attends)->map(function (CastAttend $cast_attend) {
-            return [
-                'id' => $cast_attend->id,
-                'storeId' => $cast_attend->store_id,
-                'storeName' => $cast_attend->store->store_name,
-                'startTime' => $cast_attend->start_time,
-                'endTime' => $cast_attend->end_time,
-                'attendInfo' => $cast_attend->attend_info,
-                'addedByUserId' => $cast_attend->added_by_user_id,
-            ];
+            return $cast_attend->getAdminAttributes();
         });
         return [
             'success' => true,
@@ -62,15 +54,10 @@ class AdminCastAttendController extends Controller
         return [
             'success' => true,
             'attend' => [
-                'id' => $cast_attend->id,
-                'storeId' => $cast_attend->store_id,
+                ...$cast_attend->getAdminAttributes(),
                 'storeName' => $cast_attend->store->store_name,
                 'groupId' => $cast_attend->store->store_group_id,
                 'groupName' => $cast_attend->store->getBelongingStoreGroup()->group_name,
-                'startTime' => $cast_attend->start_time,
-                'endTime' => $cast_attend->end_time,
-                'attendInfo' => $cast_attend->attend_info,
-                'addedByUserId' => $cast_attend->added_by_user_id,
             ],
         ];
     }

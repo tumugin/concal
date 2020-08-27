@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Str;
 use Webmozart\Assert\Assert;
 
 /**
@@ -29,6 +30,30 @@ use Webmozart\Assert\Assert;
  */
 class Store extends Model
 {
+    public function getAdminAttributes(): array
+    {
+        return collect($this->getAttributes())
+            ->only([
+                'store_id',
+                'store_name',
+                'store_group_id',
+                'store_disabled',
+            ])
+            ->mergeRecursive([
+                'cast_disbled' => $this->store_disabled === 1,
+            ])
+            ->mapWithKeys(fn($value, string $key) => [
+                Str::camel($key) => $value
+            ])
+            ->all();
+    }
+
+    public function getUserAttributes(): array
+    {
+        // 隠す必要のある属性がないのでそのまま返す
+        return $this->getAdminAttributes();
+    }
+
     /**
      * キャストをこの店舗に在籍させる
      *
