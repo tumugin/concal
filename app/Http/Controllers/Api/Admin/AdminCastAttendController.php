@@ -44,4 +44,45 @@ class AdminCastAttendController extends Controller
             'attends' => $attends_result,
         ];
     }
+
+    public function getAttend(Request $request)
+    {
+        $request->validate([
+            'attendId' => 'required|integer',
+        ]);
+        $attend_id = $request->get('attendid');
+        $cast_attend = CastAttend::whereCastAttendId($attend_id)
+            ->with('store')
+            ->first();
+        if ($cast_attend === null) {
+            return response([
+                'error' => 'Cast attend not found.',
+            ])->setStatusCode(404);
+        }
+        return [
+            'success' => true,
+            'attend' => [
+                'id' => $cast_attend->id,
+                'storeId' => $cast_attend->store_id,
+                'storeName' => $cast_attend->store->store_name,
+                'groupId' => $cast_attend->store->store_group_id,
+                'groupName' => $cast_attend->store->getBelongingStoreGroup()->group_name,
+                'startTime' => $cast_attend->start_time,
+                'endTime' => $cast_attend->end_time,
+                'attendInfo' => $cast_attend->attend_info,
+                'addedByUserId' => $cast_attend->added_by_user_id,
+            ],
+        ];
+    }
+
+    public function addAttend(Request $request)
+    {
+        $request->validate([
+            'castId' => 'required|integer',
+            'storeId' => 'required|integer',
+            'startTime' => 'required|date',
+            'endTime' => 'required|date',
+            'attendInfo' => 'nullable|string',
+        ]);
+    }
 }
