@@ -23,12 +23,38 @@ Route::group(['middleware' => ['auth:api']], function () {
 
 // admin apis
 Route::group(['middleware' => ['auth:api', 'can:has-admin-privilege']], function () {
+    // info
     Route::get('/admin/info', '\App\Http\Controllers\Api\Admin\AdminSystemInfoController@getSystemInfo')
         ->name('api.admin.info');
+    // users
     Route::get('/admin/users', '\App\Http\Controllers\Api\Admin\AdminUserController@getAllUsers')
         ->name('api.admin.users');
     Route::post('/admin/users', '\App\Http\Controllers\Api\Admin\AdminUserController@addUser');
     Route::get('/admin/users/{userId}', '\App\Http\Controllers\Api\Admin\AdminUserController@getUser');
     Route::delete('/admin/users/{userId}', '\App\Http\Controllers\Api\Admin\AdminUserController@deleteUser');
     Route::patch('/admin/users/{userId}', '\App\Http\Controllers\Api\Admin\AdminUserController@editUser');
+    // stores
+    Route::get('/admin/stores', '\App\Http\Controllers\Api\Admin\AdminStoreController@getAllStores');
+    Route::post('/admin/stores', '\App\Http\Controllers\Api\Admin\AdminStoreController@addStore');
+    Route::get('/admin/stores/{storeId}', '\App\Http\Controllers\Api\Admin\AdminStoreController@getStore');
+    Route::delete('/admin/stores/{storeId}', '\App\Http\Controllers\Api\Admin\AdminStoreController@deleteStore');
+    Route::patch('/admin/stores/{storeId}', '\App\Http\Controllers\Api\Admin\AdminStoreController@editStore');
+    // store group
+    Route::get('/admin/groups', '\App\Http\Controllers\Api\Admin\AdminStoreGroupController@getAllStoreGroups');
+    Route::post('/admin/groups', '\App\Http\Controllers\Api\Admin\AdminStoreGroupController@addStoreGroup');
+    Route::get('/admin/groups/{storeGroupId}', '\App\Http\Controllers\Api\Admin\AdminStoreGroupController@getStoreGroup');
+    Route::delete('/admin/groups/{storeGroupId}', '\App\Http\Controllers\Api\Admin\AdminStoreGroupController@deleteStoreGroup');
+    Route::patch('/admin/groups/{storeGroupId}', '\App\Http\Controllers\Api\Admin\AdminStoreGroupController@editStoreGroup');
+    // cast
+    Route::get('/admin/casts', '\App\Http\Controllers\Api\Admin\AdminCastController@getAllCasts');
+    Route::get('/admin/casts/{castId}', '\App\Http\Controllers\Api\Admin\AdminCastController@getCast');
+    Route::post('/admin/casts', '\App\Http\Controllers\Api\Admin\AdminCastController@addCast');
+    Route::patch('/admin/casts/{castId}', '\App\Http\Controllers\Api\Admin\AdminCastController@editCast');
+    Route::delete('/admin/casts/{castId}', '\App\Http\Controllers\Api\Admin\AdminCastController@deleteCast');
+    // cast attend
+    Route::get('/admin/casts/{castId}/attends', '\App\Http\Controllers\Api\Admin\AdminCastAttendController@getAttends');
+    Route::get('/admin/attends/{attendId}', '\App\Http\Controllers\Api\Admin\AdminCastAttendController@getAttend');
+    Route::post('/admin/casts/{castId}/attends', '\App\Http\Controllers\Api\Admin\AdminCastAttendController@addAttend');
+    Route::patch('/admin/attends/{attendId}', '\App\Http\Controllers\Api\Admin\AdminCastAttendController@editAttend');
+    Route::delete('/admin/attends/{attendId}', '\App\Http\Controllers\Api\Admin\AdminCastAttendController@deleteAttend');
 });

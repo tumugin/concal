@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
 use Webmozart\Assert\Assert;
 
 /**
@@ -18,6 +20,7 @@ use Webmozart\Assert\Assert;
  * @property int $added_by_user_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Store $store
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend query()
@@ -34,6 +37,41 @@ use Webmozart\Assert\Assert;
  */
 class CastAttend extends Model
 {
+    public function getAdminAttributes(): array
+    {
+        return collect($this->getAttributes())
+            ->only([
+                'id',
+                'cast_id',
+                'store_id',
+                'start_time',
+                'end_time',
+                'attend_info',
+                'added_by_user_id',
+            ])
+            ->mapWithKeys(fn($value, string $key) => [
+                Str::camel($key) => $value
+            ])
+            ->all();
+    }
+
+    public function getUserAttributes(): array
+    {
+        return collect($this->getAttributes())
+            ->only([
+                'id',
+                'cast_id',
+                'store_id',
+                'start_time',
+                'end_time',
+                'attend_info',
+            ])
+            ->mapWithKeys(fn($value, string $key) => [
+                Str::camel($key) => $value
+            ])
+            ->all();
+    }
+
     /**
      * キャストの出勤情報を登録する
      *
@@ -84,5 +122,10 @@ class CastAttend extends Model
         $this->added_by_user_id = $added_by_user_id;
         $this->attend_info = $attend_info;
         $this->save();
+    }
+
+    public function store(): BelongsTo
+    {
+        return $this->belongsTo(Store::class);
     }
 }

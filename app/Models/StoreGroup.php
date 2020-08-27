@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Webmozart\Assert\Assert;
 
 /**
@@ -23,6 +24,24 @@ use Webmozart\Assert\Assert;
  */
 class StoreGroup extends Model
 {
+    public function getAdminAttributes(): array
+    {
+        return collect($this->getAttributes())
+            ->only([
+                'id',
+                'group_name',
+            ])
+            ->mapWithKeys(fn($value, string $key) => [
+                Str::camel($key) => $value
+            ])
+            ->all();
+    }
+
+    public function getUserAttributes(): array
+    {
+        return $this->getAdminAttributes();
+    }
+
     /**
      * 店舗グループを作成する
      *

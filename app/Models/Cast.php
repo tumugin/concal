@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Webmozart\Assert\Assert;
 
 /**
@@ -20,6 +21,10 @@ use Webmozart\Assert\Assert;
  * @property int $cast_disabled
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CastAttend[] $castAttends
+ * @property-read int|null $cast_attends_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\StoreCast[] $storeCasts
+ * @property-read int|null $store_casts_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cast query()
@@ -36,6 +41,33 @@ use Webmozart\Assert\Assert;
  */
 class Cast extends Model
 {
+    public function getAdminAttributes(): array
+    {
+        return collect($this->getAttributes())
+            ->only([
+                'id',
+                'cast_name',
+                'cast_short_name',
+                'cast_twitter_id',
+                'cast_description',
+                'cast_color',
+                'cast_disabled',
+            ])
+            ->mergeRecursive([
+                'cast_disbled' => $this->cast_disabled === 1,
+            ])
+            ->mapWithKeys(fn($value, string $key) => [
+                Str::camel($key) => $value
+            ])
+            ->all();
+    }
+
+    public function getUserAttributes(): array
+    {
+        // 隠す必要のある属性がないのでそのまま返す
+        return $this->getAdminAttributes();
+    }
+
     private static function assertCastInfo(array $cast_info): void
     {
         Assert::stringNotEmpty($cast_info['cast_name']);
@@ -86,12 +118,12 @@ class Cast extends Model
         $this->save();
     }
 
-    public function getAttends(): HasMany
+    public function castAttends(): HasMany
     {
         return $this->hasMany(CastAttend::class);
     }
 
-    public function getStoreCasts(): HasMany
+    public function storeCasts(): HasMany
     {
         return $this->hasMany(StoreCast::class);
     }
@@ -102,8 +134,8 @@ class Cast extends Model
     public function deleteCast(): void
     {
         DB::transaction(function () {
-            self::getAttends()->delete();
-            self::getStoreCasts()->delete();
+            self::castAttends()->delete();
+            self::storeCasts()->delete();
             self::delete();
         });
     }
