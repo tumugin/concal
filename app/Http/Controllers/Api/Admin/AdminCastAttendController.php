@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\CastAttend;
+use App\Services\UserAuthService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AdminCastAttendController extends Controller
@@ -71,5 +73,60 @@ class AdminCastAttendController extends Controller
             'endTime' => 'required|date',
             'attendInfo' => 'nullable|string',
         ]);
+        CastAttend::addAttendance(
+            (int)$request->query('castId'),
+            (int)$request->post('storeId'),
+            UserAuthService::getCurrentUser('api')->user_id,
+            Carbon::parse($request->post('startTime')),
+            Carbon::parse($request->post('endTime')),
+            $request->post('attendInfo') ?? ''
+        );
+        return [
+            'success' => true,
+        ];
+    }
+
+    public function editAttend(Request $request)
+    {
+        $request->validate([
+            'attendId' => 'required|integer',
+            'storeId' => 'required|integer',
+            'startTime' => 'required|date',
+            'endTime' => 'required|date',
+            'attendInfo' => 'nullable|string',
+        ]);
+        $cast_attend = CastAttend::whereCastAttendId($request->query('attendId'))->first();
+        if ($cast_attend === null) {
+            return response([
+                'error' => 'Cast attend not found.',
+            ])->setStatusCode(404);
+        }
+        $cast_attend->updateAttendance(
+            (int)$request->post('storeId'),
+            UserAuthService::getCurrentUser('api')->user_id,
+            Carbon::parse($request->post('startTime')),
+            Carbon::parse($request->post('endTime')),
+            $request->post('attendInfo') ?? ''
+        );
+        return [
+            'success' => true,
+        ];
+    }
+
+    public function deleteAttend(Request $request)
+    {
+        $request->validate([
+            'attendId' => 'required|integer',
+        ]);
+        $cast_attend = CastAttend::whereCastAttendId($request->query('attendId'))->first();
+        if ($cast_attend === null) {
+            return response([
+                'error' => 'Cast attend not found.',
+            ])->setStatusCode(404);
+        }
+        $cast_attend->delete();
+        return [
+            'success' => true,
+        ];
     }
 }
