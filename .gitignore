@@ -1,3 +1,11 @@
+/.yarn/*
+!/.yarn/releases
+!/.yarn/plugins
+!/.yarn/sdks
+
+/.yarn/cache
+/.pnp.*
+
 /node_modules
 /public/hot
 /public/storage
