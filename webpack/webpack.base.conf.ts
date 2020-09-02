@@ -15,7 +15,7 @@ export default function config(
     const config: webpack.Configuration = {
         output: {
             filename: 'static/[name].[hash].bundle.js',
-            path: path.resolve(isProduction ? 'prod/' : 'dist/'),
+            path: path.resolve(isProduction ? 'public/' : 'public/'),
             chunkFilename: 'static/[name].[hash].bundle.js',
             publicPath: '/',
         },
@@ -35,16 +35,15 @@ export default function config(
             noEmitOnErrors: true,
         },
         resolve: {
-            extensions: ['.js', '.vue', '.json', '.ts'],
+            extensions: ['.js', '.json', '.ts', '.tsx'],
             alias: {
-                vue$: 'vue/dist/vue.runtime.esm.js',
                 '@': path.resolve('src/'),
             },
         },
         module: {
             rules: [
                 {
-                    test: /\.ts$/,
+                    test: /\.(ts|tsx)$/,
                     use: [
                         {
                             loader: 'thread-loader',
@@ -58,7 +57,6 @@ export default function config(
                         {
                             loader: 'ts-loader',
                             options: {
-                                appendTsSuffixTo: [/\.vue$/],
                                 happyPackMode: true,
                                 compilerOptions: {
                                     module: 'esnext',
@@ -68,23 +66,7 @@ export default function config(
                     ],
                 },
                 {
-                    test: /\.vue$/,
-                    use: {
-                        loader: 'vue-loader',
-                        options: {
-                            esModule: true,
-                            cacheBusting: true,
-                            loaders: {
-                                scss: 'vue-style-loader!css-loader!postcss-loader!sass-loader',
-                                sass: 'vue-style-loader!css-loader!postcss-loader!sass-loader?indentedSyntax',
-                                css: 'vue-style-loader!css-loader!postcss-loader',
-                            },
-                            extractCSS: isProduction,
-                        },
-                    },
-                },
-                {
-                    test: /\.js$/,
+                    test: /\.(js|jsx)$/,
                     exclude: /node_modules/,
                     use: {
                         loader: 'babel-loader',
@@ -134,9 +116,7 @@ export default function config(
                 },
             ],
         },
-        plugins: [
-            (new MiniCssExtractPlugin({ filename: 'static/common.[chunkhash].css' }) as unknown) as webpack.Plugin,
-        ],
+        plugins: [new MiniCssExtractPlugin({ filename: 'static/common.[chunkhash].css' })],
     }
     return config
 }
