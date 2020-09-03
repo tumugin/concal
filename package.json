@@ -1,5 +1,18 @@
 {
     "name": "concal",
+    "scripts": {
+        "dev": "webpack-dev-server --mode=development",
+        "builddev": "webpack --mode=development",
+        "watch": "webpack --mode=development --watch",
+        "prod": "webpack --mode=production",
+        "lint": "eslint --ext .ts,.js,.vue src",
+        "lint:fix": "eslint --ext .js,.vue src --fix",
+        "prettier:check": "prettier --check \"src/**/*.(js|ts|vue|scss|css)\"",
+        "prettier:fix": "prettier --write \"src/**/*.(js|ts|vue|scss|css)\"",
+        "typecheck": "tsc --noEmit",
+        "storybook": "start-storybook",
+        "test": "jest --verbose"
+    },
     "dependencies": {
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
