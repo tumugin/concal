@@ -12,7 +12,7 @@ export default function config(
     const config: webpack.Configuration = {
         ...base,
         entry: {
-            app: path.resolve('src/main.ts'),
+            app: path.resolve('src/main.tsx'),
         },
         plugins: [
             ...(base.plugins || []),

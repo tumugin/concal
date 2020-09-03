@@ -2,7 +2,8 @@
     "name": "concal",
     "dependencies": {
         "react": "^16.13.1",
-        "react-dom": "^16.13.1"
+        "react-dom": "^16.13.1",
+        "react-router-dom": "^5.2.0"
     },
     "devDependencies": {
         "@babel/core": "^7.11.4",
@@ -20,6 +21,7 @@
         "@types/puppeteer": "^3.0.1",
         "@types/react": "^16.9.48",
         "@types/react-dom": "^16.9.8",
+        "@types/react-router-dom": "^5.1.5",
         "@types/storybook__addon-storyshots": "^5.3.1",
         "@types/webpack": "^4.41.21",
         "@types/webpack-dev-server": "^3.11.0",

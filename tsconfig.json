@@ -12,12 +12,12 @@
         "moduleResolution": "node",
         "module": "commonjs",
         "target": "es6",
-        "baseUrl": "./",
+        "baseUrl": "./src/",
         "jsx": "preserve",
         "paths": {
             "@": ["src"]
         }
     },
     "typeRoots": ["node_modules/@types", "type/*.d.ts"],
-    "includes": ["src/**/*.ts"]
+    "includes": ["src/**/*.ts", "src/**/*.tsx"]
 }
