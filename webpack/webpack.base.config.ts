@@ -36,6 +36,7 @@ export default function config(
         },
         resolve: {
             extensions: ['.js', '.json', '.ts', '.tsx'],
+            modules: [path.resolve('src/'), 'node_modules'],
             alias: {
                 '@': path.resolve('src/'),
             },

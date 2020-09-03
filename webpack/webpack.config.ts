@@ -1,4 +1,4 @@
-import baseConfig from './webpack.base.conf'
+import baseConfig from './webpack.base.config'
 import * as webpack from 'webpack'
 import * as path from 'path'
 import WebpackBar from 'webpackbar'
