@@ -15,7 +15,7 @@ export default function config(
     const config: webpack.Configuration = {
         output: {
             filename: 'static/[name].[hash].bundle.js',
-            path: path.resolve(isProduction ? 'public/' : 'public/'),
+            path: path.resolve('public/'),
             chunkFilename: 'static/[name].[hash].bundle.js',
             publicPath: '/',
         },
