@@ -23,7 +23,7 @@ export default function config(
             }) as unknown) as webpack.Plugin,
             new HtmlWebpackPlugin({
                 filename: 'index.html',
-                template: path.resolve('public/index.html'),
+                template: path.resolve('resources/html/template.html'),
                 inject: true,
             }),
         ],
