@@ -1,0 +1,13 @@
+{
+    "plugins": [["@babel/plugin-syntax-dynamic-import"]],
+    "presets": [
+        ["@babel/preset-react"],
+        [
+            "@babel/preset-env",
+            {
+                "useBuiltIns": "usage",
+                "corejs": 3
+            }
+        ]
+    ]
+}

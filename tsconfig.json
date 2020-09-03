@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "esModuleInterop": true,
+        "experimentalDecorators": true,
+        "importHelpers": true,
+        "resolveJsonModule": true,
+        "outDir": "./built/",
+        "sourceMap": true,
+        "strict": true,
+        "noImplicitReturns": true,
+        "lib": ["es2015", "es2016", "es2017", "es2018", "es2019", "es2020", "dom"],
+        "moduleResolution": "node",
+        "module": "commonjs",
+        "target": "es6",
+        "baseUrl": "./src/",
+        "jsx": "preserve",
+        "paths": {
+            "@": ["src"]
+        }
+    },
+    "typeRoots": ["node_modules/@types", "type/*.d.ts"],
+    "includes": ["src/**/*.ts", "src/**/*.tsx"]
+}
