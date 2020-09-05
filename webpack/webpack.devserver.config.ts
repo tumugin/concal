@@ -1,7 +1,8 @@
 import baseConfig from './webpack.base.config'
 import * as webpack from 'webpack'
+import * as path from 'path'
 import WebpackBar from 'webpackbar'
-import ManifestPlugin from 'webpack-manifest-plugin'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
 
 export default function config(
     env: { [key: string]: string | undefined },
@@ -15,9 +16,13 @@ export default function config(
             (new WebpackBar({
                 color: '#7adad6',
                 profile: true,
-                name: 'frontend client',
+                name: 'frontend dev client',
             }) as unknown) as webpack.Plugin,
-            new ManifestPlugin(),
+            new HtmlWebpackPlugin({
+                filename: 'index.html',
+                template: path.resolve('resources/html/template.html'),
+                inject: true,
+            }),
         ],
     }
     return config
