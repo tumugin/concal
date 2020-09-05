@@ -4,19 +4,19 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 
 export default function config(
     env: { [key: string]: string | undefined },
-    argv: { [key: string]: string | undefined },
-    options?: { isSSR: boolean }
+    argv: { [key: string]: string | undefined }
 ) {
     const isProduction = argv.mode === 'production'
-    // production => cssを別途出力
-    // debug => Clientであればstyle-loaderもしくはMiniCssExtractPlugin.loaderを使用、SSRビルドでは使用できないためnull-loader
-    const styleLoader = options?.isSSR ? 'null-loader' : isProduction ? MiniCssExtractPlugin.loader : 'style-loader'
-    const sourceMapEnabled = options?.isSSR || !isProduction
+    const styleLoader = isProduction ? MiniCssExtractPlugin.loader : 'style-loader'
+    const sourceMapEnabled = !isProduction
     const config: webpack.Configuration = {
+        entry: {
+            app: path.resolve('src/main.tsx'),
+        },
         output: {
-            filename: 'static/[name].[hash].bundle.js',
-            path: path.resolve('public/resources/'),
-            chunkFilename: 'static/[name].[hash].bundle.js',
+            filename: 'js/[name].[hash].bundle.js',
+            path: path.resolve('dist/'),
+            chunkFilename: 'js/[name].[hash].bundle.js',
             publicPath: '/',
         },
         devtool: sourceMapEnabled && 'source-map',
@@ -117,7 +117,7 @@ export default function config(
                 },
             ],
         },
-        plugins: [new MiniCssExtractPlugin({ filename: 'static/common.[chunkhash].css' })],
+        plugins: [new MiniCssExtractPlugin({ filename: 'css/common.[chunkhash].css' })],
     }
     return config
 }

@@ -18,7 +18,8 @@
         "nesbot/carbon": "^2.38",
         "php-pm/httpkernel-adapter": "^2.0",
         "php-pm/php-pm": "^2.1",
-        "webmozart/assert": "^1.9"
+        "webmozart/assert": "^1.9",
+        "ext-json": "*"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.7",
