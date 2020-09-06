@@ -1,5 +1,5 @@
 {
-    "name": "myskng/concal",
+    "name": "concal",
     "scripts": {
         "dev": "webpack-dev-server --mode=development --config webpack/webpack.devserver.config.ts",
         "builddev": "webpack --mode=development",
