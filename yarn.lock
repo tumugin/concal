@@ -4622,6 +4622,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"axios@npm:^0.20.0":
+  version: 0.20.0
+  resolution: "axios@npm:0.20.0"
+  dependencies:
+    follow-redirects: ^1.10.0
+  checksum: 6cf2e963176a0d18fc457d7cb71cb6cf552193619b161fc61070d9a4db3a26a87ecfe760ba36e7af174c05a6a9898dc52cfeb5c0e62e19fddd9788739553ad73
+  languageName: node
+  linkType: hard
+
 "babel-code-frame@npm:^6.22.0":
   version: 6.26.0
   resolution: "babel-code-frame@npm:6.26.0"
@@ -4930,7 +4939,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-styled-components@npm:>= 1":
+"babel-plugin-styled-components@npm:>= 1, babel-plugin-styled-components@npm:^1.11.1":
   version: 1.11.1
   resolution: "babel-plugin-styled-components@npm:1.11.1"
   dependencies:
@@ -6551,10 +6560,12 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^3.10.1
     "@typescript-eslint/parser": ^3.10.1
     autoprefixer: ^9.8.6
+    axios: ^0.20.0
     babel-core: ^7.0.0-bridge.0
     babel-eslint: ^10.1.0
     babel-jest: ^26.3.0
     babel-loader: ^8.1.0
+    babel-plugin-styled-components: ^1.11.1
     chalk: ^4.1.0
     copy-webpack-plugin: ^6.0.3
     css-loader: ^4.2.2
@@ -9493,7 +9504,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.0.0":
+"follow-redirects@npm:^1.0.0, follow-redirects@npm:^1.10.0":
   version: 1.13.0
   resolution: "follow-redirects@npm:1.13.0"
   checksum: f220828d3f153da30ea616fdbe9f6676e74e4e68c51d336a751037c1d556e2de34aa5918f58951fa19bb6517c9c88b4403a0a8bdfc40d3e779d37def2ac0f2c4

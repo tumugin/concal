@@ -13,15 +13,18 @@ export default function config(
         ...base,
         plugins: [
             ...(base.plugins || []),
-            (new WebpackBar({
+            new WebpackBar({
                 color: '#7adad6',
                 profile: true,
                 name: 'frontend dev client',
-            }) as unknown) as webpack.Plugin,
+            }),
             new HtmlWebpackPlugin({
                 filename: 'index.html',
                 template: path.resolve('resources/html/template.html'),
                 inject: true,
+            }),
+            new webpack.DefinePlugin({
+                IS_WEBPACK_DEV_SERVER: true,
             }),
         ],
     }
