@@ -10,7 +10,7 @@ class AdminCastController extends Controller
 {
     private const _PAGINATION_COUNT = 10;
 
-    public function getAllCasts(Request $request)
+    public function index(Request $request)
     {
         $request->validate([
             'page' => 'required|integer',
@@ -29,12 +29,12 @@ class AdminCastController extends Controller
         ];
     }
 
-    public function getCast(Request $request)
+    public function show(Request $request)
     {
         $request->validate([
-            'castId' => 'required|integer',
+            'cast' => 'required|integer',
         ]);
-        $cast = Cast::whereId($request->query('castId'))->first();
+        $cast = Cast::whereId($request->query('cast'))->first();
         if ($cast === null) {
             return response([
                 'error' => 'Cast not found.',
@@ -46,7 +46,7 @@ class AdminCastController extends Controller
         ];
     }
 
-    public function addCast(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
             'castName' => 'required|string',
@@ -67,17 +67,17 @@ class AdminCastController extends Controller
         ];
     }
 
-    public function editCast(Request $request)
+    public function update(Request $request)
     {
         $request->validate([
-            'castId' => 'required|integer',
+            'cast' => 'required|integer',
             'castName' => 'required|string',
             'castShortName' => 'nullable|string',
             'castTwitterId' => 'nullable|string',
             'castDescription' => 'nullable|string',
             'castColor' => 'nullable|string',
         ]);
-        $cast = Cast::whereId($request->query('castId'))->first();
+        $cast = Cast::whereId($request->query('cast'))->first();
         if ($cast === null) {
             return response([
                 'error' => 'Cast not found.',
@@ -95,12 +95,12 @@ class AdminCastController extends Controller
         ];
     }
 
-    public function deleteCast(Request $request)
+    public function destroy(Request $request)
     {
         $request->validate([
-            'castId' => 'required|integer',
+            'cast' => 'required|integer',
         ]);
-        $cast = Cast::whereId($request->query('castId'))->first();
+        $cast = Cast::whereId($request->query('cast'))->first();
         if ($cast === null) {
             return response([
                 'error' => 'Cast not found.',

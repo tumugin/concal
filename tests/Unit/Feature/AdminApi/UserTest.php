@@ -21,7 +21,7 @@ class UserTest extends TestCase
     {
         $result = $this
             ->withToken($this->adminApiKey)
-            ->getJson(URL::route('api.admin.users', [
+            ->getJson(URL::route('api.admin.users.index', [
                 'page' => 1,
             ]));
         $result->assertStatus(200);

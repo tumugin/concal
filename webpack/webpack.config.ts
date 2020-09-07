@@ -12,11 +12,11 @@ export default function config(
         ...base,
         plugins: [
             ...(base.plugins || []),
-            (new WebpackBar({
+            new WebpackBar({
                 color: '#7adad6',
                 profile: true,
                 name: 'frontend client',
-            }) as unknown) as webpack.Plugin,
+            }),
             new ManifestPlugin(),
         ],
     }

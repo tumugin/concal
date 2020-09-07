@@ -9,7 +9,7 @@ class AdminStoreGroupController
 {
     private const _PAGINATION_COUNT = 10;
 
-    public function getAllStoreGroups(Request $request)
+    public function index(Request $request)
     {
         $request->validate([
             'page' => 'required|integer',
@@ -31,12 +31,12 @@ class AdminStoreGroupController
         ];
     }
 
-    public function getStoreGroup(Request $request)
+    public function show(Request $request)
     {
         $request->validate([
-            'storeGroupId' => 'required|integer',
+            'group' => 'required|integer',
         ]);
-        $store_group = StoreGroup::whereId($request->query('storeGroupId'))->first();
+        $store_group = StoreGroup::whereId($request->query('group'))->first();
         if ($store_group === null) {
             return response([
                 'error' => 'Store group not found.',
@@ -52,7 +52,7 @@ class AdminStoreGroupController
         ];
     }
 
-    public function addStoreGroup(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
             'groupName' => 'required|string',
@@ -63,13 +63,13 @@ class AdminStoreGroupController
         ];
     }
 
-    public function editStoreGroup(Request $request)
+    public function update(Request $request)
     {
         $request->validate([
-            'storeGroupId' => 'required|integer',
+            'group' => 'required|integer',
             'groupName' => 'required|string',
         ]);
-        $store_group = StoreGroup::whereId($request->query('storeGroupId'))->first();
+        $store_group = StoreGroup::whereId($request->query('group'))->first();
         if ($store_group === null) {
             return response([
                 'error' => 'Store group not found.',
@@ -81,12 +81,12 @@ class AdminStoreGroupController
         ];
     }
 
-    public function deleteStoreGroup(Request $request)
+    public function destroy(Request $request)
     {
         $request->validate([
-            'storeGroupId' => 'required|integer',
+            'group' => 'required|integer',
         ]);
-        $store_group = StoreGroup::whereId($request->query('storeGroupId'))->first();
+        $store_group = StoreGroup::whereId($request->query('group'))->first();
         if ($store_group === null) {
             return response([
                 'error' => 'Store group not found.',

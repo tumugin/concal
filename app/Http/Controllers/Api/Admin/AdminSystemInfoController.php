@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 
 class AdminSystemInfoController extends Controller
 {
-    public function getSystemInfo()
+    public function __invoke()
     {
         return [
             'success' => true,

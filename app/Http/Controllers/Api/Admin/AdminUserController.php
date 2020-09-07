@@ -10,7 +10,7 @@ class AdminUserController extends Controller
 {
     private const _PAGINATION_COUNT = 10;
 
-    public function getAllUsers(Request $request)
+    public function index(Request $request)
     {
         $request->validate([
             'page' => 'required|integer',
@@ -29,7 +29,7 @@ class AdminUserController extends Controller
         ];
     }
 
-    public function addUser(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
             'userName' => 'required|string',
@@ -50,12 +50,12 @@ class AdminUserController extends Controller
         ];
     }
 
-    public function deleteUser(Request $request)
+    public function destroy(Request $request)
     {
         $request->validate([
-            'userId' => 'required|integer',
+            'user' => 'required|integer',
         ]);
-        $user = User::whereId($request->query('userId'))->first();
+        $user = User::whereId($request->query('user'))->first();
         if ($user === null) {
             return response([
                 'error' => 'User not found.',
@@ -67,16 +67,16 @@ class AdminUserController extends Controller
         ];
     }
 
-    public function editUser(Request $request)
+    public function update(Request $request)
     {
         $request->validate([
-            'userId' => 'required|integer',
+            'user' => 'required|integer',
             'userName' => 'string',
             'name' => 'string',
             'password' => 'string',
             'email' => 'email:rfc',
         ]);
-        $user = User::whereId($request->query('userId'))->first();
+        $user = User::whereId($request->query('user'))->first();
         if ($user === null) {
             return response([
                 'error' => 'User not found.',
@@ -93,12 +93,12 @@ class AdminUserController extends Controller
         ];
     }
 
-    public function getUser(Request $request)
+    public function show(Request $request)
     {
         $request->validate([
-            'userId' => 'required|integer',
+            'user' => 'required|integer',
         ]);
-        $user = User::whereId($request->query('userId'))->first();
+        $user = User::whereId($request->query('user'))->first();
         if ($user === null) {
             return response([
                 'error' => 'User not found.',

@@ -22,6 +22,7 @@ class ApiAuthController extends Controller
         try {
             $user = $userAuthService->attemptLogin($user_name, $email, $password, 'web');
             return [
+                'success' => true,
                 'apiToken' => $user->createApiToken(),
             ];
         } catch (LoginFailedException $ex) {
@@ -37,6 +38,16 @@ class ApiAuthController extends Controller
         $user->revokeAllPersonalAccessTokens();
         return [
             'success' => true,
+        ];
+    }
+
+    public function userInfo()
+    {
+        $user = UserAuthService::getCurrentUser('api');
+        return [
+            'success' => true,
+            // 自分の情報なのでAdmin用のデータを返してしまう
+            'info' => $user->getAdminAttributes(),
         ];
     }
 }
