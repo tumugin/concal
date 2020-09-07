@@ -12,7 +12,7 @@ interface SelfResponse {
         userName: string
         name: string
         email: string
-        userPrivilege: string
+        userPrivilege: 'admin' | 'user'
     }
 }
 
@@ -29,10 +29,10 @@ export async function login({ email, userName, password }: { email?: string; use
     }
 }
 
-export async function self({ apiKey }: ApiKeyParam) {
+export async function selfInfo({ apiToken }: ApiKeyParam) {
     try {
         const response = await Axios.get<SelfResponse>('/api/self', {
-            headers: getAuthHeader(apiKey),
+            headers: getAuthHeader(apiToken),
         })
         return response.data
     } catch (e) {
@@ -40,12 +40,12 @@ export async function self({ apiKey }: ApiKeyParam) {
     }
 }
 
-export async function revokeTokens({ apiKey }: ApiKeyParam) {
-    await Axios.post<LoginResponse>(
+export async function revokeTokens({ apiToken }: ApiKeyParam) {
+    await Axios.post(
         '/api/token/revoke',
         {},
         {
-            headers: getAuthHeader(apiKey),
+            headers: getAuthHeader(apiToken),
         }
     )
 }

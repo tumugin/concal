@@ -14,6 +14,10 @@ module.exports = {
         'prettier/@typescript-eslint',
         'prettier/react',
     ],
-    plugins: ['@typescript-eslint'],
-    rules: {},
+    plugins: ['@typescript-eslint', 'react-hooks'],
+    rules: {
+        '@typescript-eslint/explicit-module-boundary-types': 'off',
+        'react-hooks/rules-of-hooks': 'error',
+        'react-hooks/exhaustive-deps': 'error',
+    },
 }

@@ -1,9 +1,9 @@
 export interface ApiKeyParam {
-    apiKey: string
+    apiToken: string
 }
 
-export function getAuthHeader(apiKey: string) {
+export function getAuthHeader(apiToken: string) {
     return {
-        Authorization: `Bearer ${apiKey}`,
+        Authorization: `Bearer ${apiToken}`,
     }
 }
