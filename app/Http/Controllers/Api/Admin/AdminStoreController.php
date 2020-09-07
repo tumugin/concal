@@ -12,7 +12,7 @@ class AdminStoreController extends Controller
 {
     private const _PAGINATION_COUNT = 10;
 
-    public function getAllStores(Request $request)
+    public function index(Request $request)
     {
         $request->validate([
             'page' => 'required|integer',
@@ -31,7 +31,7 @@ class AdminStoreController extends Controller
         ];
     }
 
-    public function addStore(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
             'storeName' => 'required|string',
@@ -47,14 +47,14 @@ class AdminStoreController extends Controller
         ];
     }
 
-    public function editStore(Request $request)
+    public function update(Request $request)
     {
         $request->validate([
-            'storeId' => 'required|number',
+            'store' => 'required|number',
             'storeName' => 'required|string',
             'storeGroupId' => 'required|number',
         ]);
-        $store = Store::whereId($request->query('storeId'))->first();
+        $store = Store::whereId($request->query('store'))->first();
         if ($store === null) {
             return response([
                 'error' => 'Store not found.',
@@ -67,12 +67,12 @@ class AdminStoreController extends Controller
         ];
     }
 
-    public function getStore(Request $request)
+    public function show(Request $request)
     {
         $request->validate([
-            'storeId' => 'required|integer',
+            'store' => 'required|integer',
         ]);
-        $store = Store::whereId($request->query('storeId'))->first();
+        $store = Store::whereId($request->query('store'))->first();
         if ($store === null) {
             return response([
                 'error' => 'Store not found.',
@@ -91,12 +91,12 @@ class AdminStoreController extends Controller
         ];
     }
 
-    public function deleteStore(Request $request)
+    public function destroy(Request $request)
     {
         $request->validate([
-            'storeId' => 'required|integer',
+            'store' => 'required|integer',
         ]);
-        $store = Store::whereId($request->query('storeId'))->first();
+        $store = Store::whereId($request->query('store'))->first();
         if ($store === null) {
             return response([
                 'error' => 'Store not found.',

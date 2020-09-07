@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,47 +13,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/login', '\App\Http\Controllers\Api\ApiAuthController@login');
+Route::post('/login', 'Api\ApiAuthController@login');
 
 // user apis
 Route::group(['middleware' => ['auth:api']], function () {
-    Route::post('/token/revoke', '\App\Http\Controllers\Api\ApiAuthController@revokeTokens');
+    Route::post('/token/revoke', 'Api\ApiAuthController@revokeTokens');
 });
 
 // admin apis
-Route::group(['middleware' => ['auth:api', 'can:has-admin-privilege']], function () {
+Route::group(['middleware' => ['auth:api', 'can:has-admin-privilege'], 'prefix' => 'admin'], function () {
     // info
-    Route::get('/admin/info', '\App\Http\Controllers\Api\Admin\AdminSystemInfoController@getSystemInfo')
+    Route::get('info', 'Api\Admin\AdminSystemInfoController')
         ->name('api.admin.info');
     // users
-    Route::get('/admin/users', '\App\Http\Controllers\Api\Admin\AdminUserController@getAllUsers')
-        ->name('api.admin.users');
-    Route::post('/admin/users', '\App\Http\Controllers\Api\Admin\AdminUserController@addUser');
-    Route::get('/admin/users/{userId}', '\App\Http\Controllers\Api\Admin\AdminUserController@getUser');
-    Route::delete('/admin/users/{userId}', '\App\Http\Controllers\Api\Admin\AdminUserController@deleteUser');
-    Route::patch('/admin/users/{userId}', '\App\Http\Controllers\Api\Admin\AdminUserController@editUser');
+    Route::apiResource('users', 'Api\Admin\AdminUserController', ['as' => 'api.admin']);
     // stores
-    Route::get('/admin/stores', '\App\Http\Controllers\Api\Admin\AdminStoreController@getAllStores');
-    Route::post('/admin/stores', '\App\Http\Controllers\Api\Admin\AdminStoreController@addStore');
-    Route::get('/admin/stores/{storeId}', '\App\Http\Controllers\Api\Admin\AdminStoreController@getStore');
-    Route::delete('/admin/stores/{storeId}', '\App\Http\Controllers\Api\Admin\AdminStoreController@deleteStore');
-    Route::patch('/admin/stores/{storeId}', '\App\Http\Controllers\Api\Admin\AdminStoreController@editStore');
+    Route::apiResource('stores', 'Api\Admin\AdminStoreController', ['as' => 'api.admin']);
     // store group
-    Route::get('/admin/groups', '\App\Http\Controllers\Api\Admin\AdminStoreGroupController@getAllStoreGroups');
-    Route::post('/admin/groups', '\App\Http\Controllers\Api\Admin\AdminStoreGroupController@addStoreGroup');
-    Route::get('/admin/groups/{storeGroupId}', '\App\Http\Controllers\Api\Admin\AdminStoreGroupController@getStoreGroup');
-    Route::delete('/admin/groups/{storeGroupId}', '\App\Http\Controllers\Api\Admin\AdminStoreGroupController@deleteStoreGroup');
-    Route::patch('/admin/groups/{storeGroupId}', '\App\Http\Controllers\Api\Admin\AdminStoreGroupController@editStoreGroup');
+    Route::apiResource('groups', 'Api\Admin\AdminStoreGroupController', ['as' => 'api.admin']);
     // cast
-    Route::get('/admin/casts', '\App\Http\Controllers\Api\Admin\AdminCastController@getAllCasts');
-    Route::get('/admin/casts/{castId}', '\App\Http\Controllers\Api\Admin\AdminCastController@getCast');
-    Route::post('/admin/casts', '\App\Http\Controllers\Api\Admin\AdminCastController@addCast');
-    Route::patch('/admin/casts/{castId}', '\App\Http\Controllers\Api\Admin\AdminCastController@editCast');
-    Route::delete('/admin/casts/{castId}', '\App\Http\Controllers\Api\Admin\AdminCastController@deleteCast');
+    Route::apiResource('casts', 'Api\Admin\AdminCastController', ['as' => 'api.admin']);
     // cast attend
-    Route::get('/admin/casts/{castId}/attends', '\App\Http\Controllers\Api\Admin\AdminCastAttendController@getAttends');
-    Route::get('/admin/attends/{attendId}', '\App\Http\Controllers\Api\Admin\AdminCastAttendController@getAttend');
-    Route::post('/admin/casts/{castId}/attends', '\App\Http\Controllers\Api\Admin\AdminCastAttendController@addAttend');
-    Route::patch('/admin/attends/{attendId}', '\App\Http\Controllers\Api\Admin\AdminCastAttendController@editAttend');
-    Route::delete('/admin/attends/{attendId}', '\App\Http\Controllers\Api\Admin\AdminCastAttendController@deleteAttend');
+    Route::apiResource('casts.attends', 'Api\Admin\AdminCastAttendController', ['as' => 'api.admin'])
+        ->shallow();
 });

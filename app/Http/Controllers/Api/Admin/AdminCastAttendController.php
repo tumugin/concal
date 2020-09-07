@@ -12,16 +12,16 @@ class AdminCastAttendController extends Controller
 {
     private const _PAGINATION_COUNT = 10;
 
-    public function getAttends(Request $request)
+    public function index(Request $request)
     {
         $request->validate([
-            'castId' => 'required|integer',
+            'cast' => 'required|integer',
             'page' => 'required|integer',
             'startTime' => 'required|date',
             'endTime' => 'required|date',
         ]);
         $page = (int)$request->get('page');
-        $attends = CastAttend::whereCastId($request->get('castId'))
+        $attends = CastAttend::whereCastId($request->query('cast'))
             ->whereBetween(
                 'start_time',
                 [$request->get('startTime'), $request->get('endTime')]
@@ -39,12 +39,12 @@ class AdminCastAttendController extends Controller
         ];
     }
 
-    public function getAttend(Request $request)
+    public function show(Request $request)
     {
         $request->validate([
-            'attendId' => 'required|integer',
+            'attend' => 'required|integer',
         ]);
-        $attend_id = $request->query('attendId');
+        $attend_id = $request->query('attend');
         $cast_attend = CastAttend::whereId($attend_id)
             ->with('store')
             ->first();
@@ -64,17 +64,17 @@ class AdminCastAttendController extends Controller
         ];
     }
 
-    public function addAttend(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
-            'castId' => 'required|integer',
+            'cast' => 'required|integer',
             'storeId' => 'required|integer',
             'startTime' => 'required|date',
             'endTime' => 'required|date',
             'attendInfo' => 'nullable|string',
         ]);
         CastAttend::addAttendance(
-            (int)$request->query('castId'),
+            (int)$request->query('cast'),
             (int)$request->post('storeId'),
             UserAuthService::getCurrentUser('api')->id,
             Carbon::parse($request->post('startTime')),
@@ -86,16 +86,16 @@ class AdminCastAttendController extends Controller
         ];
     }
 
-    public function editAttend(Request $request)
+    public function update(Request $request)
     {
         $request->validate([
-            'attendId' => 'required|integer',
+            'attend' => 'required|integer',
             'storeId' => 'required|integer',
             'startTime' => 'required|date',
             'endTime' => 'required|date',
             'attendInfo' => 'nullable|string',
         ]);
-        $cast_attend = CastAttend::whereId($request->query('attendId'))->first();
+        $cast_attend = CastAttend::whereId($request->query('attend'))->first();
         if ($cast_attend === null) {
             return response([
                 'error' => 'Cast attend not found.',
@@ -113,12 +113,12 @@ class AdminCastAttendController extends Controller
         ];
     }
 
-    public function deleteAttend(Request $request)
+    public function destroy(Request $request)
     {
         $request->validate([
-            'attendId' => 'required|integer',
+            'attend' => 'required|integer',
         ]);
-        $cast_attend = CastAttend::whereId($request->query('attendId'))->first();
+        $cast_attend = CastAttend::whereId($request->query('attend'))->first();
         if ($cast_attend === null) {
             return response([
                 'error' => 'Cast attend not found.',
