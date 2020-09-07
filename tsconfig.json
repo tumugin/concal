@@ -14,6 +14,7 @@
         "target": "es6",
         "baseUrl": "./src/",
         "jsx": "preserve",
+        "skipLibCheck": true,
         "paths": {
             "@": ["src"]
         }
