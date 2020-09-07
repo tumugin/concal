@@ -18,6 +18,7 @@ Route::post('/login', 'Api\ApiAuthController@login');
 // user apis
 Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/token/revoke', 'Api\ApiAuthController@revokeTokens');
+    Route::post('/self', 'Api\ApiAuthController@userInfo');
 });
 
 // admin apis

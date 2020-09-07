@@ -40,4 +40,14 @@ class ApiAuthController extends Controller
             'success' => true,
         ];
     }
+
+    public function userInfo()
+    {
+        $user = UserAuthService::getCurrentUser('api');
+        return [
+            'success' => true,
+            // 自分の情報なのでAdmin用のデータを返してしまう
+            'info' => $user->getAdminAttributes(),
+        ];
+    }
 }
