@@ -1,14 +1,8 @@
 import * as ReactDOM from 'react-dom'
 import React from 'react'
-import PageRouter from 'pageRouter'
 import { setAxiosApiHost } from 'api/config'
-import { StoreProvider } from 'store/store'
+import { App } from 'App'
 
 setAxiosApiHost()
 
-ReactDOM.render(
-    <StoreProvider>
-        <PageRouter />
-    </StoreProvider>,
-    document.getElementById('root')
-)
+ReactDOM.render(<App />, document.getElementById('root'))
