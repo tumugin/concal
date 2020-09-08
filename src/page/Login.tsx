@@ -1,17 +1,47 @@
 import { PageWrapper } from 'components/PageWrapper'
 import { Box, Button, Heading } from 'rebass/styled-components'
-import React, { useCallback, useState } from 'react'
+import React, { KeyboardEvent, useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { Label, Input } from '@rebass/forms/styled-components'
 import { Note } from 'components/Note'
 import { useUserLogin } from 'store/user'
+import { LoginException } from 'api/error'
+import { useHistory } from 'react-router-dom'
 
 export function Login() {
+    const history = useHistory()
     const [userIdentifier, setUserIdentifier] = useState('')
     const [password, setPassword] = useState('')
-    const [isAuthFailed] = useState(false)
+    const [isAuthFailed, setIsAuthFailed] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const login = useUserLogin()
-    const onLogin = useCallback(() => {}, [])
+    const onLogin = useCallback(async () => {
+        setIsLoading(true)
+        try {
+            await login({
+                userIdentifier,
+                password,
+            })
+            setIsAuthFailed(false)
+            history.replace('/')
+        } catch (e) {
+            if (e instanceof LoginException) {
+                setIsAuthFailed(true)
+                return
+            }
+            throw e
+        }
+        setIsLoading(false)
+    }, [history, login, password, userIdentifier])
+    const onKeyPressHandler = useCallback(
+        (e: KeyboardEvent) => {
+            if (e.key === 'Enter') {
+                e.preventDefault()
+                void onLogin()
+            }
+        },
+        [onLogin]
+    )
 
     return (
         <PageWrapper>
@@ -24,7 +54,8 @@ export function Login() {
                         placeholder="concafe@example.com"
                         value={userIdentifier}
                         onChange={(event) => setUserIdentifier(event.target.value)}
-                        onSubmit={onLogin}
+                        onKeyPress={onKeyPressHandler}
+                        disabled={isLoading}
                     />
                     <Label mt={2}>パスワード</Label>
                     <Input
@@ -32,15 +63,16 @@ export function Login() {
                         placeholder="concafe_ikitai_yooooo"
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
-                        onSubmit={onLogin}
+                        onKeyPress={onKeyPressHandler}
+                        disabled={isLoading}
                     />
                     {isAuthFailed && <Note>パスワードもしくはユーザ名が違います。</Note>}
                     <CenteringGrid mt={4}>
-                        <Button variant="primary" mr={2} onClick={onLogin}>
+                        <Button variant="primary" mr={2} onClick={onLogin} disabled={isLoading}>
                             ログイン
                         </Button>
-                        <Button variant="outline" mr={2}>
-                            新規登録(※現在準備中)
+                        <Button variant="outline" mr={2} disabled={isLoading}>
+                            新規登録(現在準備中)
                         </Button>
                     </CenteringGrid>
                 </LoginBox>
