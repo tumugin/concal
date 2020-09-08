@@ -26,17 +26,27 @@ export function createUserStore(): UserStore {
     }
 }
 
-export function useUserLogin(credentials: { email?: string; userName?: string; password: string }) {
+const emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+
+export function useUserLogin() {
     const { store, setStore } = useStoreContext()
-    return useCallback(async () => {
-        const apiResult = await login(credentials)
-        setStore(
-            produce(store, (draftStore) => {
-                draftStore.user.isLoggedIn = true
-                draftStore.user.apiToken = apiResult.apiToken
+    return useCallback(
+        async ({ userIdentifier, password }: { userIdentifier: string; password: string }) => {
+            const email = emailRegex.test(userIdentifier) ? userIdentifier : undefined
+            const apiResult = await login({
+                email,
+                userName: email ? undefined : userIdentifier,
+                password,
             })
-        )
-    }, [credentials, setStore, store])
+            setStore(
+                produce(store, (draftStore) => {
+                    draftStore.user.isLoggedIn = true
+                    draftStore.user.apiToken = apiResult.apiToken
+                })
+            )
+        },
+        [setStore, store]
+    )
 }
 
 export function useUserLogout() {

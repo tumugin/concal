@@ -1,14 +1,17 @@
 import { PageWrapper } from 'components/PageWrapper'
 import { Box, Button, Heading } from 'rebass/styled-components'
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { Label, Input } from '@rebass/forms/styled-components'
 import { Note } from 'components/Note'
+import { useUserLogin } from 'store/user'
 
 export function Login() {
     const [userIdentifier, setUserIdentifier] = useState('')
     const [password, setPassword] = useState('')
     const [isAuthFailed] = useState(false)
+    const login = useUserLogin()
+    const onLogin = useCallback(() => {}, [])
 
     return (
         <PageWrapper>
@@ -21,6 +24,7 @@ export function Login() {
                         placeholder="concafe@example.com"
                         value={userIdentifier}
                         onChange={(event) => setUserIdentifier(event.target.value)}
+                        onSubmit={onLogin}
                     />
                     <Label mt={2}>パスワード</Label>
                     <Input
@@ -28,10 +32,11 @@ export function Login() {
                         placeholder="concafe_ikitai_yooooo"
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
+                        onSubmit={onLogin}
                     />
                     {isAuthFailed && <Note>パスワードもしくはユーザ名が違います。</Note>}
                     <CenteringGrid mt={4}>
-                        <Button variant="primary" mr={2}>
+                        <Button variant="primary" mr={2} onClick={onLogin}>
                             ログイン
                         </Button>
                         <Button variant="outline" mr={2}>
