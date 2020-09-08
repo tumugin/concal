@@ -2230,6 +2230,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rebass/form@npm:^1.0.0-2":
+  version: 1.0.0-2
+  resolution: "@rebass/form@npm:1.0.0-2"
+  dependencies:
+    prop-types: ^15.6.2
+  checksum: 84f3f9d2a016efd47c5da55acecabed9b2ad4c768acd2b8672634a472e54663e48e5128049f72a7833d1170cf289d167a03823e07d77f09ad1700a8faff92a81
+  languageName: node
+  linkType: hard
+
+"@rebass/forms@npm:^4.0.6":
+  version: 4.0.6
+  resolution: "@rebass/forms@npm:4.0.6"
+  dependencies:
+    reflexbox: ^4.0.6
+  checksum: 72408de036e14287eea0109e28dd44fa454f0c7210d251a1b7e68838fae28614e1d9500ebb21988869244b0812a5c2733aba0ee37c14a945625b261ec248ba6c
+  languageName: node
+  linkType: hard
+
 "@rebass/preset@npm:^4.0.5":
   version: 4.0.5
   resolution: "@rebass/preset@npm:4.0.5"
@@ -3664,7 +3682,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/rebass@npm:^4.0.6":
+"@types/rebass@npm:*, @types/rebass@npm:^4.0.6":
   version: 4.0.6
   resolution: "@types/rebass@npm:4.0.6"
   dependencies:
@@ -3673,6 +3691,17 @@ __metadata:
     "@types/styled-system": "*"
     "@types/styled-system__css": "*"
   checksum: bb8c11e8ea0ad0bb958d1bc8238c984a70fed076e4aa20d7a3be024591321f3452303ad6b93d48596a5400ccfe701924065fa750272ecf33919ee2d8657be746
+  languageName: node
+  linkType: hard
+
+"@types/rebass__forms@npm:^4.0.2":
+  version: 4.0.2
+  resolution: "@types/rebass__forms@npm:4.0.2"
+  dependencies:
+    "@types/react": "*"
+    "@types/rebass": "*"
+    "@types/styled-system": "*"
+  checksum: 8d74cfab1c97c30b4ea3c083358eedbae7e197709cc2a1fe9162d72b579c01c1941f6221f9fb4abb01001a211bc59475d0267c6efa7e1f416b187d54ed232d0f
   languageName: node
   linkType: hard
 
@@ -6853,6 +6882,8 @@ __metadata:
     "@babel/preset-env": ^7.11.0
     "@babel/preset-react": ^7.10.4
     "@babel/template": ^7.10.4
+    "@rebass/form": ^1.0.0-2
+    "@rebass/forms": ^4.0.6
     "@rebass/preset": ^4.0.5
     "@storybook/addon-knobs": ^6.0.20
     "@storybook/addon-storyshots": ^6.0.20
@@ -6868,6 +6899,7 @@ __metadata:
     "@types/react-dom": ^16.9.8
     "@types/react-router-dom": ^5.1.5
     "@types/rebass": ^4.0.6
+    "@types/rebass__forms": ^4.0.2
     "@types/storybook__addon-storyshots": ^5.3.1
     "@types/styled-components": ^5.1.3
     "@types/webpack": ^4.41.21
