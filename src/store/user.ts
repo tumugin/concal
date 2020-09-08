@@ -1,7 +1,6 @@
 import { useStoreContext } from './store'
 import { login, selfInfo } from 'api/auth'
 import produce from 'immer'
-import { unreachableCode } from 'types/util'
 import { useCallback } from 'react'
 
 export interface UserStore {
@@ -26,40 +25,55 @@ export function createUserStore(): UserStore {
     }
 }
 
-export function useUserLogin(credentials: { email?: string; userName?: string; password: string }) {
-    const { store, setStore } = useStoreContext()
-    return useCallback(async () => {
-        const apiResult = await login(credentials)
-        setStore(
-            produce(store, (draftStore) => {
-                draftStore.user.isLoggedIn = true
-                draftStore.user.apiToken = apiResult.apiToken
+const emailRegex = /^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+
+export function useUserLogin() {
+    const { setStore } = useStoreContext()
+    const fetchUserInfo = useFetchUserInfo()
+    return useCallback(
+        async ({ userIdentifier, password }: { userIdentifier: string; password: string }) => {
+            const email = emailRegex.test(userIdentifier) ? userIdentifier : undefined
+            const apiResult = await login({
+                email,
+                userName: email ? undefined : userIdentifier,
+                password,
             })
-        )
-    }, [credentials, setStore, store])
+            setStore((store) =>
+                produce(store, (draftStore) => {
+                    draftStore.user.isLoggedIn = true
+                    draftStore.user.apiToken = apiResult.apiToken
+                })
+            )
+            await fetchUserInfo(apiResult.apiToken)
+        },
+        [fetchUserInfo, setStore]
+    )
 }
 
 export function useUserLogout() {
-    const { store, setStore } = useStoreContext()
+    const { setStore } = useStoreContext()
     return useCallback(() => {
-        setStore(
+        setStore((store) =>
             produce(store, (draftStore) => {
                 draftStore.user.self = null
                 draftStore.user.apiToken = null
                 draftStore.user.isLoggedIn = false
             })
         )
-    }, [setStore, store])
+    }, [setStore])
 }
 
 export function useFetchUserInfo() {
-    const { store, setStore } = useStoreContext()
-    return useCallback(async () => {
-        const apiResult = await selfInfo({ apiToken: store.user.apiToken ?? unreachableCode() })
-        setStore(
-            produce(store, (draftStore) => {
-                draftStore.user.self = apiResult.info
-            })
-        )
-    }, [setStore, store])
+    const { setStore } = useStoreContext()
+    return useCallback(
+        async (apiToken: string) => {
+            const apiResult = await selfInfo({ apiToken })
+            setStore((store) =>
+                produce(store, (draftStore) => {
+                    draftStore.user.self = apiResult.info
+                })
+            )
+        },
+        [setStore]
+    )
 }
