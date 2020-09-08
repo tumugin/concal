@@ -1,10 +1,10 @@
 import React from 'react'
-import styled from 'styled-components'
+import { Box, Heading } from 'rebass/styled-components'
 
 export function Top() {
-    return <Wrapper>トップページ(仮)</Wrapper>
+    return (
+        <Box p={3}>
+            <Heading>店舗グループ/店舗一覧</Heading>
+        </Box>
+    )
 }
-
-const Wrapper = styled.div`
-    font-size: 30px;
-`

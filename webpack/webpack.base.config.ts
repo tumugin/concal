@@ -1,6 +1,7 @@
 import * as webpack from 'webpack'
 import * as path from 'path'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
+import * as os from 'os'
 
 export default function config(
     env: { [key: string]: string | undefined },
@@ -49,7 +50,7 @@ export default function config(
                         {
                             loader: 'thread-loader',
                             options: {
-                                workers: require('os').cpus().length - 1,
+                                workers: os.cpus().length - 1,
                             },
                         },
                         {

@@ -27,6 +27,9 @@ export default function config(
                 IS_WEBPACK_DEV_SERVER: true,
             }),
         ],
+        devServer: {
+            historyApiFallback: true,
+        },
     }
     return config
 }
