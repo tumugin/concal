@@ -7,8 +7,8 @@ export interface ErrorResponse {
 export class LoginException extends Error {}
 
 export function generateError(error: AxiosError<ErrorResponse>) {
-    if (error.code !== '401') {
-        return error
+    if (error.response?.status === 401) {
+        return new LoginException()
     }
-    return LoginException
+    return error
 }
