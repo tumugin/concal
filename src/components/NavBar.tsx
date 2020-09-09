@@ -10,9 +10,11 @@ export function NavBar() {
 
     return (
         <Flex px={3} py={2} color="white" bg="black" alignItems="center">
-            <Text p={2} fontWeight="bold">
-                <TitleLink to="/">コンカフェカレンダー</TitleLink>
-            </Text>
+            <TitleLink to="/">
+                <Text p={2} fontWeight="bold">
+                    コンカフェカレンダー
+                </Text>
+            </TitleLink>
             <Box mx="auto" />
             {!isLoggedIn && (
                 <Link to="/login">

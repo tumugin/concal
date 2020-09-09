@@ -27,9 +27,9 @@ export function Login() {
         } catch (e) {
             if (e instanceof LoginException) {
                 setIsAuthFailed(true)
-                return
+            } else {
+                throw e
             }
-            throw e
         }
         setIsLoading(false)
     }, [history, login, password, userIdentifier])
