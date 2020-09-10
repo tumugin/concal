@@ -19,7 +19,7 @@ export default function config(
                 name: 'frontend client',
             }),
             new ManifestPlugin({
-                fileName: path.resolve('storage/app/public/manifest.json'),
+                fileName: path.resolve('storage/app/manifest.json'),
             }),
         ],
     }

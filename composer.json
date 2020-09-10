@@ -66,9 +66,12 @@
             "@php artisan key:generate --ansi"
         ],
         "server:dev": [
+            "@php artisan serve --port=9000"
+        ],
+        "server:ppm:dev": [
             "ppm start --bootstrap=laravel --app-env=local --debug=1 --workers=1 --port 9000 --static-directory=public/"
         ],
-        "server:prod": [
+        "server:ppm:prod": [
             "ppm start --bootstrap=laravel --app-env=production --workers=16 --port 9000 --static-directory=public/"
         ]
     }
