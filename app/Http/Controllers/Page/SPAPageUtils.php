@@ -8,7 +8,7 @@ class SPAPageUtils
 {
     public static function renderSPAPage(array $options = [])
     {
-        $raw_manifest = File::get('storage/app/public/manifest.json');
+        $raw_manifest = File::get(storage_path('app/public/manifest.json'));
         $manifest = json_decode($raw_manifest, true);
         return view('spapage', [
             'app_js_path' => $manifest['app.js'],
