@@ -2,6 +2,7 @@ import baseConfig from './webpack.base.config'
 import * as webpack from 'webpack'
 import WebpackBar from 'webpackbar'
 import ManifestPlugin from 'webpack-manifest-plugin'
+import * as path from 'path'
 
 export default function config(
     env: { [key: string]: string | undefined },
@@ -17,7 +18,9 @@ export default function config(
                 profile: true,
                 name: 'frontend client',
             }),
-            new ManifestPlugin(),
+            new ManifestPlugin({
+                fileName: path.resolve('storage/app/public/manifest.json'),
+            }),
         ],
     }
     return config

@@ -15,9 +15,9 @@ export default function config(
             app: path.resolve('src/main.tsx'),
         },
         output: {
-            filename: 'js/[name].[hash].bundle.js',
-            path: path.resolve('dist/'),
-            chunkFilename: 'js/[name].[hash].bundle.js',
+            filename: 'assets/js/[name].[hash].bundle.js',
+            path: path.resolve('public/'),
+            chunkFilename: 'assets/js/[name].[hash].bundle.js',
             publicPath: '/',
         },
         devtool: sourceMapEnabled && 'source-map',
@@ -80,7 +80,7 @@ export default function config(
                         loader: 'url-loader',
                         options: {
                             limit: 10000,
-                            name: 'img/[name].[hash:7].[ext]',
+                            name: 'assets/img/[name].[hash:7].[ext]',
                         },
                     },
                 },
@@ -90,7 +90,7 @@ export default function config(
                         loader: 'url-loader',
                         options: {
                             limit: 10000,
-                            name: 'media/[name].[hash:7].[ext]',
+                            name: 'assets/media/[name].[hash:7].[ext]',
                         },
                     },
                 },
@@ -100,7 +100,7 @@ export default function config(
                         loader: 'url-loader',
                         options: {
                             limit: 10000,
-                            name: 'fonts/[name].[hash:7].[ext]',
+                            name: 'assets/fonts/[name].[hash:7].[ext]',
                         },
                     },
                 },
@@ -118,7 +118,7 @@ export default function config(
                 },
             ],
         },
-        plugins: [new MiniCssExtractPlugin({ filename: 'css/common.[chunkhash].css' })],
+        plugins: [new MiniCssExtractPlugin({ filename: 'assets/css/common.[chunkhash].css' })],
     }
     return config
 }
