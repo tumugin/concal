@@ -15,6 +15,7 @@
         "nesbot/carbon": "^2.38",
         "php-pm/httpkernel-adapter": "^2.0",
         "php-pm/php-pm": "^2.1",
+        "tcg/voyager": "^1.4",
         "webmozart/assert": "^1.9"
     },
     "require-dev": {
@@ -73,5 +74,11 @@
         "server:ppm:prod": [
             "ppm start --bootstrap=laravel --app-env=production --workers=16 --port 9000 --static-directory=public/"
         ]
+    },
+    "repositories": {
+        "hooks": {
+            "type": "composer",
+            "url": "https://larapack.io"
+        }
     }
 }

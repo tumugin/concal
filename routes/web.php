@@ -14,3 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', '\App\Http\Controllers\Page\TopPageController@renderTopPage');
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Voyager::routes();
+});
