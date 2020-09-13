@@ -7,20 +7,34 @@ import { deep } from '@theme-ui/presets'
 import preset from '@rebass/preset'
 import PageRouter from 'pageRouter'
 import { StoreProvider } from 'store/store'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Box } from 'rebass/styled-components'
 import { Normalize } from 'styled-normalize'
+import { useSavedUserLogin } from 'store/user'
 
 export function App() {
     return (
         <StoreProvider>
+            <AppWithStore />
+        </StoreProvider>
+    )
+}
+
+function AppWithStore() {
+    const savedUserLogin = useSavedUserLogin()
+
+    useEffect(() => {
+        void savedUserLogin()
+    }, [savedUserLogin])
+
+    return (
+        <>
             <Normalize />
             <ThemeProvider theme={{ ...preset, ...deep }}>
                 <WrapperBox
                     sx={{
                         color: 'text',
                         bg: 'background',
-                        fontFamily: 'body',
                         fontWeight: 'body',
                         lineHeight: 'body',
                     }}
@@ -28,7 +42,7 @@ export function App() {
                     <PageRouter />
                 </WrapperBox>
             </ThemeProvider>
-        </StoreProvider>
+        </>
     )
 }
 
