@@ -16,6 +16,7 @@ class AdminCastController extends Controller
             'page' => 'required|integer',
         ]);
         $page = (int)$request->get('page');
+        $casts_count = Cast::count();
         $casts = Cast::all()
             ->skip(self::_PAGINATION_COUNT * $page)
             ->take(self::_PAGINATION_COUNT)
@@ -26,6 +27,7 @@ class AdminCastController extends Controller
         return [
             'success' => true,
             'casts' => $casts_result,
+            'pageCount' => floor($casts_count / self::_PAGINATION_COUNT),
         ];
     }
 

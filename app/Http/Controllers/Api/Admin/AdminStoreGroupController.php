@@ -15,6 +15,7 @@ class AdminStoreGroupController
             'page' => 'required|integer',
         ]);
         $page = (int)$request->get('page');
+        $store_groups_count = StoreGroup::count();
         $store_groups = StoreGroup::all()
             ->skip(self::_PAGINATION_COUNT * $page)
             ->take(self::_PAGINATION_COUNT)
@@ -28,6 +29,7 @@ class AdminStoreGroupController
         return [
             'success' => true,
             'storeGroups' => $store_groups,
+            'pageCount' => floor($store_groups_count / self::_PAGINATION_COUNT),
         ];
     }
 

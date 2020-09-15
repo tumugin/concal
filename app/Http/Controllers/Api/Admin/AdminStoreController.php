@@ -18,6 +18,7 @@ class AdminStoreController extends Controller
             'page' => 'required|integer',
         ]);
         $page = (int)$request->get('page');
+        $store_count = Store::count();
         $stores = Store::all()
             ->skip(self::_PAGINATION_COUNT * $page)
             ->take(self::_PAGINATION_COUNT)
@@ -28,6 +29,7 @@ class AdminStoreController extends Controller
         return [
             'success' => true,
             'stores' => $stores_result,
+            'pageCount' => floor($store_count / self::_PAGINATION_COUNT),
         ];
     }
 

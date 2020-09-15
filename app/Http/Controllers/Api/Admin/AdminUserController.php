@@ -16,6 +16,7 @@ class AdminUserController extends Controller
             'page' => 'required|integer',
         ]);
         $page = (int)$request->get('page');
+        $userCount = User::count();
         $users = User::all()
             ->skip(self::_PAGINATION_COUNT * $page)
             ->take(self::_PAGINATION_COUNT)
@@ -26,6 +27,7 @@ class AdminUserController extends Controller
         return [
             'success' => true,
             'users' => $users_result,
+            'pageCount' => floor($userCount / self::_PAGINATION_COUNT),
         ];
     }
 
