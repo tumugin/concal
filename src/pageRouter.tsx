@@ -3,6 +3,10 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { Top } from 'page/Top'
 import { NavBar } from 'components/NavBar'
 import { Login } from 'page/Login'
+import { AdminCasts } from 'page/admin/casts'
+import { AdminGroups } from 'page/admin/groups'
+import { AdminStores } from 'page/admin/stores'
+import { AdminUsers } from 'page/admin/users'
 
 export default function PageRouter() {
     return (
@@ -11,6 +15,10 @@ export default function PageRouter() {
             <Switch>
                 <Route path="/" component={Top} exact />
                 <Route path="/login" component={Login} exact />
+                <Route path="/admin/users" component={AdminUsers} exact />
+                <Route path="/admin/casts" component={AdminCasts} exact />
+                <Route path="/admin/groups" component={AdminGroups} exact />
+                <Route path="/admin/stores" component={AdminStores} exact />
             </Switch>
         </BrowserRouter>
     )

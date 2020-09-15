@@ -2,7 +2,8 @@ import { useStoreContext } from './store'
 import { login, selfInfo } from 'api/auth'
 import produce from 'immer'
 import { useCallback } from 'react'
-import { getLocalStorageToken, setLocalStorageToken } from 'storage/tokenStorage'
+import { deleteLocalStorageToken, getLocalStorageToken, setLocalStorageToken } from 'storage/tokenStorage'
+import { LoginException } from 'api/error'
 
 export interface UserStore {
     isLoggedIn: boolean
@@ -55,6 +56,7 @@ export function useUserLogin() {
 export function useSavedUserLogin() {
     const { setStore } = useStoreContext()
     const fetchUserInfo = useFetchUserInfo()
+    const logout = useUserLogout()
     return useCallback(async () => {
         const currentToken = getLocalStorageToken()
         if (currentToken === null) {
@@ -66,8 +68,17 @@ export function useSavedUserLogin() {
                 draftStore.user.apiToken = currentToken
             })
         )
-        await fetchUserInfo(currentToken)
-    }, [fetchUserInfo, setStore])
+        try {
+            await fetchUserInfo(currentToken)
+        } catch (e) {
+            if (e instanceof LoginException) {
+                // TODO: どうにかしてエラーを出す
+                logout()
+            } else {
+                throw e
+            }
+        }
+    }, [fetchUserInfo, logout, setStore])
 }
 
 export function useUserLogout() {
@@ -80,6 +91,7 @@ export function useUserLogout() {
                 draftStore.user.isLoggedIn = false
             })
         )
+        deleteLocalStorageToken()
     }, [setStore])
 }
 

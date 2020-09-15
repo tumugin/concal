@@ -10,24 +10,18 @@ use Illuminate\Http\Request;
 
 class AdminCastAttendController extends Controller
 {
-    private const _PAGINATION_COUNT = 10;
-
     public function index(Request $request)
     {
         $request->validate([
             'cast' => 'required|integer',
-            'page' => 'required|integer',
             'startTime' => 'required|date',
             'endTime' => 'required|date',
         ]);
-        $page = (int)$request->get('page');
         $attends = CastAttend::whereCastId($request->query('cast'))
             ->whereBetween(
                 'start_time',
                 [$request->get('startTime'), $request->get('endTime')]
             )
-            ->skip(self::_PAGINATION_COUNT * $page)
-            ->take(self::_PAGINATION_COUNT)
             ->with('store')
             ->get();
         $attends_result = collect($attends)->map(function (CastAttend $cast_attend) {
