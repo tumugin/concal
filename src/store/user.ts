@@ -2,6 +2,7 @@ import { useStoreContext } from './store'
 import { login, selfInfo } from 'api/auth'
 import produce from 'immer'
 import { useCallback } from 'react'
+import { getLocalStorageToken, setLocalStorageToken } from 'storage/tokenStorage'
 
 export interface UserStore {
     isLoggedIn: boolean
@@ -44,10 +45,29 @@ export function useUserLogin() {
                     draftStore.user.apiToken = apiResult.apiToken
                 })
             )
+            setLocalStorageToken(apiResult.apiToken)
             await fetchUserInfo(apiResult.apiToken)
         },
         [fetchUserInfo, setStore]
     )
+}
+
+export function useSavedUserLogin() {
+    const { setStore } = useStoreContext()
+    const fetchUserInfo = useFetchUserInfo()
+    return useCallback(async () => {
+        const currentToken = getLocalStorageToken()
+        if (currentToken === null) {
+            return
+        }
+        setStore((store) =>
+            produce(store, (draftStore) => {
+                draftStore.user.isLoggedIn = true
+                draftStore.user.apiToken = currentToken
+            })
+        )
+        await fetchUserInfo(currentToken)
+    }, [fetchUserInfo, setStore])
 }
 
 export function useUserLogout() {
