@@ -77,6 +77,7 @@ class AdminUserController extends Controller
             'name' => 'string',
             'password' => 'string',
             'email' => 'email:rfc',
+            'user_privilege' => 'string',
         ]);
         $user = User::whereId($request->query('user'))->first();
         if ($user === null) {
@@ -89,6 +90,7 @@ class AdminUserController extends Controller
             'name' => $request->post('name'),
             'password' => $request->post('password'),
             'email' => $request->post('email'),
+            'user_privilege' => $request->post('userPrivilege')
         ]);
         return [
             'success' => true,

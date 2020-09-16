@@ -12,7 +12,7 @@ export interface UserStore {
 }
 
 interface SelfState {
-    id: string
+    id: number
     userName: string
     name: string
     email: string

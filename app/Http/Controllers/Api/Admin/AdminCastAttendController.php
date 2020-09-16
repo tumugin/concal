@@ -20,7 +20,13 @@ class AdminCastAttendController extends Controller
         $attends = CastAttend::whereCastId($request->query('cast'))
             ->whereBetween(
                 'start_time',
-                [$request->get('startTime'), $request->get('endTime')]
+                [$request->get('startTime'), $request->get('endTime')],
+                'or'
+            )
+            ->whereBetween(
+                'end_time',
+                [$request->get('startTime'), $request->get('endTime')],
+                'or'
             )
             ->with('store')
             ->get();

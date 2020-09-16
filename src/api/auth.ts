@@ -8,7 +8,7 @@ interface LoginResponse {
 
 interface SelfResponse {
     info: {
-        id: string
+        id: number
         userName: string
         name: string
         email: string

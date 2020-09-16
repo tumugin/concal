@@ -52,6 +52,7 @@ class UserTest extends TestCase
             'name' => 'エルサ',
             'password' => 'Erusa_erusa_erusa_1',
             'email' => 'erusa@example.com',
+            'user_privilege' => User::USER_PRIVILEGE_USER,
         ];
         $user = factory(User::class)->create();
         $user->updateUserInfo($test_user_data);

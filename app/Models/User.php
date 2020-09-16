@@ -167,6 +167,17 @@ class User extends Authenticatable
     }
 
     /**
+     * ユーザ権限を更新する。トランザクション内での使用を想定。
+     *
+     * @param string $new_user_privilege
+     */
+    private function updateUserPrivilege(string $new_user_privilege): void
+    {
+        Assert::inArray($new_user_privilege, self::USER_PRIVILEGES);
+        $this->user_privilege = $new_user_privilege;
+    }
+
+    /**
      * ユーザ名を更新する。トランザクション内での使用を想定。
      *
      * @param string $new_user_name
@@ -196,7 +207,7 @@ class User extends Authenticatable
     public function updateUserInfo(array $updated_user_info): void
     {
         DB::transaction(function () use ($updated_user_info) {
-            if ($updated_user_info['user_name'] !== null) {
+            if ($updated_user_info['user_name']!== null) {
                 $this->updateUserName($updated_user_info['user_name']);
             }
             if ($updated_user_info['name'] !== null) {
@@ -207,6 +218,9 @@ class User extends Authenticatable
             }
             if ($updated_user_info['email'] !== null) {
                 $this->updateEmailAddress($updated_user_info['email']);
+            }
+            if ($updated_user_info['user_privilege'] !== null) {
+                $this->updateUserPrivilege($updated_user_info['user_privilege']);
             }
             $this->save();
         });

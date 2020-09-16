@@ -21,10 +21,7 @@ class AdminStoreGroupController
             ->take(self::_PAGINATION_COUNT)
             ->getIterator();
         $store_groups = collect($store_groups)->map(function (StoreGroup $store_group) {
-            return [
-                'id' => $store_group->id,
-                'groupName' => $store_group->group_name,
-            ];
+            return $store_group->getAdminAttributes();
         })->all();
         return [
             'success' => true,
@@ -44,13 +41,9 @@ class AdminStoreGroupController
                 'error' => 'Store group not found.',
             ])->setStatusCode(404);
         }
-        $store_group_info = [
-            'id' => $store_group->id,
-            'groupName' => $store_group->group_name,
-        ];
         return [
             'success' => true,
-            'storeGroup' => $store_group_info,
+            'storeGroup' => $store_group->getAdminAttributes(),
         ];
     }
 

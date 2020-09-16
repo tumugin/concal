@@ -44,7 +44,7 @@ class AdminCastController extends Controller
         }
         return [
             'success' => true,
-            'castInfo' => $cast->getAdminAttributes(),
+            'cast' => $cast->getAdminAttributes(),
         ];
     }
 
