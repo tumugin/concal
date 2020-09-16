@@ -18,7 +18,7 @@ class AdminUserController extends Controller
         $page = (int)$request->get('page');
         $userCount = User::count();
         $users = User::all()
-            ->skip(self::_PAGINATION_COUNT * $page)
+            ->skip(self::_PAGINATION_COUNT * ($page - 1))
             ->take(self::_PAGINATION_COUNT)
             ->getIterator();
         $users_result = collect($users)->map(function (User $user) {
@@ -27,7 +27,7 @@ class AdminUserController extends Controller
         return [
             'success' => true,
             'users' => $users_result,
-            'pageCount' => floor($userCount / self::_PAGINATION_COUNT),
+            'pageCount' => ceil($userCount / self::_PAGINATION_COUNT),
         ];
     }
 

@@ -109,3 +109,8 @@ export function useFetchUserInfo() {
         [setStore]
     )
 }
+
+export function useApiToken() {
+    const { store } = useStoreContext()
+    return store.user.apiToken
+}

@@ -27,7 +27,7 @@ class AdminCastController extends Controller
         return [
             'success' => true,
             'casts' => $casts_result,
-            'pageCount' => floor($casts_count / self::_PAGINATION_COUNT),
+            'pageCount' => ceil($casts_count / self::_PAGINATION_COUNT),
         ];
     }
 

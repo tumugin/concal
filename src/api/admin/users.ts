@@ -1,7 +1,7 @@
 import { ApiKeyParam, getAuthHeader } from 'api/authUtils'
 import Axios from 'axios'
 
-interface UserData {
+export interface UserData {
     id: number
     userName: string
     name: string
