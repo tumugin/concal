@@ -6955,6 +6955,7 @@ __metadata:
     react: ^16.13.1
     react-dom: ^16.13.1
     react-router-dom: ^5.2.0
+    react-table: ^7.5.0
     rebass: ^4.0.7
     rimraf: ^3.0.2
     sass-loader: ^10.0.1
@@ -17518,6 +17519,15 @@ fsevents@^1.2.7:
   peerDependencies:
     react: ">= 0.14.0"
   checksum: 7826e8d3946df39ff84277d8a72ee8341a2e9720a372ccfb755ce47041586ade25acdf59dc01b7fef1b2b6bd4de225c871d2a881f3d6aec6c74c17073fee3cbd
+  languageName: node
+  linkType: hard
+
+"react-table@npm:^7.5.0":
+  version: 7.5.0
+  resolution: "react-table@npm:7.5.0"
+  peerDependencies:
+    react: ^16.8.3
+  checksum: be6f42ab1919333e8ac43249e386acfe8c8e975a7e952a2d4dac32707dd899a36b18650acd54b73fe98206ea056309cad25932cf8abe61a57839317187e365f6
   languageName: node
   linkType: hard
 

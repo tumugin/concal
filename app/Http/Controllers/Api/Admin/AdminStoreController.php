@@ -29,7 +29,7 @@ class AdminStoreController extends Controller
         return [
             'success' => true,
             'stores' => $stores_result,
-            'pageCount' => floor($store_count / self::_PAGINATION_COUNT),
+            'pageCount' => ceil($store_count / self::_PAGINATION_COUNT),
         ];
     }
 

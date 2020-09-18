@@ -26,7 +26,7 @@ class AdminStoreGroupController
         return [
             'success' => true,
             'storeGroups' => $store_groups,
-            'pageCount' => floor($store_groups_count / self::_PAGINATION_COUNT),
+            'pageCount' => ceil($store_groups_count / self::_PAGINATION_COUNT),
         ];
     }
 
