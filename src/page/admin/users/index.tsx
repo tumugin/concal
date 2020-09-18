@@ -1,12 +1,14 @@
 import { PageWrapper } from 'components/PageWrapper'
-import { Heading } from 'rebass/styled-components'
+import { Box, Heading } from 'rebass/styled-components'
 import React, { useDebugValue, useEffect, useState } from 'react'
 import { getUsers, UserData } from 'api/admin/users'
 import { useApiToken } from 'store/user'
+import { PaginationController } from 'components/PaginationController'
 
 export function AdminUsers() {
     const apiToken = useApiToken()
     const [userData, setUserData] = useState<UserData[]>([])
+    const [totalPages, setTotalPages] = useState(0)
     const [page, setPage] = useState(1)
     useDebugValue(userData)
 
@@ -15,13 +17,18 @@ export function AdminUsers() {
             return
         }
         ;(async () => {
-            setUserData((await getUsers({ apiToken }, { page })).users)
+            const apiResult = await getUsers({ apiToken }, { page })
+            setUserData(apiResult.users)
+            setTotalPages(apiResult.pageCount)
         })()
     }, [apiToken, page])
 
     return (
         <PageWrapper>
             <Heading>ユーザ一覧</Heading>
+            <Box mt={4}>
+                <PaginationController currentPage={page} totalPages={totalPages} onPageChange={setPage} />
+            </Box>
         </PageWrapper>
     )
 }
