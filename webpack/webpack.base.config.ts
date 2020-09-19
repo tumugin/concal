@@ -2,6 +2,7 @@ import * as webpack from 'webpack'
 import * as path from 'path'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import * as os from 'os'
+import { ForkTsCheckerWebpackPlugin } from 'fork-ts-checker-webpack-plugin/lib/ForkTsCheckerWebpackPlugin'
 
 export default function config(
     env: { [key: string]: string | undefined },
@@ -118,7 +119,17 @@ export default function config(
                 },
             ],
         },
-        plugins: [new MiniCssExtractPlugin({ filename: 'assets/css/common.[chunkhash].css' })],
+        plugins: [
+            new MiniCssExtractPlugin({ filename: 'assets/css/common.[chunkhash].css' }),
+            new ForkTsCheckerWebpackPlugin({
+                typescript: {
+                    diagnosticOptions: {
+                        semantic: true,
+                        syntactic: true,
+                    },
+                },
+            }),
+        ],
     }
     return config
 }
