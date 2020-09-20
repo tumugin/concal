@@ -160,8 +160,10 @@ class User extends Authenticatable
     {
         Assert::email($new_email);
 
-        // 変更後のメールアドレスを所有しているユーザが0人であることを確認する
-        Assert::eq(self::whereEmail($new_email)->count(), 0);
+        if ($new_email !== $this->email) {
+            // 変更後のメールアドレスを所有しているユーザが0人であることを確認する
+            Assert::eq(self::whereEmail($new_email)->count(), 0);
+        }
 
         $this->email = $new_email;
     }
@@ -187,8 +189,10 @@ class User extends Authenticatable
         Assert::stringNotEmpty($new_user_name);
         Assert::regex($new_user_name, self::USER_NAME_TEST_REGEX);
 
-        // 変更後のユーザ名を所有しているユーザが0人であることを確認する
-        Assert::eq(self::whereUserName($new_user_name)->count(), 0);
+        if ($new_user_name !== $this->user_name) {
+            // 変更後のユーザ名を所有しているユーザが0人であることを確認する
+            Assert::eq(self::whereUserName($new_user_name)->count(), 0);
+        }
 
         $this->user_name = $new_user_name;
     }
@@ -207,7 +211,7 @@ class User extends Authenticatable
     public function updateUserInfo(array $updated_user_info): void
     {
         DB::transaction(function () use ($updated_user_info) {
-            if ($updated_user_info['user_name']!== null) {
+            if ($updated_user_info['user_name'] !== null) {
                 $this->updateUserName($updated_user_info['user_name']);
             }
             if ($updated_user_info['name'] !== null) {

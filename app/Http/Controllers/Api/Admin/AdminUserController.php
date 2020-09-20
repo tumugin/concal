@@ -52,12 +52,8 @@ class AdminUserController extends Controller
         ];
     }
 
-    public function destroy(Request $request)
+    public function destroy(User $user)
     {
-        $request->validate([
-            'user' => 'required|integer',
-        ]);
-        $user = User::whereId($request->query('user'))->first();
         if ($user === null) {
             return response([
                 'error' => 'User not found.',
@@ -69,17 +65,15 @@ class AdminUserController extends Controller
         ];
     }
 
-    public function update(Request $request)
+    public function update(Request $request, User $user)
     {
         $request->validate([
-            'user' => 'required|integer',
             'userName' => 'string',
             'name' => 'string',
             'password' => 'string',
             'email' => 'email:rfc',
             'user_privilege' => 'string',
         ]);
-        $user = User::whereId($request->query('user'))->first();
         if ($user === null) {
             return response([
                 'error' => 'User not found.',
@@ -97,12 +91,8 @@ class AdminUserController extends Controller
         ];
     }
 
-    public function show(Request $request)
+    public function show(User $user)
     {
-        $request->validate([
-            'user' => 'required|integer',
-        ]);
-        $user = User::whereId($request->query('user'))->first();
         if ($user === null) {
             return response([
                 'error' => 'User not found.',

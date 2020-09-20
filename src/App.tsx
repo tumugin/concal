@@ -11,6 +11,8 @@ import React, { useEffect } from 'react'
 import { Box } from 'rebass/styled-components'
 import { Normalize } from 'styled-normalize'
 import { useSavedUserLogin } from 'store/user'
+import '@sweetalert2/theme-dark/dark.scss'
+import 'toastr/build/toastr.css'
 
 export function App() {
     return (
@@ -47,6 +49,6 @@ function AppWithStore() {
 }
 
 const WrapperBox = styled(Box)`
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    min-height: 100vh;
 `

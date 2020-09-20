@@ -67,11 +67,11 @@ export function updateUser(
         email,
         userPrivilege,
     }: {
-        userId: number
-        userName: string
-        name: string
+        userId?: number
+        userName?: string
+        name?: string
         password?: string
-        email: string
+        email?: string
         userPrivilege?: string
     }
 ) {
@@ -90,7 +90,7 @@ export function updateUser(
     )
 }
 
-export function deleteStore({ apiToken }: ApiKeyParam, { userId }: { userId: number }) {
+export function deleteUser({ apiToken }: ApiKeyParam, { userId }: { userId: number }) {
     return Axios.delete(`/api/admin/users/${userId}`, {
         headers: getAuthHeader(apiToken),
     })
