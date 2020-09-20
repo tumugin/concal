@@ -9,6 +9,7 @@ import { AdminStores } from 'page/admin/stores'
 import { AdminUsers } from 'page/admin/users'
 import { CreateUser } from 'page/admin/users/createUser'
 import { ManageUser } from 'page/admin/users/manageUser'
+import { CreateGroup } from 'page/admin/groups/createGroup'
 
 export default function PageRouter() {
     return (
@@ -22,6 +23,7 @@ export default function PageRouter() {
                 <Route path="/admin/users/:id" component={ManageUser} />
                 <Route path="/admin/casts" component={AdminCasts} exact />
                 <Route path="/admin/groups" component={AdminGroups} exact />
+                <Route path="/admin/groups/new" component={CreateGroup} exact />
                 <Route path="/admin/stores" component={AdminStores} exact />
             </Switch>
         </BrowserRouter>

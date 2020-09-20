@@ -17,7 +17,7 @@ class AdminStoreGroupController
         $page = (int)$request->get('page');
         $store_groups_count = StoreGroup::count();
         $store_groups = StoreGroup::all()
-            ->skip(self::_PAGINATION_COUNT * $page)
+            ->skip(self::_PAGINATION_COUNT * ($page - 1))
             ->take(self::_PAGINATION_COUNT)
             ->getIterator();
         $store_groups = collect($store_groups)->map(function (StoreGroup $store_group) {

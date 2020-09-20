@@ -1,7 +1,7 @@
 import { ApiKeyParam, getAuthHeader } from 'api/authUtils'
 import Axios from 'axios'
 
-interface StoreGroupData {
+export interface StoreGroupData {
     id: number
     groupName: string
 }
