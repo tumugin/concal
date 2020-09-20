@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react'
 import { Box } from 'rebass/styled-components'
 import styled from 'styled-components'
+import { BootstrapLikeColors } from 'utils/bootstrapLike'
 
 type ColorTypes = 'danger' | 'alert' | 'success'
 
@@ -16,5 +17,11 @@ const Wrapper = styled(Box)<{ type: ColorTypes }>`
     display: inline;
     border-radius: 10px;
     background-color: ${({ type }) =>
-        type === 'success' ? '#28a745' : type === 'alert' ? '#ffc107' : type === 'danger' ? '#dc3545' : ''};
+        type === 'success'
+            ? BootstrapLikeColors.success
+            : type === 'alert'
+            ? BootstrapLikeColors.alert
+            : type === 'danger'
+            ? BootstrapLikeColors.danger
+            : 'unset'};
 `
