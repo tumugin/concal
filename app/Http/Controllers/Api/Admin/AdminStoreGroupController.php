@@ -17,7 +17,7 @@ class AdminStoreGroupController
         $page = (int)$request->get('page');
         $store_groups_count = StoreGroup::count();
         $store_groups = StoreGroup::all()
-            ->skip(self::_PAGINATION_COUNT * $page)
+            ->skip(self::_PAGINATION_COUNT * ($page - 1))
             ->take(self::_PAGINATION_COUNT)
             ->getIterator();
         $store_groups = collect($store_groups)->map(function (StoreGroup $store_group) {
@@ -30,20 +30,16 @@ class AdminStoreGroupController
         ];
     }
 
-    public function show(Request $request)
+    public function show(StoreGroup $group)
     {
-        $request->validate([
-            'group' => 'required|integer',
-        ]);
-        $store_group = StoreGroup::whereId($request->query('group'))->first();
-        if ($store_group === null) {
+        if ($group === null) {
             return response([
                 'error' => 'Store group not found.',
             ])->setStatusCode(404);
         }
         return [
             'success' => true,
-            'storeGroup' => $store_group->getAdminAttributes(),
+            'storeGroup' => $group->getAdminAttributes(),
         ];
     }
 
@@ -58,36 +54,30 @@ class AdminStoreGroupController
         ];
     }
 
-    public function update(Request $request)
+    public function update(Request $request, StoreGroup $group)
     {
         $request->validate([
-            'group' => 'required|integer',
             'groupName' => 'required|string',
         ]);
-        $store_group = StoreGroup::whereId($request->query('group'))->first();
-        if ($store_group === null) {
+        if ($group === null) {
             return response([
                 'error' => 'Store group not found.',
             ])->setStatusCode(404);
         }
-        $store_group->updateStoreInfo($request->post('groupName'));
+        $group->updateStoreInfo($request->post('groupName'));
         return [
             'success' => true,
         ];
     }
 
-    public function destroy(Request $request)
+    public function destroy(StoreGroup $group)
     {
-        $request->validate([
-            'group' => 'required|integer',
-        ]);
-        $store_group = StoreGroup::whereId($request->query('group'))->first();
-        if ($store_group === null) {
+        if ($group === null) {
             return response([
                 'error' => 'Store group not found.',
             ])->setStatusCode(404);
         }
-        $store_group->deleteStoreGroup();
+        $group->deleteStoreGroup();
         return [
             'success' => true,
         ];
