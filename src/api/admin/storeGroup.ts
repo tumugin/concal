@@ -64,7 +64,7 @@ export function updateStoreGroup(
 }
 
 export function deleteStoreGroup({ apiToken }: ApiKeyParam, { storeGroupId }: { storeGroupId: number }) {
-    return Axios.delete(`/api/admin/stores/${storeGroupId}`, {
+    return Axios.delete(`/api/admin/groups/${storeGroupId}`, {
         headers: getAuthHeader(apiToken),
     })
 }
