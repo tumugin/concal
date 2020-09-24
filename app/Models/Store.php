@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
@@ -70,7 +71,7 @@ class Store extends Model
     /**
      * 在籍しているキャストを取得する
      */
-    public function getBelongingCasts(): BelongsToMany
+    public function casts(): BelongsToMany
     {
         return $this->belongsToMany(Cast::class, StoreCast::class);
     }
@@ -91,9 +92,9 @@ class Store extends Model
      *
      * @return StoreGroup
      */
-    public function getBelongingStoreGroup(): StoreGroup
+    public function storeGroup(): StoreGroup
     {
-        return StoreGroup::whereId($this->store_group_id)->firstOrFail();
+        return $this->belongsTo(StoreGroup::class)->first();
     }
 
     /**

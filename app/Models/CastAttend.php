@@ -124,8 +124,11 @@ class CastAttend extends Model
         $this->save();
     }
 
-    public function store(): BelongsTo
+    /**
+     * @return Store
+     */
+    public function store(): Store
     {
-        return $this->belongsTo(Store::class);
+        return $this->belongsTo(Store::class)->first();
     }
 }
