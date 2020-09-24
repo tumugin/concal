@@ -19,15 +19,15 @@ class AdminStoreController extends Controller
         ]);
         $page = (int)$request->get('page');
         $store_count = Store::count();
-        $stores = Store::with(StoreGroup::class)
-            ->skip(self::_PAGINATION_COUNT * $page)
+        $stores = Store::with('storeGroup')
+            ->skip(self::_PAGINATION_COUNT * ($page - 1))
             ->take(self::_PAGINATION_COUNT)
             ->get();
         $stores_result = $stores->map(function (Store $store) {
-            return [
-                ...$store->getAdminAttributes(),
-                'storeGroup' => $store->storeGroup(),
-            ];
+            return array_merge(
+                $store->getAdminAttributes(),
+                ['storeGroup' => $store->storeGroup()->first()->getAdminAttributes()]
+            );
         })->all();
         return [
             'success' => true,
@@ -69,7 +69,7 @@ class AdminStoreController extends Controller
     {
         $store_info = [
             ...$store->getAdminAttributes(),
-            'storeGroup' => $store->storeGroup(),
+            'storeGroup' => $store->storeGroup()->first()->getAdminAttributes(),
             'casts' => $store->casts()->get()->map(function (Cast $cast) {
                 return $cast->getAdminAttributes();
             })->all(),

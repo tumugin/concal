@@ -53,7 +53,7 @@ class StoreTest extends TestCase
         $store->save();
         $this->assertEquals(
             $store_group->getAttributes(),
-            $store->storeGroup()->getAttributes(),
+            $store->storeGroup()->first()->getAttributes(),
         );
     }
 

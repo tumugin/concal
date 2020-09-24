@@ -90,11 +90,11 @@ class Store extends Model
     /**
      * 所属している店舗のグループを取得する
      *
-     * @return StoreGroup
+     * @return BelongsTo
      */
-    public function storeGroup(): StoreGroup
+    public function storeGroup(): BelongsTo
     {
-        return $this->belongsTo(StoreGroup::class)->first();
+        return $this->belongsTo(StoreGroup::class);
     }
 
     /**

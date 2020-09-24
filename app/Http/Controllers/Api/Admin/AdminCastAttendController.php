@@ -67,7 +67,7 @@ class AdminCastAttendController extends Controller
                 ...$cast_attend->getAdminAttributes(),
                 'storeName' => $cast_attend->store()->store_name,
                 'groupId' => $cast_attend->store()->store_group_id,
-                'groupName' => $cast_attend->store()->storeGroup()->group_name,
+                'groupName' => $cast_attend->store()->storeGroup()->first()->group_name,
             ],
         ];
     }
