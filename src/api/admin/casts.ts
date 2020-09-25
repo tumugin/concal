@@ -1,7 +1,7 @@
 import { ApiKeyParam, getAuthHeader } from 'api/authUtils'
 import Axios from 'axios'
 
-interface CastData {
+export interface CastData {
     id: number
     castName: string
     castShortName: string

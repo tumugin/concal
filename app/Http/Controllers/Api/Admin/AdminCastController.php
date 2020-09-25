@@ -24,7 +24,6 @@ class AdminCastController extends Controller
             ->get();
         $casts_result = $casts->map(fn(Cast $cast) => collect($cast->getAdminAttributes())->merge(
             [
-                ...$cast->getAdminAttributes(),
                 'stores' => $cast->stores()->get()->map(function (Store $store) {
                     return $store->getAdminAttributes();
                 }),
