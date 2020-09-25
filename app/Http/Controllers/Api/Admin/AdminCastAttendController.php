@@ -33,12 +33,11 @@ class AdminCastAttendController extends Controller
             ->with(Store::class)
             ->with('store.storeGroup')
             ->get();
-        $attends_result = collect($attends)->map(function (CastAttend $cast_attend) {
-            $store = $cast_attend->store();
-            return [
-                ...$cast_attend->getAdminAttributes(),
+        $attends_result = $attends->map(function (CastAttend $cast_attend) {
+            $store = $cast_attend->store()->first();
+            return collect($cast_attend->getAdminAttributes())->merge([
                 'store' => $store ? $store->getAdminAttributes() : null,
-            ];
+            ]);
         });
         return [
             'success' => true,
@@ -46,29 +45,22 @@ class AdminCastAttendController extends Controller
         ];
     }
 
-    public function show(Request $request)
+    public function show(CastAttend $cast_attend)
     {
-        $request->validate([
-            'attend' => 'required|integer',
-        ]);
-        $attend_id = $request->query('attend');
-        $cast_attend = CastAttend::whereId($attend_id)
-            ->with(Store::class)
-            ->with('store.storeGroup')
-            ->first();
         if ($cast_attend === null) {
             return response([
                 'error' => 'Cast attend not found.',
             ])->setStatusCode(404);
         }
+        $store = $cast_attend->store()->first();
         return [
             'success' => true,
-            'attend' => [
-                ...$cast_attend->getAdminAttributes(),
-                'storeName' => $cast_attend->store()->store_name,
-                'groupId' => $cast_attend->store()->store_group_id,
-                'groupName' => $cast_attend->store()->storeGroup()->first()->group_name,
-            ],
+            'attend' => collect($cast_attend->getAdminAttributes())
+                ->merge([
+                    'storeName' => $store->store_name,
+                    'groupId' => $store->store_group_id,
+                    'groupName' => $store->storeGroup()->first()->group_name,
+                ]),
         ];
     }
 

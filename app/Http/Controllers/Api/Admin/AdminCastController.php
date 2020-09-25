@@ -22,14 +22,14 @@ class AdminCastController extends Controller
             ->skip(self::_PAGINATION_COUNT * ($page - 1))
             ->take(self::_PAGINATION_COUNT)
             ->get();
-        $casts_result = $casts->map(function (Cast $cast) {
-            return [
+        $casts_result = $casts->map(fn(Cast $cast) => collect($cast->getAdminAttributes())->merge(
+            [
                 ...$cast->getAdminAttributes(),
                 'stores' => $cast->stores()->get()->map(function (Store $store) {
                     return $store->getAdminAttributes();
                 }),
-            ];
-        })->all();
+            ])
+        );
         return [
             'success' => true,
             'casts' => $casts_result,
@@ -43,9 +43,10 @@ class AdminCastController extends Controller
             'success' => true,
             'cast' => [
                 ...$cast->getAdminAttributes(),
-                'stores' => $cast->stores()->get()->map(function (Store $store) {
-                    return $store->getAdminAttributes();
-                }),
+                'stores' => $cast
+                    ->stores()
+                    ->get()
+                    ->map(fn(Store $store) => $store->getAdminAttributes())
             ],
         ];
     }

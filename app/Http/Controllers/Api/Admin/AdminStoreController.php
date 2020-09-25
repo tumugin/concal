@@ -24,10 +24,10 @@ class AdminStoreController extends Controller
             ->take(self::_PAGINATION_COUNT)
             ->get();
         $stores_result = $stores->map(function (Store $store) {
-            return array_merge(
-                $store->getAdminAttributes(),
-                ['storeGroup' => $store->storeGroup()->first()->getAdminAttributes()]
-            );
+            return collect($store->getAdminAttributes())
+                ->merge([
+                    'storeGroup' => $store->storeGroup()->first()->getAdminAttributes()
+                ]);
         })->all();
         return [
             'success' => true,
@@ -67,13 +67,15 @@ class AdminStoreController extends Controller
 
     public function show(Store $store)
     {
-        $store_info = [
-            ...$store->getAdminAttributes(),
-            'storeGroup' => $store->storeGroup()->first()->getAdminAttributes(),
-            'casts' => $store->casts()->get()->map(function (Cast $cast) {
-                return $cast->getAdminAttributes();
-            })->all(),
-        ];
+        $store_info = collect($store->getAdminAttributes())
+            ->merge(
+                [
+                    'storeGroup' => $store->storeGroup()->first()->getAdminAttributes(),
+                    'casts' => $store->casts()->get()->map(
+                        fn(Cast $cast) => $cast->getAdminAttributes()
+                    )
+                ]
+            );
         return [
             'success' => true,
             'store' => $store_info,
