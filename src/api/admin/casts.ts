@@ -1,5 +1,6 @@
 import { ApiKeyParam, getAuthHeader } from 'api/authUtils'
 import Axios from 'axios'
+import { StoreData } from 'api/admin/store'
 
 export interface CastData {
     id: number
@@ -9,6 +10,7 @@ export interface CastData {
     castDescription: string
     castColor: string
     castDisabled: boolean
+    stores: StoreData[]
 }
 
 export async function getCasts({ apiToken }: ApiKeyParam, { page }: { page: number }) {
@@ -68,6 +70,7 @@ export function updateCast(
         castTwitterId,
         castDescription,
         castColor,
+        storeIds,
     }: {
         castId: number
         castName: string
@@ -75,6 +78,7 @@ export function updateCast(
         castTwitterId: string
         castDescription: string
         castColor: string | null
+        storeIds?: number[]
     }
 ) {
     return Axios.patch(
@@ -85,6 +89,7 @@ export function updateCast(
             castTwitterId,
             castDescription,
             castColor,
+            storeIds: storeIds !== undefined ? storeIds.join() : undefined,
         },
         {
             headers: getAuthHeader(apiToken),
