@@ -11,6 +11,8 @@ import { CreateUser } from 'page/admin/users/createUser'
 import { ManageUser } from 'page/admin/users/manageUser'
 import { CreateGroup } from 'page/admin/groups/createGroup'
 import { ManageGroup } from 'page/admin/groups/manageGroup'
+import { CreateStore } from 'page/admin/groups/createStore'
+import { ManageStore } from 'page/admin/stores/manageStore'
 
 export default function PageRouter() {
     return (
@@ -21,12 +23,14 @@ export default function PageRouter() {
                 <Route path="/login" component={Login} exact />
                 <Route path="/admin/users" component={AdminUsers} exact />
                 <Route path="/admin/users/new" component={CreateUser} exact />
-                <Route path="/admin/users/:id" component={ManageUser} />
+                <Route path="/admin/users/:id" component={ManageUser} exact />
                 <Route path="/admin/casts" component={AdminCasts} exact />
                 <Route path="/admin/groups" component={AdminGroups} exact />
                 <Route path="/admin/groups/new" component={CreateGroup} exact />
-                <Route path="/admin/groups/:id" component={ManageGroup} />
+                <Route path="/admin/groups/:id" component={ManageGroup} exact />
+                <Route path="/admin/groups/:id/new_store" component={CreateStore} exact />
                 <Route path="/admin/stores" component={AdminStores} exact />
+                <Route path="/admin/stores/:id" component={ManageStore} exact />
             </Switch>
         </BrowserRouter>
     )

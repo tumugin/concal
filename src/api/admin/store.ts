@@ -1,11 +1,13 @@
 import { ApiKeyParam, getAuthHeader } from 'api/authUtils'
 import Axios from 'axios'
+import { StoreGroupData } from 'api/admin/storeGroup'
 
 export interface StoreData {
     id: number
     storeName: string
     storeGroupId: number
     storeDisabled: boolean
+    storeGroup: StoreGroupData
 }
 
 export async function getStores({ apiToken }: ApiKeyParam, { page }: { page: number }) {
@@ -53,10 +55,12 @@ export function updateStore(
         storeId,
         storeName,
         storeGroupId,
+        storeDisabled,
     }: {
         storeId: number
         storeName: string
         storeGroupId: number
+        storeDisabled: boolean
     }
 ) {
     return Axios.patch(
@@ -64,6 +68,7 @@ export function updateStore(
         {
             storeName,
             storeGroupId,
+            storeDisabled: storeDisabled.toString(),
         },
         {
             headers: getAuthHeader(apiToken),
