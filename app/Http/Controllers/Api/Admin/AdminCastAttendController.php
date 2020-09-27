@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\CastAttend;
+use App\Models\Store;
+use App\Models\StoreGroup;
 use App\Services\UserAuthService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -28,10 +30,14 @@ class AdminCastAttendController extends Controller
                 [$request->get('startTime'), $request->get('endTime')],
                 'or'
             )
-            ->with('store')
+            ->with(Store::class)
+            ->with('store.storeGroup')
             ->get();
-        $attends_result = collect($attends)->map(function (CastAttend $cast_attend) {
-            return $cast_attend->getAdminAttributes();
+        $attends_result = $attends->map(function (CastAttend $cast_attend) {
+            $store = $cast_attend->store()->first();
+            return collect($cast_attend->getAdminAttributes())->merge([
+                'store' => $store ? $store->getAdminAttributes() : null,
+            ]);
         });
         return [
             'success' => true,
@@ -39,28 +45,22 @@ class AdminCastAttendController extends Controller
         ];
     }
 
-    public function show(Request $request)
+    public function show(CastAttend $cast_attend)
     {
-        $request->validate([
-            'attend' => 'required|integer',
-        ]);
-        $attend_id = $request->query('attend');
-        $cast_attend = CastAttend::whereId($attend_id)
-            ->with('store')
-            ->first();
         if ($cast_attend === null) {
             return response([
                 'error' => 'Cast attend not found.',
             ])->setStatusCode(404);
         }
+        $store = $cast_attend->store()->first();
         return [
             'success' => true,
-            'attend' => [
-                ...$cast_attend->getAdminAttributes(),
-                'storeName' => $cast_attend->store->store_name,
-                'groupId' => $cast_attend->store->store_group_id,
-                'groupName' => $cast_attend->store->getBelongingStoreGroup()->group_name,
-            ],
+            'attend' => collect($cast_attend->getAdminAttributes())
+                ->merge([
+                    'storeName' => $store->store_name,
+                    'groupId' => $store->store_group_id,
+                    'groupName' => $store->storeGroup()->first()->group_name,
+                ]),
         ];
     }
 

@@ -19,12 +19,15 @@ class AdminStoreController extends Controller
         ]);
         $page = (int)$request->get('page');
         $store_count = Store::count();
-        $stores = Store::all()
-            ->skip(self::_PAGINATION_COUNT * $page)
+        $stores = Store::with('storeGroup')
+            ->skip(self::_PAGINATION_COUNT * ($page - 1))
             ->take(self::_PAGINATION_COUNT)
-            ->getIterator();
-        $stores_result = collect($stores)->map(function (Store $store) {
-            return $store->getAdminAttributes();
+            ->get();
+        $stores_result = $stores->map(function (Store $store) {
+            return collect($store->getAdminAttributes())
+                ->merge([
+                    'storeGroup' => $store->storeGroup()->first()->getAdminAttributes()
+                ]);
         })->all();
         return [
             'success' => true,
@@ -49,19 +52,12 @@ class AdminStoreController extends Controller
         ];
     }
 
-    public function update(Request $request)
+    public function update(Request $request, Store $store)
     {
         $request->validate([
-            'store' => 'required|number',
             'storeName' => 'required|string',
             'storeGroupId' => 'required|number',
         ]);
-        $store = Store::whereId($request->query('store'))->first();
-        if ($store === null) {
-            return response([
-                'error' => 'Store not found.',
-            ])->setStatusCode(404);
-        }
         $store_group = StoreGroup::whereId($request->post('storeGroupId'))->firstOrFail();
         $store->updateStore($request->post('storeName'), $store_group);
         return [
@@ -69,41 +65,28 @@ class AdminStoreController extends Controller
         ];
     }
 
-    public function show(Request $request)
+    public function show(Store $store)
     {
-        $request->validate([
-            'store' => 'required|integer',
-        ]);
-        $store = Store::whereId($request->query('store'))->first();
-        if ($store === null) {
-            return response([
-                'error' => 'Store not found.',
-            ])->setStatusCode(404);
-        }
-        $store_info = [
-            ...$store->getAdminAttributes(),
-            'casts' => collect($store->getBelongingCasts()->get()->all())
-                ->map(function (Cast $cast) {
-                    return $cast->getAdminAttributes();
-                }),
-        ];
+        $store_info = collect($store->getAdminAttributes())
+            ->merge(
+                [
+                    'storeGroup' => $store->storeGroup()->first()->getAdminAttributes(),
+                    'casts' => $store->casts()->get()->map(
+                        fn(Cast $cast) => $cast->getAdminAttributes()
+                    )
+                ]
+            );
         return [
             'success' => true,
             'store' => $store_info,
         ];
     }
 
-    public function destroy(Request $request)
+    public function destroy(Request $request, Store $store)
     {
         $request->validate([
             'store' => 'required|integer',
         ]);
-        $store = Store::whereId($request->query('store'))->first();
-        if ($store === null) {
-            return response([
-                'error' => 'Store not found.',
-            ])->setStatusCode(404);
-        }
         $store->delete();
         return [
             'success' => true,

@@ -28,7 +28,7 @@ class StoreTest extends TestCase
         $store = factory(Store::class)->create();
         $cast = factory(Cast::class)->create();
         $store->enrollCast($cast);
-        $belonging_casts = $store->getBelongingCasts();
+        $belonging_casts = $store->casts();
         $this->assertEquals(1, $belonging_casts->count());
         $this->assertEquals(
             $cast->getAttributes(),
@@ -53,7 +53,7 @@ class StoreTest extends TestCase
         $store->save();
         $this->assertEquals(
             $store_group->getAttributes(),
-            $store->getBelongingStoreGroup()->getAttributes(),
+            $store->storeGroup()->first()->getAttributes(),
         );
     }
 

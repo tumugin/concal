@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cast;
+use App\Models\Store;
 use Illuminate\Http\Request;
 
 class AdminCastController extends Controller
@@ -17,13 +18,17 @@ class AdminCastController extends Controller
         ]);
         $page = (int)$request->get('page');
         $casts_count = Cast::count();
-        $casts = Cast::all()
-            ->skip(self::_PAGINATION_COUNT * $page)
+        $casts = Cast::with('stores')
+            ->skip(self::_PAGINATION_COUNT * ($page - 1))
             ->take(self::_PAGINATION_COUNT)
-            ->getIterator();
-        $casts_result = collect($casts)->map(function (Cast $cast) {
-            return $cast->getAdminAttributes();
-        });
+            ->get();
+        $casts_result = $casts->map(fn(Cast $cast) => collect($cast->getAdminAttributes())->merge(
+            [
+                'stores' => $cast->stores()->get()->map(function (Store $store) {
+                    return $store->getAdminAttributes();
+                }),
+            ])
+        );
         return [
             'success' => true,
             'casts' => $casts_result,
@@ -31,20 +36,17 @@ class AdminCastController extends Controller
         ];
     }
 
-    public function show(Request $request)
+    public function show(Cast $cast)
     {
-        $request->validate([
-            'cast' => 'required|integer',
-        ]);
-        $cast = Cast::whereId($request->query('cast'))->first();
-        if ($cast === null) {
-            return response([
-                'error' => 'Cast not found.',
-            ])->setStatusCode(404);
-        }
         return [
             'success' => true,
-            'cast' => $cast->getAdminAttributes(),
+            'cast' => [
+                ...$cast->getAdminAttributes(),
+                'stores' => $cast
+                    ->stores()
+                    ->get()
+                    ->map(fn(Store $store) => $store->getAdminAttributes())
+            ],
         ];
     }
 
@@ -69,22 +71,15 @@ class AdminCastController extends Controller
         ];
     }
 
-    public function update(Request $request)
+    public function update(Request $request, Cast $cast)
     {
         $request->validate([
-            'cast' => 'required|integer',
             'castName' => 'required|string',
             'castShortName' => 'nullable|string',
             'castTwitterId' => 'nullable|string',
             'castDescription' => 'nullable|string',
             'castColor' => 'nullable|string',
         ]);
-        $cast = Cast::whereId($request->query('cast'))->first();
-        if ($cast === null) {
-            return response([
-                'error' => 'Cast not found.',
-            ])->setStatusCode(404);
-        }
         $cast->editStore([
             'cast_name' => $request->post('castName'),
             'cast_short_name' => $request->post('castShortName'),
@@ -97,17 +92,8 @@ class AdminCastController extends Controller
         ];
     }
 
-    public function destroy(Request $request)
+    public function destroy(Cast $cast)
     {
-        $request->validate([
-            'cast' => 'required|integer',
-        ]);
-        $cast = Cast::whereId($request->query('cast'))->first();
-        if ($cast === null) {
-            return response([
-                'error' => 'Cast not found.',
-            ])->setStatusCode(404);
-        }
         $cast->delete();
         return [
             'success' => true,
