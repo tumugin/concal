@@ -62,17 +62,17 @@ export function AdminCasts() {
                         {
                             Header: 'キャスト名',
                             accessor: 'castName',
-                            width: 200,
+                            width: 250,
                         },
                         {
                             Header: 'キャスト省略名称',
                             accessor: 'castShortName',
-                            width: 200,
+                            width: 250,
                         },
                         {
                             Header: '在籍店舗',
                             accessor: 'stores',
-                            width: 200,
+                            width: 250,
                         },
                         {
                             Header: 'キャストTwitter',

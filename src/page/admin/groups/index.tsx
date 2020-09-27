@@ -51,12 +51,12 @@ export function AdminGroups() {
                         {
                             Header: '店舗グループ名',
                             accessor: 'groupName',
-                            width: 200,
+                            width: 250,
                         },
                     ]}
                     data={mappedStoreGroups}
                     operationNode={createOperationNode}
-                    operationWidth={20}
+                    operationWidth={100}
                 />
             </Box>
             <Box mt={4}>

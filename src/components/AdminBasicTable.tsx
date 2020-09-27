@@ -22,13 +22,13 @@ export function AdminBasicTable<D extends Record<string, string | number | React
                     {headerGroups.map((headerGroup, index) => (
                         <StyledTrHeader {...headerGroup.getHeaderGroupProps()} key={index}>
                             {operationNode && (
-                                <StyledThHeader colSpan={1} role="columnheader" style={{ width: operationWidth }} />
+                                <StyledThHeader colSpan={1} role="columnheader" style={{ minWidth: operationWidth }} />
                             )}
                             {headerGroup.headers.map((column, columnIndex) => (
                                 <StyledThHeader
                                     {...column.getHeaderProps()}
                                     key={columnIndex}
-                                    style={{ width: column.width, maxWidth: column.maxWidth }}
+                                    style={{ minWidth: column.width, maxWidth: column.maxWidth }}
                                 >
                                     {column.render('Header')}
                                 </StyledThHeader>
@@ -42,7 +42,7 @@ export function AdminBasicTable<D extends Record<string, string | number | React
                         return (
                             <StyledTrBody {...row.getRowProps()} key={rowIndex}>
                                 {operationNode && (
-                                    <StyledTdBody role="cell" style={{ width: operationWidth }}>
+                                    <StyledTdBody role="cell" style={{ minWidth: operationWidth }}>
                                         {operationNode(row.original)}
                                     </StyledTdBody>
                                 )}
@@ -51,7 +51,7 @@ export function AdminBasicTable<D extends Record<string, string | number | React
                                         <StyledTdBody
                                             {...cell.getCellProps()}
                                             key={cellIndex}
-                                            style={{ width: cell.column.width, maxWidth: cell.column.maxWidth }}
+                                            style={{ minWidth: cell.column.width, maxWidth: cell.column.maxWidth }}
                                         >
                                             {cell.render('Cell')}
                                         </StyledTdBody>
@@ -89,6 +89,5 @@ const StyledTdBody = styled.td`
 
 const StyledTable = styled.table`
     border-collapse: collapse;
-    table-layout: fixed;
-    width: 100%;
+    width: fit-content;
 `

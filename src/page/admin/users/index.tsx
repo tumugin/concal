@@ -59,7 +59,7 @@ export function AdminUsers() {
                         {
                             Header: '名前',
                             accessor: 'name',
-                            width: 200,
+                            width: 250,
                         },
                         {
                             Header: 'ユーザID',

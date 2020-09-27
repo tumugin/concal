@@ -47,17 +47,17 @@ export function AdminStores() {
                         {
                             Header: '店舗名',
                             accessor: 'storeName',
-                            width: 200,
+                            width: 250,
                         },
                         {
                             Header: '店舗グループ',
                             accessor: 'storeGroupName',
-                            width: 200,
+                            width: 250,
                         },
                     ]}
                     data={mappedStoreData}
                     operationNode={createOperationNode}
-                    operationWidth={50}
+                    operationWidth={100}
                 />
             </Box>
             <Box mt={4}>
