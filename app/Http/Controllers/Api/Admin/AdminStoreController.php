@@ -40,7 +40,7 @@ class AdminStoreController extends Controller
     {
         $request->validate([
             'storeName' => 'required|string',
-            'storeGroupId' => 'required|number',
+            'storeGroupId' => 'required|integer',
         ]);
         $store_group = StoreGroup::whereId($request->post('storeGroupId'))->firstOrFail();
         Store::createStore(
@@ -56,10 +56,12 @@ class AdminStoreController extends Controller
     {
         $request->validate([
             'storeName' => 'required|string',
-            'storeGroupId' => 'required|number',
+            'storeGroupId' => 'required|integer',
+            'storeDisabled' => 'required|string'
         ]);
         $store_group = StoreGroup::whereId($request->post('storeGroupId'))->firstOrFail();
         $store->updateStore($request->post('storeName'), $store_group);
+        $store->setStoreClosed($request->post('storeDisabled') === 'true');
         return [
             'success' => true,
         ];
@@ -82,11 +84,8 @@ class AdminStoreController extends Controller
         ];
     }
 
-    public function destroy(Request $request, Store $store)
+    public function destroy(Store $store)
     {
-        $request->validate([
-            'store' => 'required|integer',
-        ]);
         $store->delete();
         return [
             'success' => true,

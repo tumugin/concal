@@ -1,11 +1,11 @@
-import { useHistory, useParams } from 'react-router-dom'
+import { Link, useHistory, useParams } from 'react-router-dom'
 import { useApiToken } from 'store/user'
 import React, { useCallback, useEffect, useState } from 'react'
 import { unreachableCode } from 'types/util'
 import toastr from 'toastr'
 import Swal from 'sweetalert2'
 import { PageWrapper } from 'components/PageWrapper'
-import { Button, Heading } from 'rebass/styled-components'
+import { Box, Button, Heading } from 'rebass/styled-components'
 import { AdminInfoBoxWrapper } from 'components/AdminInfoBoxWrapper'
 import { AdminInfoBox } from 'components/AdminInfoBox'
 import { AdminInfoGrid } from 'components/AdminInfoGrid'
@@ -96,6 +96,11 @@ export function ManageGroup() {
                             },
                         ]}
                     />
+                    <Box mt={3}>
+                        <Link to={`/admin/groups/${id}/new_store`}>
+                            <Button>このグループに店舗を追加する</Button>
+                        </Link>
+                    </Box>
                 </AdminInfoBox>
                 <AdminInfoBox header="店舗グループ情報変更">
                     <Label>店舗グループ名</Label>
