@@ -13,6 +13,7 @@ import { CreateGroup } from 'page/admin/groups/createGroup'
 import { ManageGroup } from 'page/admin/groups/manageGroup'
 import { CreateStore } from 'page/admin/groups/createStore'
 import { ManageStore } from 'page/admin/stores/manageStore'
+import { CreateCast } from 'page/admin/casts/createCast'
 
 export default function PageRouter() {
     return (
@@ -25,6 +26,7 @@ export default function PageRouter() {
                 <Route path="/admin/users/new" component={CreateUser} exact />
                 <Route path="/admin/users/:id" component={ManageUser} exact />
                 <Route path="/admin/casts" component={AdminCasts} exact />
+                <Route path="/admin/casts/new" component={CreateCast} exact />
                 <Route path="/admin/groups" component={AdminGroups} exact />
                 <Route path="/admin/groups/new" component={CreateGroup} exact />
                 <Route path="/admin/groups/:id" component={ManageGroup} exact />

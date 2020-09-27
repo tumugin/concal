@@ -24,7 +24,7 @@ class AdminCastController extends Controller
             ->get();
         $casts_result = $casts->map(fn(Cast $cast) => collect($cast->getAdminAttributes())->merge(
             [
-                'stores' => $cast->stores()->get()->map(function (Store $store) {
+                'stores' => $cast->stores->map(function (Store $store) {
                     return $store->getAdminAttributes();
                 }),
             ])
@@ -63,7 +63,7 @@ class AdminCastController extends Controller
             'cast_name' => $request->post('castName'),
             'cast_short_name' => $request->post('castShortName'),
             'cast_twitter_id' => $request->post('castTwitterId'),
-            'cast_description' => $request->post('castDescription'),
+            'cast_description' => $request->post('castDescription') ?? '',
             'cast_color' => $request->post('cast_color'),
         ]);
         return [
@@ -79,6 +79,7 @@ class AdminCastController extends Controller
             'castTwitterId' => 'nullable|string',
             'castDescription' => 'nullable|string',
             'castColor' => 'nullable|string',
+            'storeIds' => 'nullable|string',
         ]);
         $cast->editStore([
             'cast_name' => $request->post('castName'),
@@ -87,6 +88,16 @@ class AdminCastController extends Controller
             'cast_description' => $request->post('castDescription'),
             'cast_color' => $request->post('cast_color'),
         ]);
+        if ($request->has('storeIds')) {
+            $comma_separated_store_ids = $request->post('storeIds');
+            $store_ids = collect(
+                $comma_separated_store_ids !== null ? explode(',', $comma_separated_store_ids) : []
+            )
+                ->filter(fn($value) => is_numeric($value))
+                ->map(fn($value) => (int)$value)
+                ->all();
+            $cast->updateEnrolledStoresByIds($store_ids);
+        }
         return [
             'success' => true,
         ];

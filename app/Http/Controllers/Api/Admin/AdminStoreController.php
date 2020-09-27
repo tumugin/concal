@@ -26,7 +26,7 @@ class AdminStoreController extends Controller
         $stores_result = $stores->map(function (Store $store) {
             return collect($store->getAdminAttributes())
                 ->merge([
-                    'storeGroup' => $store->storeGroup()->first()->getAdminAttributes()
+                    'storeGroup' => $store->storeGroup->getAdminAttributes()
                 ]);
         })->all();
         return [
