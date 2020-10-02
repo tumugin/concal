@@ -1,6 +1,7 @@
 import { Column, useTable } from 'react-table'
 import React, { ReactNode } from 'react'
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 
 export function AdminBasicTable<D extends Record<string, string | number | ReactNode>>({
     columns,
@@ -40,7 +41,7 @@ export function AdminBasicTable<D extends Record<string, string | number | React
                     {rows.map((row, rowIndex) => {
                         prepareRow(row)
                         return (
-                            <StyledTrBody {...row.getRowProps()} key={rowIndex}>
+                            <StyledTrBody {...row.getRowProps()}>
                                 {operationNode && (
                                     <StyledTdBody role="cell" style={{ minWidth: operationWidth }}>
                                         {operationNode(row.original)}
@@ -53,7 +54,9 @@ export function AdminBasicTable<D extends Record<string, string | number | React
                                             key={cellIndex}
                                             style={{ minWidth: cell.column.width, maxWidth: cell.column.maxWidth }}
                                         >
-                                            {cell.render('Cell')}
+                                            <LinkToWrapper linkTo={row.original['linkTo'] as string}>
+                                                {cell.render('Cell')}
+                                            </LinkToWrapper>
                                         </StyledTdBody>
                                     )
                                 })}
@@ -65,6 +68,20 @@ export function AdminBasicTable<D extends Record<string, string | number | React
         </Wrapper>
     )
 }
+
+function LinkToWrapper({ children, linkTo }: { children: React.ReactNode; linkTo: string }) {
+    if (linkTo) {
+        return <NoStyleLink to={linkTo}>{children}</NoStyleLink>
+    }
+    return <>{children}</>
+}
+
+const CellWrapper = styled.div``
+
+const NoStyleLink = styled(Link)`
+    color: inherit;
+    text-decoration: none;
+`
 
 const Wrapper = styled.div`
     overflow: auto;
@@ -89,5 +106,5 @@ const StyledTdBody = styled.td`
 
 const StyledTable = styled.table`
     border-collapse: collapse;
-    width: fit-content;
+    width: 100%;
 `
