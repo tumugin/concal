@@ -41,7 +41,7 @@ export function AdminBasicTable<D extends Record<string, string | number | React
                     {rows.map((row, rowIndex) => {
                         prepareRow(row)
                         return (
-                            <StyledTrBody {...row.getRowProps()}>
+                            <StyledTrBody {...row.getRowProps()} key={rowIndex}>
                                 {operationNode && (
                                     <StyledTdBody role="cell" style={{ minWidth: operationWidth }}>
                                         {operationNode(row.original)}
