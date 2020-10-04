@@ -101,7 +101,7 @@ export function updateCast(
 }
 
 export function deleteCast({ apiToken }: ApiKeyParam, { castId }: { castId: number }) {
-    return Axios.delete(`/api/admin/attends/${castId}`, {
+    return Axios.delete(`/api/admin/casts/${castId}`, {
         headers: getAuthHeader(apiToken),
     })
 }
