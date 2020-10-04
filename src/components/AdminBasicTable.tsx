@@ -21,12 +21,7 @@ export function AdminBasicTable<D extends Record<string, string | number | React
                         <StyledTrHeader {...headerGroup.getHeaderGroupProps()} key={index}>
                             {operationNode && <StyledThHeader role="columnheader" />}
                             {headerGroup.headers.map((column, columnIndex) => (
-                                <StyledThHeader
-                                    key={columnIndex}
-                                    style={{ minWidth: column.width, maxWidth: column.maxWidth }}
-                                >
-                                    {column.render('Header')}
-                                </StyledThHeader>
+                                <StyledThHeader key={columnIndex}>{column.render('Header')}</StyledThHeader>
                             ))}
                             <th colSpan={1} role="columnheader" />
                         </StyledTrHeader>
@@ -47,7 +42,7 @@ export function AdminBasicTable<D extends Record<string, string | number | React
                                         <StyledTdBody
                                             {...cell.getCellProps()}
                                             key={cellIndex}
-                                            style={{ minWidth: cell.column.width }}
+                                            style={{ width: cell.column.width, minWidth: cell.column.width }}
                                         >
                                             {cell.render('Cell')}
                                         </StyledTdBody>
