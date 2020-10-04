@@ -87,7 +87,6 @@ export function AdminCasts() {
                     ]}
                     data={mappedCastData}
                     operationNode={createOperationNode}
-                    operationWidth={100}
                 />
             </Box>
             <Box mt={4}>

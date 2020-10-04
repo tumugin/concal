@@ -56,7 +56,6 @@ export function AdminGroups() {
                     ]}
                     data={mappedStoreGroups}
                     operationNode={createOperationNode}
-                    operationWidth={100}
                 />
             </Box>
             <Box mt={4}>

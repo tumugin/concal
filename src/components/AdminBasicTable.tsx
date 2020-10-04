@@ -6,12 +6,10 @@ export function AdminBasicTable<D extends Record<string, string | number | React
     columns,
     data,
     operationNode,
-    operationWidth,
 }: {
     columns: Column<D>[]
     data: D[]
     operationNode?: (data: D) => ReactNode
-    operationWidth?: number
 }) {
     const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data })
 
@@ -21,18 +19,11 @@ export function AdminBasicTable<D extends Record<string, string | number | React
                 <thead>
                     {headerGroups.map((headerGroup, index) => (
                         <StyledTrHeader {...headerGroup.getHeaderGroupProps()} key={index}>
-                            {operationNode && (
-                                <StyledThHeader colSpan={1} role="columnheader" style={{ minWidth: operationWidth }} />
-                            )}
+                            {operationNode && <StyledThHeader role="columnheader" />}
                             {headerGroup.headers.map((column, columnIndex) => (
-                                <StyledThHeader
-                                    {...column.getHeaderProps()}
-                                    key={columnIndex}
-                                    style={{ minWidth: column.width, maxWidth: column.maxWidth }}
-                                >
-                                    {column.render('Header')}
-                                </StyledThHeader>
+                                <StyledThHeader key={columnIndex}>{column.render('Header')}</StyledThHeader>
                             ))}
+                            <th colSpan={1} role="columnheader" />
                         </StyledTrHeader>
                     ))}
                 </thead>
@@ -42,21 +33,22 @@ export function AdminBasicTable<D extends Record<string, string | number | React
                         return (
                             <StyledTrBody {...row.getRowProps()} key={rowIndex}>
                                 {operationNode && (
-                                    <StyledTdBody role="cell" style={{ minWidth: operationWidth }}>
+                                    <StyledOperationNodeTdBody role="cell" style={{ width: 1, minWidth: 1 }}>
                                         {operationNode(row.original)}
-                                    </StyledTdBody>
+                                    </StyledOperationNodeTdBody>
                                 )}
                                 {row.cells.map((cell, cellIndex) => {
                                     return (
                                         <StyledTdBody
                                             {...cell.getCellProps()}
                                             key={cellIndex}
-                                            style={{ minWidth: cell.column.width, maxWidth: cell.column.maxWidth }}
+                                            style={{ width: cell.column.width, minWidth: cell.column.width }}
                                         >
                                             {cell.render('Cell')}
                                         </StyledTdBody>
                                     )
                                 })}
+                                <td />
                             </StyledTrBody>
                         )
                     })}
@@ -87,7 +79,12 @@ const StyledTdBody = styled.td`
     padding: 8px;
 `
 
+const StyledOperationNodeTdBody = styled(StyledTdBody)`
+    white-space: nowrap;
+`
+
 const StyledTable = styled.table`
+    table-layout: fixed;
     border-collapse: collapse;
-    width: fit-content;
+    min-width: 100%;
 `

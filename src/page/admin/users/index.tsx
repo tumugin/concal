@@ -78,7 +78,6 @@ export function AdminUsers() {
                     ]}
                     data={mappedUserData}
                     operationNode={createOperationNode}
-                    operationWidth={100}
                 />
             </Box>
             <Box mt={4}>
