@@ -75,6 +75,7 @@ class Cast extends Model
         Assert::nullOrStringNotEmpty($cast_info['cast_short_name'] ?? null);
         Assert::nullOrStringNotEmpty($cast_info['cast_twitter_id'] ?? null);
         Assert::string($cast_info['cast_description']);
+        Assert::nullOrBoolean($cast_info['cast_disabled'] ?? null);
         if (isset($cast_info['cast_color'])) {
             Assert::regex($cast_info['cast_color'], '/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/');
         }
@@ -116,6 +117,7 @@ class Cast extends Model
         $this->cast_twitter_id = $cast_info['cast_twitter_id'] ?? null;
         $this->cast_description = $cast_info['cast_description'];
         $this->cast_color = $cast_info['cast_color'] ?? null;
+        $this->cast_disabled = $cast_info['cast_disabled'];
         $this->save();
     }
 
@@ -173,7 +175,7 @@ class Cast extends Model
     public function updateEnrolledStoresByIds(array $store_ids): void
     {
         Assert::allInteger($store_ids);
-        
+
         DB::transaction(function () use ($store_ids) {
             // 一旦全ての所属情報を消す
             self::storeCasts()->delete();

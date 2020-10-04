@@ -31,9 +31,16 @@ export function AdminCasts() {
 
     const createOperationNode = (item: { id: number }) => {
         return (
-            <Link to={`/admin/casts/${item.id}`}>
-                <Button variant="outline">管理</Button>
-            </Link>
+            <Flex>
+                <Link to={`/admin/casts/${item.id}`}>
+                    <Button variant="outline">管理</Button>
+                </Link>
+                <Box marginLeft={1}>
+                    <Link to={`/admin/casts/${item.id}/attends`}>
+                        <Button variant="outline">出勤管理</Button>
+                    </Link>
+                </Box>
+            </Flex>
         )
     }
 

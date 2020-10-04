@@ -11,3 +11,9 @@ const Wrapper = styled(Box)`
     grid-auto-flow: row;
     grid-row-gap: 24px;
 `
+
+export const AdminVerticalButtons = styled(Box)`
+    display: grid;
+    grid-auto-flow: row;
+    row-gap: 8px;
+`

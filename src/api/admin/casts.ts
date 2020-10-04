@@ -71,6 +71,7 @@ export function updateCast(
         castDescription,
         castColor,
         storeIds,
+        castDisabled,
     }: {
         castId: number
         castName: string
@@ -79,6 +80,7 @@ export function updateCast(
         castDescription: string
         castColor: string | null
         storeIds?: number[]
+        castDisabled?: boolean
     }
 ) {
     return Axios.patch(
@@ -90,6 +92,7 @@ export function updateCast(
             castDescription,
             castColor,
             storeIds: storeIds !== undefined ? storeIds.join() : undefined,
+            castDisabled: castDisabled ? 'true' : 'false',
         },
         {
             headers: getAuthHeader(apiToken),
@@ -98,7 +101,7 @@ export function updateCast(
 }
 
 export function deleteCast({ apiToken }: ApiKeyParam, { castId }: { castId: number }) {
-    return Axios.delete(`/api/admin/attends/${castId}`, {
+    return Axios.delete(`/api/admin/casts/${castId}`, {
         headers: getAuthHeader(apiToken),
     })
 }
