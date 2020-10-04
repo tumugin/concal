@@ -1,5 +1,5 @@
 import { PageWrapper } from 'components/PageWrapper'
-import { Box, Button, Heading, Link as RebassLink } from 'rebass/styled-components'
+import { Box, Button, Flex, Heading, Link as RebassLink } from 'rebass/styled-components'
 import React, { useCallback, useEffect, useState } from 'react'
 import { unreachableCode } from 'types/util'
 import { useApiToken } from 'store/user'
@@ -14,6 +14,7 @@ import { Textarea } from '@rebass/forms'
 import { BootstrapLikeColors } from 'utils/bootstrapLike'
 import { Note } from 'components/Note'
 import Swal from 'sweetalert2'
+import { CastColorBlock } from 'components/CastColorBlock'
 
 export function ManageCast() {
     const history = useHistory()
@@ -138,7 +139,14 @@ export function ManageCast() {
                             },
                             {
                                 name: 'キャストイメージカラー',
-                                value: castData.castColor ?? '未登録',
+                                value: castData.castColor ? (
+                                    <Flex sx={{ alignItems: 'center' }}>
+                                        <CastColorBlock color={castData.castColor} />
+                                        <Box marginLeft={2}>{castData.castColor}</Box>
+                                    </Flex>
+                                ) : (
+                                    '未登録'
+                                ),
                             },
                             {
                                 name: 'キャスト登録状態',

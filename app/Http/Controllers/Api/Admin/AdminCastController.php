@@ -63,7 +63,7 @@ class AdminCastController extends Controller
             'cast_short_name' => $request->post('castShortName'),
             'cast_twitter_id' => $request->post('castTwitterId'),
             'cast_description' => $request->post('castDescription') ?? '',
-            'cast_color' => $request->post('cast_color'),
+            'cast_color' => $request->post('castColor'),
         ]);
         return [
             'success' => true,
@@ -86,7 +86,7 @@ class AdminCastController extends Controller
             'cast_short_name' => $request->post('castShortName'),
             'cast_twitter_id' => $request->post('castTwitterId'),
             'cast_description' => $request->post('castDescription') ?? '',
-            'cast_color' => $request->post('cast_color'),
+            'cast_color' => $request->post('castColor'),
             'cast_disabled' => $request->post('castDisabled') === 'true',
         ]);
         if ($request->has('storeIds')) {
