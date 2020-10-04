@@ -1,18 +1,15 @@
 import { Column, useTable } from 'react-table'
 import React, { ReactNode } from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
 
 export function AdminBasicTable<D extends Record<string, string | number | ReactNode>>({
     columns,
     data,
     operationNode,
-    operationWidth,
 }: {
     columns: Column<D>[]
     data: D[]
     operationNode?: (data: D) => ReactNode
-    operationWidth?: number
 }) {
     const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data })
 
@@ -22,18 +19,16 @@ export function AdminBasicTable<D extends Record<string, string | number | React
                 <thead>
                     {headerGroups.map((headerGroup, index) => (
                         <StyledTrHeader {...headerGroup.getHeaderGroupProps()} key={index}>
-                            {operationNode && (
-                                <StyledThHeader colSpan={1} role="columnheader" style={{ minWidth: operationWidth }} />
-                            )}
+                            {operationNode && <StyledThHeader role="columnheader" />}
                             {headerGroup.headers.map((column, columnIndex) => (
                                 <StyledThHeader
-                                    {...column.getHeaderProps()}
                                     key={columnIndex}
                                     style={{ minWidth: column.width, maxWidth: column.maxWidth }}
                                 >
                                     {column.render('Header')}
                                 </StyledThHeader>
                             ))}
+                            <th colSpan={1} role="columnheader" />
                         </StyledTrHeader>
                     ))}
                 </thead>
@@ -43,23 +38,22 @@ export function AdminBasicTable<D extends Record<string, string | number | React
                         return (
                             <StyledTrBody {...row.getRowProps()} key={rowIndex}>
                                 {operationNode && (
-                                    <StyledTdBody role="cell" style={{ minWidth: operationWidth }}>
+                                    <StyledOperationNodeTdBody role="cell" style={{ width: 1, minWidth: 1 }}>
                                         {operationNode(row.original)}
-                                    </StyledTdBody>
+                                    </StyledOperationNodeTdBody>
                                 )}
                                 {row.cells.map((cell, cellIndex) => {
                                     return (
                                         <StyledTdBody
                                             {...cell.getCellProps()}
                                             key={cellIndex}
-                                            style={{ minWidth: cell.column.width, maxWidth: cell.column.maxWidth }}
+                                            style={{ minWidth: cell.column.width }}
                                         >
-                                            <LinkToWrapper linkTo={row.original['linkTo'] as string}>
-                                                {cell.render('Cell')}
-                                            </LinkToWrapper>
+                                            {cell.render('Cell')}
                                         </StyledTdBody>
                                     )
                                 })}
+                                <td />
                             </StyledTrBody>
                         )
                     })}
@@ -68,20 +62,6 @@ export function AdminBasicTable<D extends Record<string, string | number | React
         </Wrapper>
     )
 }
-
-function LinkToWrapper({ children, linkTo }: { children: React.ReactNode; linkTo: string }) {
-    if (linkTo) {
-        return <NoStyleLink to={linkTo}>{children}</NoStyleLink>
-    }
-    return <>{children}</>
-}
-
-const CellWrapper = styled.div``
-
-const NoStyleLink = styled(Link)`
-    color: inherit;
-    text-decoration: none;
-`
 
 const Wrapper = styled.div`
     overflow: auto;
@@ -104,7 +84,12 @@ const StyledTdBody = styled.td`
     padding: 8px;
 `
 
+const StyledOperationNodeTdBody = styled(StyledTdBody)`
+    white-space: nowrap;
+`
+
 const StyledTable = styled.table`
+    table-layout: fixed;
     border-collapse: collapse;
-    width: 100%;
+    min-width: 100%;
 `

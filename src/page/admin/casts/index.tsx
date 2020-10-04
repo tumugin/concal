@@ -27,8 +27,15 @@ export function AdminCasts() {
         ),
         castStatus: item.castDisabled ? <Badge type="alert">卒業済み</Badge> : <Badge type="success">現役</Badge>,
         stores: item.stores.map((store, index) => <div key={index}>{store.storeName}</div>),
-        linkTo: `/admin/casts/${item.id}`,
     }))
+
+    const createOperationNode = (item: { id: number }) => {
+        return (
+            <Link to={`/admin/casts/${item.id}`}>
+                <Button variant="outline">管理</Button>
+            </Link>
+        )
+    }
 
     useEffect(() => {
         if (!apiToken) {
@@ -79,6 +86,7 @@ export function AdminCasts() {
                         },
                     ]}
                     data={mappedCastData}
+                    operationNode={createOperationNode}
                 />
             </Box>
             <Box mt={4}>

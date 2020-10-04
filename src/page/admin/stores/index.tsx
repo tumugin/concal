@@ -57,7 +57,6 @@ export function AdminStores() {
                     ]}
                     data={mappedStoreData}
                     operationNode={createOperationNode}
-                    operationWidth={100}
                 />
             </Box>
             <Box mt={4}>
