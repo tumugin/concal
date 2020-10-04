@@ -40,13 +40,12 @@ class AdminCastController extends Controller
     {
         return [
             'success' => true,
-            'cast' => [
-                ...$cast->getAdminAttributes(),
+            'cast' => collect($cast->getAdminAttributes())->merge([
                 'stores' => $cast
                     ->stores()
                     ->get()
                     ->map(fn(Store $store) => $store->getAdminAttributes())
-            ],
+            ]),
         ];
     }
 
@@ -80,13 +79,15 @@ class AdminCastController extends Controller
             'castDescription' => 'nullable|string',
             'castColor' => 'nullable|string',
             'storeIds' => 'nullable|string',
+            'castDisabled' => 'nullable|string',
         ]);
-        $cast->editStore([
+        $cast->updateCast([
             'cast_name' => $request->post('castName'),
             'cast_short_name' => $request->post('castShortName'),
             'cast_twitter_id' => $request->post('castTwitterId'),
-            'cast_description' => $request->post('castDescription'),
+            'cast_description' => $request->post('castDescription') ?? '',
             'cast_color' => $request->post('cast_color'),
+            'cast_disabled' => $request->post('castDisabled') === 'true',
         ]);
         if ($request->has('storeIds')) {
             $comma_separated_store_ids = $request->post('storeIds');

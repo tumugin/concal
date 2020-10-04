@@ -71,6 +71,7 @@ export function updateCast(
         castDescription,
         castColor,
         storeIds,
+        castDisabled,
     }: {
         castId: number
         castName: string
@@ -79,6 +80,7 @@ export function updateCast(
         castDescription: string
         castColor: string | null
         storeIds?: number[]
+        castDisabled?: boolean
     }
 ) {
     return Axios.patch(
@@ -90,6 +92,7 @@ export function updateCast(
             castDescription,
             castColor,
             storeIds: storeIds !== undefined ? storeIds.join() : undefined,
+            castDisabled: castDisabled ? 'true' : 'false',
         },
         {
             headers: getAuthHeader(apiToken),
