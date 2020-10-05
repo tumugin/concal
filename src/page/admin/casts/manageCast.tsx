@@ -15,6 +15,7 @@ import { BootstrapLikeColors } from 'utils/bootstrapLike'
 import { Note } from 'components/Note'
 import Swal from 'sweetalert2'
 import { CastColorBlock } from 'components/CastColorBlock'
+import toastr from 'toastr'
 
 export function ManageCast() {
     const history = useHistory()
@@ -54,6 +55,7 @@ export function ManageCast() {
             }
         )
         await fetchPageData(id)
+        toastr.success('更新しました')
     }, [apiToken, castColor, castData?.id, castDescription, castName, castShortName, castTwitterId, fetchPageData, id])
     const toggleCastStatus = useCallback(async () => {
         if (!castData) {
@@ -75,6 +77,7 @@ export function ManageCast() {
                 }
             )
             await fetchPageData(id)
+            toastr.success('更新しました')
         }
     }, [apiToken, castData, fetchPageData, id])
     const onDeleteCast = useCallback(async () => {
@@ -87,6 +90,7 @@ export function ManageCast() {
         if (dialogResult.isConfirmed) {
             await deleteCast({ apiToken: apiToken ?? unreachableCode() }, { castId: castData?.id ?? unreachableCode() })
             history.push('/admin/casts')
+            toastr.success('キャストを削除しました')
         }
     }, [apiToken, castData?.id, history])
 

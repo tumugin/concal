@@ -117,7 +117,9 @@ class Cast extends Model
         $this->cast_twitter_id = $cast_info['cast_twitter_id'] ?? null;
         $this->cast_description = $cast_info['cast_description'];
         $this->cast_color = $cast_info['cast_color'] ?? null;
-        $this->cast_disabled = $cast_info['cast_disabled'];
+        if (isset($cast_info['cast_disabled'])) {
+            $this->cast_disabled = $cast_info['cast_disabled'];
+        }
         $this->save();
     }
 
