@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 import { AdminBasicTable } from 'components/AdminBasicTable'
 import { PaginationController } from 'components/PaginationController'
 import { Badge } from 'components/Badge'
+import { RebassRouterLink } from 'components/RebassRouterLink'
 
 export function AdminCasts() {
     const apiToken = useApiToken()
@@ -26,7 +27,11 @@ export function AdminCasts() {
             ''
         ),
         castStatus: item.castDisabled ? <Badge type="alert">卒業済み</Badge> : <Badge type="success">現役</Badge>,
-        stores: item.stores.map((store, index) => <div key={index}>{store.storeName}</div>),
+        stores: item.stores.map((store, index) => (
+            <div key={index}>
+                <RebassRouterLink to={`/admin/stores/${store.id}`}>{store.storeName}</RebassRouterLink>
+            </div>
+        )),
     }))
 
     const createOperationNode = (item: { id: number }) => {
@@ -79,7 +84,7 @@ export function AdminCasts() {
                         {
                             Header: '在籍店舗',
                             accessor: 'stores',
-                            width: 250,
+                            width: 300,
                         },
                         {
                             Header: 'キャストTwitter',

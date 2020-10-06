@@ -42,7 +42,7 @@ export function AdminStoreSelector({
                     {
                         Header: '店舗名',
                         accessor: 'storeName',
-                        width: 250,
+                        width: 300,
                     },
                     {
                         Header: '店舗グループ',

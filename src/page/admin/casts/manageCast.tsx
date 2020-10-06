@@ -16,6 +16,7 @@ import { Note } from 'components/Note'
 import Swal from 'sweetalert2'
 import { CastColorBlock } from 'components/CastColorBlock'
 import toastr from 'toastr'
+import { RebassRouterLink } from 'components/RebassRouterLink'
 
 export function ManageCast() {
     const history = useHistory()
@@ -127,7 +128,9 @@ export function ManageCast() {
                                 name: '在籍店舗',
                                 value: castData.stores.map((store, index) => (
                                     <div key={index}>
-                                        <Link to={`/admin/stores/${store.id}`}>{store.storeName}</Link>
+                                        <RebassRouterLink to={`/admin/stores/${store.id}`}>
+                                            {store.storeName}
+                                        </RebassRouterLink>
                                     </div>
                                 )),
                             },
