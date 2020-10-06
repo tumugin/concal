@@ -7,7 +7,7 @@ import { CastData, deleteCast, getCast, updateCast } from 'api/admin/casts'
 import { Link, useHistory, useParams } from 'react-router-dom'
 import { AdminInfoBox } from 'components/AdminInfoBox'
 import { AdminInfoGrid } from 'components/AdminInfoGrid'
-import { AdminInfoBoxWrapper, AdminVerticalButtons } from 'components/AdminInfoBoxWrapper'
+import { AdminInfoBoxWrapper, AdminVerticalButtonLink, AdminVerticalButtons } from 'components/AdminInfoBoxWrapper'
 import { Badge } from 'components/Badge'
 import { Input, Label } from '@rebass/forms/styled-components'
 import { Textarea } from '@rebass/forms'
@@ -167,12 +167,12 @@ export function ManageCast() {
                         ]}
                     />
                     <AdminVerticalButtons mt={3}>
-                        <Link to={`/admin/casts/${id}/attends`}>
+                        <AdminVerticalButtonLink to={`/admin/casts/${id}/attends`}>
                             <Button>このキャストの出勤を管理する</Button>
-                        </Link>
-                        <Link to={`/admin/casts/${id}/stores`}>
+                        </AdminVerticalButtonLink>
+                        <AdminVerticalButtonLink to={`/admin/casts/${id}/stores`}>
                             <Button>このキャストの在籍店舗を管理する</Button>
-                        </Link>
+                        </AdminVerticalButtonLink>
                     </AdminVerticalButtons>
                 </AdminInfoBox>
                 <AdminInfoBox header="キャスト情報変更">

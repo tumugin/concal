@@ -1,15 +1,19 @@
 import { PageWrapper } from 'components/PageWrapper'
-import { Button, Flex, Heading } from 'rebass/styled-components'
+import { Box, Button, Flex, Heading } from 'rebass/styled-components'
 import React, { useCallback, useEffect, useState } from 'react'
 import { AdminInfoBoxWrapper } from 'components/AdminInfoBoxWrapper'
 import { AdminInfoBox } from 'components/AdminInfoBox'
 import { Input } from '@rebass/forms/styled-components'
 import { AdminStoreSelector } from 'components/AdminStoreSelector'
-import { getStores, StoreData } from 'api/admin/store'
+import { getStore, getStores, StoreData } from 'api/admin/store'
 import { useParams } from 'react-router-dom'
 import { useApiToken } from 'store/user'
-import { CastData, getCast } from 'api/admin/casts'
+import { CastData, getCast, updateCast } from 'api/admin/casts'
 import { unreachableCode } from 'types/util'
+import { AdminStoresEditorListView } from 'components/AdminStoresEditorListView'
+import produce from 'immer'
+import toastr from 'toastr'
+import Swal from 'sweetalert2'
 
 export function ManageBelongingStores() {
     const { id } = useParams<{ id: string }>()
@@ -18,15 +22,55 @@ export function ManageBelongingStores() {
     const [castData, setCastData] = useState<CastData | null>(null)
     const [storeList, setStoreList] = useState<{ storeName: string; storeId: number }[]>([])
 
-    const onStoreSelect = useCallback((storeData: StoreData) => {
-        setStoreList((store) => [...store, { storeName: storeData.storeName, storeId: storeData.id }])
-    }, [])
+    const onStoreSelect = useCallback(
+        (storeData: StoreData) => {
+            if (!storeList.find((store) => store.storeId === storeData.id)) {
+                setStoreList((store) => [...store, { storeName: storeData.storeName, storeId: storeData.id }])
+            }
+        },
+        [storeList]
+    )
 
     const fetchPageData = useCallback(async () => {
         const { cast } = await getCast({ apiToken: apiToken ?? unreachableCode() }, { castId: parseInt(id) })
         setCastData(cast)
         setStoreList(cast.stores.map((store) => ({ storeName: store.storeName, storeId: store.id })))
     }, [apiToken, id])
+
+    const onStoreDelete = useCallback((storeId: number) => {
+        setStoreList((storeList) =>
+            produce(storeList, (draftStoreList) => {
+                draftStoreList.splice(
+                    draftStoreList.findIndex((store) => store.storeId === storeId),
+                    1
+                )
+            })
+        )
+    }, [])
+
+    const applyStore = useCallback(async () => {
+        if (!castData) {
+            return
+        }
+        await updateCast(
+            { apiToken: apiToken ?? unreachableCode() },
+            { ...castData, castId: castData.id, storeIds: storeList.map((store) => store.storeId) }
+        )
+        await fetchPageData()
+        toastr.success('更新しました')
+    }, [apiToken, castData, fetchPageData, storeList])
+
+    const addFromStoreId = useCallback(async () => {
+        try {
+            const storeData = await getStore(
+                { apiToken: apiToken ?? unreachableCode() },
+                { storeId: parseInt(draftStoreId) }
+            )
+            onStoreSelect(storeData.store)
+        } catch {
+            await Swal.fire('エラー', 'APIエラーが発生しました', 'error')
+        }
+    }, [apiToken, draftStoreId, onStoreSelect])
 
     useEffect(() => {
         if (apiToken) {
@@ -43,7 +87,13 @@ export function ManageBelongingStores() {
             <Heading>キャスト在籍店舗管理(編集中: {castData.castName})</Heading>
             <AdminInfoBoxWrapper>
                 <AdminInfoBox header="在籍店舗一覧編集">
-                    <Button>反映する</Button>
+                    <Box marginBottom={3}>
+                        {storeList.length > 0 && (
+                            <AdminStoresEditorListView stores={storeList} onDelete={onStoreDelete} />
+                        )}
+                        {storeList.length === 0 && <Box>在籍店舗なし</Box>}
+                    </Box>
+                    <Button onClick={applyStore}>反映する</Button>
                 </AdminInfoBox>
                 <AdminInfoBox header="店舗IDから追加">
                     <Flex>
@@ -54,7 +104,9 @@ export function ManageBelongingStores() {
                             width={200}
                             maxWidth="100%"
                         />
-                        <Button marginLeft={2}>追加する</Button>
+                        <Button marginLeft={2} onClick={addFromStoreId}>
+                            追加する
+                        </Button>
                     </Flex>
                 </AdminInfoBox>
                 <AdminInfoBox header="店舗一覧から追加する">
