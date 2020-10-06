@@ -7,7 +7,7 @@ import { CastData, deleteCast, getCast, updateCast } from 'api/admin/casts'
 import { Link, useHistory, useParams } from 'react-router-dom'
 import { AdminInfoBox } from 'components/AdminInfoBox'
 import { AdminInfoGrid } from 'components/AdminInfoGrid'
-import { AdminInfoBoxWrapper, AdminVerticalButtons } from 'components/AdminInfoBoxWrapper'
+import { AdminInfoBoxWrapper, AdminVerticalButtonLink, AdminVerticalButtons } from 'components/AdminInfoBoxWrapper'
 import { Badge } from 'components/Badge'
 import { Input, Label } from '@rebass/forms/styled-components'
 import { Textarea } from '@rebass/forms'
@@ -15,6 +15,8 @@ import { BootstrapLikeColors } from 'utils/bootstrapLike'
 import { Note } from 'components/Note'
 import Swal from 'sweetalert2'
 import { CastColorBlock } from 'components/CastColorBlock'
+import toastr from 'toastr'
+import { RebassRouterLink } from 'components/RebassRouterLink'
 
 export function ManageCast() {
     const history = useHistory()
@@ -54,6 +56,7 @@ export function ManageCast() {
             }
         )
         await fetchPageData(id)
+        toastr.success('更新しました')
     }, [apiToken, castColor, castData?.id, castDescription, castName, castShortName, castTwitterId, fetchPageData, id])
     const toggleCastStatus = useCallback(async () => {
         if (!castData) {
@@ -75,6 +78,7 @@ export function ManageCast() {
                 }
             )
             await fetchPageData(id)
+            toastr.success('更新しました')
         }
     }, [apiToken, castData, fetchPageData, id])
     const onDeleteCast = useCallback(async () => {
@@ -87,6 +91,7 @@ export function ManageCast() {
         if (dialogResult.isConfirmed) {
             await deleteCast({ apiToken: apiToken ?? unreachableCode() }, { castId: castData?.id ?? unreachableCode() })
             history.push('/admin/casts')
+            toastr.success('キャストを削除しました')
         }
     }, [apiToken, castData?.id, history])
 
@@ -123,7 +128,9 @@ export function ManageCast() {
                                 name: '在籍店舗',
                                 value: castData.stores.map((store, index) => (
                                     <div key={index}>
-                                        <Link to={`/admin/stores/${store.id}`}>{store.storeName}</Link>
+                                        <RebassRouterLink to={`/admin/stores/${store.id}`}>
+                                            {store.storeName}
+                                        </RebassRouterLink>
                                     </div>
                                 )),
                             },
@@ -163,12 +170,12 @@ export function ManageCast() {
                         ]}
                     />
                     <AdminVerticalButtons mt={3}>
-                        <Link to={`/admin/casts/${id}/attends`}>
+                        <AdminVerticalButtonLink to={`/admin/casts/${id}/attends`}>
                             <Button>このキャストの出勤を管理する</Button>
-                        </Link>
-                        <Link to={`/admin/casts/${id}/stores`}>
+                        </AdminVerticalButtonLink>
+                        <AdminVerticalButtonLink to={`/admin/casts/${id}/stores`}>
                             <Button>このキャストの在籍店舗を管理する</Button>
-                        </Link>
+                        </AdminVerticalButtonLink>
                     </AdminVerticalButtons>
                 </AdminInfoBox>
                 <AdminInfoBox header="キャスト情報変更">
