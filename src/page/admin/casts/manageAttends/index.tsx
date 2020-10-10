@@ -8,9 +8,11 @@ import { AdminInfoBox } from 'components/AdminInfoBox'
 import { AdminInfoBoxWrapper } from 'components/AdminInfoBoxWrapper'
 import dayjs from 'dayjs'
 import { getAttends } from 'api/admin/attends'
+import { CastAttendAddEditor } from 'page/admin/casts/manageAttends/CastAttendAddEditor'
 
 export function ManageAttends() {
     const { id } = useParams<{ id: string }>()
+    const castId = parseInt(id)
     const apiToken = useApiToken()
     const [castData, setCastData] = useState<CastData | null>(null)
     const [selectedYear, setSelectedYear] = useState(dayjs().year())
@@ -24,8 +26,8 @@ export function ManageAttends() {
         if (!apiToken) {
             return
         }
-        setCastData((await getCast({ apiToken }, { castId: parseInt(id) })).cast)
-    }, [apiToken, id])
+        setCastData((await getCast({ apiToken }, { castId })).cast)
+    }, [apiToken, castId])
     const fetchAttendData = useCallback(async () => {
         if (!apiToken) {
             return
@@ -33,12 +35,12 @@ export function ManageAttends() {
         await getAttends(
             { apiToken },
             {
-                castId: parseInt(id),
+                castId,
                 startTime: currentDayJsDate.toISOString(),
                 endTime: currentDayJsDate.add(1, 'month').toISOString(),
             }
         )
-    }, [apiToken, currentDayJsDate, id])
+    }, [apiToken, castId, currentDayJsDate])
     const onNextMonth = useCallback(() => {
         const newDate = dayjs().year(selectedYear).month(selectedMonth).add(1, 'month')
         setSelectedYear(newDate.year())
@@ -75,7 +77,14 @@ export function ManageAttends() {
                     </Flex>
                 </Box>
                 <AdminInfoBox header="キャスト出勤一覧"></AdminInfoBox>
-                <AdminInfoBox header="キャスト出勤追加"></AdminInfoBox>
+                <AdminInfoBox header="キャスト出勤追加">
+                    <CastAttendAddEditor
+                        selectedYear={selectedYear}
+                        selectedMonth={selectedMonth}
+                        castId={castId}
+                        stores={castData.stores}
+                    />
+                </AdminInfoBox>
             </AdminInfoBoxWrapper>
         </PageWrapper>
     )

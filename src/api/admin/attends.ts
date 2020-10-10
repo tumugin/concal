@@ -11,7 +11,7 @@ interface AttendData {
     addedByUserId: number
 }
 
-interface AttendDataDetails extends AttendData {
+export interface AttendDataDetails extends AttendData {
     storeName: string
     groupId: number
     groupName: string

@@ -20,6 +20,13 @@ export const AdminVerticalButtons = styled(Box)`
     width: fit-content;
 `
 
+export const AdminHorizontalButtons = styled(Box)`
+    display: grid;
+    grid-auto-flow: column;
+    column-gap: 8px;
+    width: fit-content;
+`
+
 export const AdminVerticalButtonLink = styled(Link)`
     width: fit-content;
 `

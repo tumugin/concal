@@ -22,4 +22,5 @@ const GridWrapper = styled.div`
     grid-column-gap: 48px;
     grid-row-gap: 16px;
     grid-template-columns: auto auto;
+    align-items: center;
 `
