@@ -6982,6 +6982,7 @@ __metadata:
     copy-webpack-plugin: ^6.0.3
     css-loader: ^4.2.2
     cssnano: ^4.1.10
+    dayjs: ^1.9.1
     eslint: ^7.7.0
     eslint-config-prettier: ^6.11.0
     eslint-config-standard: ^14.1.1
@@ -7845,6 +7846,13 @@ __metadata:
     whatwg-mimetype: ^2.3.0
     whatwg-url: ^8.0.0
   checksum: 42239927c6a202e2d02b7f41c94ca53e3cea036898b97b8bf6120ed1b25e0dd11c48ec7aa5c84cf807c2cb9f3a637df9fb50f3ca25a52863186a4ac46254726b
+  languageName: node
+  linkType: hard
+
+"dayjs@npm:^1.9.1":
+  version: 1.9.1
+  resolution: "dayjs@npm:1.9.1"
+  checksum: c1043abb528f43878f3fa88ea6f890be8539f734b41a21cd939da8fb431472428188badb5518f18313fb332701ccc0663c0494caa158e4dac3f6f6f6a24c4849
   languageName: node
   linkType: hard
 

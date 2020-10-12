@@ -3,38 +3,37 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cast;
 use App\Models\CastAttend;
 use App\Models\Store;
 use App\Models\StoreGroup;
 use App\Services\UserAuthService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class AdminCastAttendController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, Cast $cast)
     {
         $request->validate([
-            'cast' => 'required|integer',
             'startTime' => 'required|date',
             'endTime' => 'required|date',
         ]);
-        $attends = CastAttend::whereCastId($request->query('cast'))
+        $attends = CastAttend::whereCastId($cast->id)
             ->whereBetween(
                 'start_time',
                 [$request->get('startTime'), $request->get('endTime')],
-                'or'
             )
             ->whereBetween(
                 'end_time',
-                [$request->get('startTime'), $request->get('endTime')],
-                'or'
+                [$request->get('startTime'), $request->get('endTime')]
             )
-            ->with(Store::class)
+            ->with('store')
             ->with('store.storeGroup')
             ->get();
         $attends_result = $attends->map(function (CastAttend $cast_attend) {
-            $store = $cast_attend->store()->first();
+            $store = $cast_attend->store;
             return collect($cast_attend->getAdminAttributes())->merge([
                 'store' => $store ? $store->getAdminAttributes() : null,
             ]);
@@ -64,17 +63,16 @@ class AdminCastAttendController extends Controller
         ];
     }
 
-    public function store(Request $request)
+    public function store(Cast $cast, Request $request)
     {
         $request->validate([
-            'cast' => 'required|integer',
             'storeId' => 'required|integer',
             'startTime' => 'required|date',
             'endTime' => 'required|date',
             'attendInfo' => 'nullable|string',
         ]);
         CastAttend::addAttendance(
-            (int)$request->query('cast'),
+            $cast->id,
             (int)$request->post('storeId'),
             UserAuthService::getCurrentUser('api')->id,
             Carbon::parse($request->post('startTime')),
@@ -86,21 +84,14 @@ class AdminCastAttendController extends Controller
         ];
     }
 
-    public function update(Request $request)
+    public function update(Request $request, CastAttend $cast_attend)
     {
         $request->validate([
-            'attend' => 'required|integer',
             'storeId' => 'required|integer',
             'startTime' => 'required|date',
             'endTime' => 'required|date',
             'attendInfo' => 'nullable|string',
         ]);
-        $cast_attend = CastAttend::whereId($request->query('attend'))->first();
-        if ($cast_attend === null) {
-            return response([
-                'error' => 'Cast attend not found.',
-            ])->setStatusCode(404);
-        }
         $cast_attend->updateAttendance(
             (int)$request->post('storeId'),
             UserAuthService::getCurrentUser('api')->id,
@@ -113,18 +104,9 @@ class AdminCastAttendController extends Controller
         ];
     }
 
-    public function destroy(Request $request)
+    public function destroy(CastAttend $attend)
     {
-        $request->validate([
-            'attend' => 'required|integer',
-        ]);
-        $cast_attend = CastAttend::whereId($request->query('attend'))->first();
-        if ($cast_attend === null) {
-            return response([
-                'error' => 'Cast attend not found.',
-            ])->setStatusCode(404);
-        }
-        $cast_attend->delete();
+        $attend->delete();
         return [
             'success' => true,
         ];
