@@ -22,9 +22,10 @@ export const AdminVerticalButtons = styled(Box)`
 
 export const AdminHorizontalButtons = styled(Box)`
     display: grid;
-    grid-auto-flow: column;
+    grid-template-columns: repeat(auto-fill, 200px);
+    grid-template-rows: auto;
     column-gap: 8px;
-    width: fit-content;
+    row-gap: 8px;
 `
 
 export const AdminVerticalButtonLink = styled(Link)`

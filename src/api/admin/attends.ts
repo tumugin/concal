@@ -1,5 +1,6 @@
 import Axios from 'axios'
 import { ApiKeyParam, getAuthHeader } from 'api/authUtils'
+import { StoreData } from 'api/admin/store'
 
 interface AttendData {
     id: number
@@ -12,9 +13,7 @@ interface AttendData {
 }
 
 export interface AttendDataDetails extends AttendData {
-    storeName: string
-    groupId: number
-    groupName: string
+    store: StoreData
 }
 
 export async function getAttends(

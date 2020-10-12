@@ -7,8 +7,12 @@ import { CastData, getCast } from 'api/admin/casts'
 import { AdminInfoBox } from 'components/AdminInfoBox'
 import { AdminInfoBoxWrapper } from 'components/AdminInfoBoxWrapper'
 import dayjs from 'dayjs'
-import { getAttends } from 'api/admin/attends'
+import { AttendDataDetails, deleteAttend, getAttends } from 'api/admin/attends'
 import { CastAttendAddEditor } from 'page/admin/casts/manageAttends/CastAttendAddEditor'
+import { CastAttendEditBox } from 'page/admin/casts/manageAttends/CastAttendEditBox'
+import styled from 'styled-components'
+import { unreachableCode } from 'types/util'
+import toastr from 'toastr'
 
 export function ManageAttends() {
     const { id } = useParams<{ id: string }>()
@@ -21,6 +25,7 @@ export function ManageAttends() {
         () => dayjs().year(selectedYear).month(selectedMonth).date(1).hour(0).minute(0).second(0).millisecond(0),
         [selectedMonth, selectedYear]
     )
+    const [attends, setAttends] = useState<AttendDataDetails[]>([])
 
     const fetchCastData = useCallback(async () => {
         if (!apiToken) {
@@ -32,15 +37,27 @@ export function ManageAttends() {
         if (!apiToken) {
             return
         }
-        await getAttends(
-            { apiToken },
-            {
-                castId,
-                startTime: currentDayJsDate.toISOString(),
-                endTime: currentDayJsDate.add(1, 'month').toISOString(),
-            }
+        setAttends(
+            (
+                await getAttends(
+                    { apiToken },
+                    {
+                        castId,
+                        startTime: currentDayJsDate.toISOString(),
+                        endTime: currentDayJsDate.add(1, 'month').toISOString(),
+                    }
+                )
+            ).attends
         )
     }, [apiToken, castId, currentDayJsDate])
+    const onAttendDelete = useCallback(
+        async (attendData: AttendDataDetails) => {
+            await deleteAttend({ apiToken: apiToken ?? unreachableCode() }, { attendId: attendData.id })
+            await fetchAttendData()
+            toastr.success('出勤を削除しました')
+        },
+        [apiToken, fetchAttendData]
+    )
     const onNextMonth = useCallback(() => {
         const newDate = dayjs().year(selectedYear).month(selectedMonth).add(1, 'month')
         setSelectedYear(newDate.year())
@@ -76,16 +93,30 @@ export function ManageAttends() {
                         <Button onClick={onNextMonth}>次月</Button>
                     </Flex>
                 </Box>
-                <AdminInfoBox header="キャスト出勤一覧"></AdminInfoBox>
+                <AdminInfoBox header="キャスト出勤一覧">
+                    {attends.length === 0 && <Box>出勤がありません</Box>}
+                    <AttendsGrid>
+                        {attends.map((item, index) => (
+                            <CastAttendEditBox attendData={item} key={index} onDelete={onAttendDelete} />
+                        ))}
+                    </AttendsGrid>
+                </AdminInfoBox>
                 <AdminInfoBox header="キャスト出勤追加">
                     <CastAttendAddEditor
                         selectedYear={selectedYear}
                         selectedMonth={selectedMonth}
                         castId={castId}
                         stores={castData.stores}
+                        onCastAttendAdd={fetchAttendData}
                     />
                 </AdminInfoBox>
             </AdminInfoBoxWrapper>
         </PageWrapper>
     )
 }
+
+const AttendsGrid = styled.div`
+    display: grid;
+    grid-auto-flow: row;
+    grid-row-gap: 8px;
+`

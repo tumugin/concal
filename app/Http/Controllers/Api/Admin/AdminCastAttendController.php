@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cast;
 use App\Models\CastAttend;
 use App\Models\Store;
 use App\Models\StoreGroup;
@@ -29,11 +30,11 @@ class AdminCastAttendController extends Controller
                 [$request->get('startTime'), $request->get('endTime')],
                 'or'
             )
-            ->with(Store::class)
+            ->with('store')
             ->with('store.storeGroup')
             ->get();
         $attends_result = $attends->map(function (CastAttend $cast_attend) {
-            $store = $cast_attend->store()->first();
+            $store = $cast_attend->store;
             return collect($cast_attend->getAdminAttributes())->merge([
                 'store' => $store ? $store->getAdminAttributes() : null,
             ]);
@@ -63,17 +64,16 @@ class AdminCastAttendController extends Controller
         ];
     }
 
-    public function store(Request $request)
+    public function store(Cast $cast, Request $request)
     {
         $request->validate([
-            'cast' => 'required|integer',
             'storeId' => 'required|integer',
             'startTime' => 'required|date',
             'endTime' => 'required|date',
             'attendInfo' => 'nullable|string',
         ]);
         CastAttend::addAttendance(
-            (int)$request->query('cast'),
+            $cast->id,
             (int)$request->post('storeId'),
             UserAuthService::getCurrentUser('api')->id,
             Carbon::parse($request->post('startTime')),
