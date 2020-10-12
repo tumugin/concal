@@ -10,25 +10,24 @@ use App\Models\StoreGroup;
 use App\Services\UserAuthService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class AdminCastAttendController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, Cast $cast)
     {
         $request->validate([
             'startTime' => 'required|date',
             'endTime' => 'required|date',
         ]);
-        $attends = CastAttend::whereCastId($request->query('cast'))
+        $attends = CastAttend::whereCastId($cast->id)
             ->whereBetween(
                 'start_time',
                 [$request->get('startTime'), $request->get('endTime')],
-                'or'
             )
             ->whereBetween(
                 'end_time',
-                [$request->get('startTime'), $request->get('endTime')],
-                'or'
+                [$request->get('startTime'), $request->get('endTime')]
             )
             ->with('store')
             ->with('store.storeGroup')
@@ -105,9 +104,9 @@ class AdminCastAttendController extends Controller
         ];
     }
 
-    public function destroy(CastAttend $cast_attend)
+    public function destroy(CastAttend $attend)
     {
-        $cast_attend->delete();
+        $attend->delete();
         return [
             'success' => true,
         ];
