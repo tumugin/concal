@@ -44,10 +44,12 @@ class CastAttend extends Model
                 'id',
                 'cast_id',
                 'store_id',
-                'start_time',
-                'end_time',
                 'attend_info',
                 'added_by_user_id',
+            ])
+            ->merge([
+                'start_time' => Carbon::make($this->start_time)->toIso8601String(),
+                'end_time' => Carbon::make($this->end_time)->toIso8601String(),
             ])
             ->mapWithKeys(fn($value, string $key) => [
                 Str::camel($key) => $value
@@ -62,9 +64,11 @@ class CastAttend extends Model
                 'id',
                 'cast_id',
                 'store_id',
-                'start_time',
-                'end_time',
                 'attend_info',
+            ])
+            ->merge([
+                'start_time' => Carbon::make($this->start_time)->toIso8601String(),
+                'end_time' => Carbon::make($this->end_time)->toIso8601String(),
             ])
             ->mapWithKeys(fn($value, string $key) => [
                 Str::camel($key) => $value
@@ -92,8 +96,8 @@ class CastAttend extends Model
         $cast_attend = new CastAttend();
         $cast_attend->cast_id = $cast_id;
         $cast_attend->store_id = $store_id;
-        $cast_attend->start_time = $start_time->toDateTimeString();
-        $cast_attend->end_time = $end_time->toDateTimeString();
+        $cast_attend->start_time = $start_time->toDateTimeString(); // UTCで格納
+        $cast_attend->end_time = $end_time->toDateTimeString(); // UTCで格納
         $cast_attend->added_by_user_id = $added_by_user_id;
         $cast_attend->attend_info = $attend_info;
         $cast_attend->save();
@@ -117,8 +121,8 @@ class CastAttend extends Model
         Assert::false($start_time->unix() > $end_time->unix(), '開始時間が終了時間より未来は不正');
 
         $this->store_id = $store_id;
-        $this->start_time = $start_time->toDateTimeString();
-        $this->end_time = $end_time->toDateTimeString();
+        $this->start_time = $start_time->toDateTimeString(); // UTCで格納
+        $this->end_time = $end_time->toDateTimeString(); // UTCで格納
         $this->added_by_user_id = $added_by_user_id;
         $this->attend_info = $attend_info;
         $this->save();

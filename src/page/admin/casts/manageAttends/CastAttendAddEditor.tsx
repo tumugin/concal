@@ -27,7 +27,7 @@ export function CastAttendAddEditor({
     const apiToken = useApiToken()
 
     const [selectedStore, setSelectedStore] = useState<StoreData | null>(null)
-    const [selectedStartDay, setSelectedStartDay] = useState('1')
+    const [selectedStartDate, setSelectedStartDate] = useState('1')
     const [selectedStartHour, setSelectedStartHour] = useState('0')
     const [selectedStartMin, setSelectedStartMin] = useState('0')
     const [selectedEndHour, setSelectedEndHour] = useState('0')
@@ -57,6 +57,7 @@ export function CastAttendAddEditor({
         const startTime = dayjs()
             .year(selectedYear)
             .month(selectedMonth)
+            .date(parseInt(selectedStartDate))
             .hour(parseInt(selectedStartHour))
             .minute(parseInt(selectedStartMin))
         let endTime = startTime.hour(parseInt(selectedEndHour)).minute(parseInt(selectedEndMin))
@@ -87,6 +88,7 @@ export function CastAttendAddEditor({
         selectedEndHour,
         selectedEndMin,
         selectedMonth,
+        selectedStartDate,
         selectedStartHour,
         selectedStartMin,
         selectedStore,
@@ -122,8 +124,8 @@ export function CastAttendAddEditor({
                                 <Input
                                     sx={{ width: '100px' }}
                                     type="number"
-                                    value={selectedStartDay}
-                                    onChange={(event) => setSelectedStartDay(event.target.value)}
+                                    value={selectedStartDate}
+                                    onChange={(event) => setSelectedStartDate(event.target.value)}
                                 />
                                 <Box marginLeft={1}>日</Box>
                                 <Input
@@ -187,6 +189,9 @@ export function CastAttendAddEditor({
                 </Button>
                 <Button variant="outline" onClick={() => onSetTimes('19:00', '23:00')}>
                     カフェ店舗遅番休日
+                </Button>
+                <Button variant="outline" onClick={() => onSetTimes('15:00', '23:00')}>
+                    カフェ店舗通し休日
                 </Button>
                 <Button variant="outline" onClick={() => onSetTimes('18:00', '23:00')}>
                     バー店舗早番

@@ -10,8 +10,8 @@ export function CastAttendEditBox({
     attendData: AttendDataDetails
     onDelete: (attendData: AttendDataDetails) => void
 }) {
-    const attendStartDate = useMemo(() => dayjs(attendData.startTime).format('DD日 HH:MM'), [attendData.startTime])
-    const attendEndDate = useMemo(() => dayjs(attendData.endTime).format('DD日 HH:MM'), [attendData.endTime])
+    const attendStartDate = useMemo(() => dayjs(attendData.startTime).format('DD日 HH:mm'), [attendData.startTime])
+    const attendEndDate = useMemo(() => dayjs(attendData.endTime).format('DD日 HH:mm'), [attendData.endTime])
 
     return (
         <Flex sx={{ alignItems: 'center' }}>
