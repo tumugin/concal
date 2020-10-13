@@ -46,7 +46,7 @@ export function NavBar() {
                 )}
             </Flex>
             {isAdminUser && (
-                <AdminMenu px={2} py={1} bg="muted">
+                <AdminMenu px={3} py={1} bg="muted">
                     <AdminMenuText p={2} fontWeight="bold">
                         管理者メニュー
                     </AdminMenuText>
