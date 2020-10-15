@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 use Webmozart\Assert\Assert;
 
@@ -21,6 +22,8 @@ use Webmozart\Assert\Assert;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\StoreGroup whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\StoreGroup whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Store[] $stores
+ * @property-read int|null $stores_count
  */
 class StoreGroup extends Model
 {
@@ -40,6 +43,11 @@ class StoreGroup extends Model
     public function getUserAttributes(): array
     {
         return $this->getAdminAttributes();
+    }
+
+    public function stores(): HasMany
+    {
+        return $this->hasMany(Store::class);
     }
 
     /**

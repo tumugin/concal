@@ -69,9 +69,11 @@
             "@php artisan serve --port=9000"
         ],
         "server:roadrunner:dev": [
+            "composer dump-autoload",
             "./rr serve -v -d"
         ],
         "server:roadrunner:prod": [
+            "composer dump-autoload",
             "./rr serve"
         ],
         "server:roadrunner:setup": [

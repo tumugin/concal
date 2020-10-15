@@ -17,36 +17,28 @@ import { CreateCast } from 'page/admin/casts/createCast'
 import { ManageCast } from 'page/admin/casts/manageCast'
 import { ManageBelongingStores } from 'page/admin/casts/manageBelongingStores'
 import { ManageAttends } from 'page/admin/casts/manageAttends'
-import { useStoreContext } from 'store/store'
 
 export default function PageRouter() {
-    const { store } = useStoreContext()
-    const isAdminUser = store.user?.self?.userPrivilege === 'admin'
-
     return (
         <BrowserRouter>
             <NavBar />
             <Switch>
                 <Route path="/" component={Top} exact />
                 <Route path="/login" component={Login} exact />
-                {isAdminUser && (
-                    <>
-                        <Route path="/admin/users" component={AdminUsers} exact />
-                        <Route path="/admin/users/new" component={CreateUser} exact />
-                        <Route path="/admin/users/:id" component={ManageUser} exact />
-                        <Route path="/admin/casts" component={AdminCasts} exact />
-                        <Route path="/admin/casts/new" component={CreateCast} exact />
-                        <Route path="/admin/casts/:id" component={ManageCast} exact />
-                        <Route path="/admin/casts/:id/stores" component={ManageBelongingStores} exact />
-                        <Route path="/admin/casts/:id/attends" component={ManageAttends} exact />
-                        <Route path="/admin/groups" component={AdminGroups} exact />
-                        <Route path="/admin/groups/new" component={CreateGroup} exact />
-                        <Route path="/admin/groups/:id" component={ManageGroup} exact />
-                        <Route path="/admin/groups/:id/new_store" component={CreateStore} exact />
-                        <Route path="/admin/stores" component={AdminStores} exact />
-                        <Route path="/admin/stores/:id" component={ManageStore} exact />
-                    </>
-                )}
+                <Route path="/admin/users" component={AdminUsers} exact />
+                <Route path="/admin/users/new" component={CreateUser} exact />
+                <Route path="/admin/users/:id" component={ManageUser} exact />
+                <Route path="/admin/casts" component={AdminCasts} exact />
+                <Route path="/admin/casts/new" component={CreateCast} exact />
+                <Route path="/admin/casts/:id" component={ManageCast} exact />
+                <Route path="/admin/casts/:id/stores" component={ManageBelongingStores} exact />
+                <Route path="/admin/casts/:id/attends" component={ManageAttends} exact />
+                <Route path="/admin/groups" component={AdminGroups} exact />
+                <Route path="/admin/groups/new" component={CreateGroup} exact />
+                <Route path="/admin/groups/:id" component={ManageGroup} exact />
+                <Route path="/admin/groups/:id/new_store" component={CreateStore} exact />
+                <Route path="/admin/stores" component={AdminStores} exact />
+                <Route path="/admin/stores/:id" component={ManageStore} exact />
             </Switch>
         </BrowserRouter>
     )
