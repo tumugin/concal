@@ -13,13 +13,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/login', 'Api\ApiAuthController@login');
+Route::post('/login', 'Api\AuthController@login');
 
 // user apis
 Route::group(['middleware' => ['auth:api']], function () {
-    Route::post('/token/revoke', 'Api\ApiAuthController@revokeTokens');
-    Route::get('/self', 'Api\ApiAuthController@userInfo');
+    Route::post('/token/revoke', 'Api\AuthController@revokeTokens');
+    Route::get('/self', 'Api\AuthController@userInfo');
 });
+Route::apiResource('top_contents', 'Api\TopContentsController')
+    ->only(['index']);
 
 // admin apis
 Route::group(['middleware' => ['auth:api', 'can:has-admin-privilege'], 'prefix' => 'admin'], function () {

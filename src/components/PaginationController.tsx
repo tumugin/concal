@@ -33,7 +33,7 @@ export function PaginationController({
                 <CurrentNumber px={2}>
                     {currentPage} / {totalPages}
                 </CurrentNumber>
-                <RoundContainer onClick={onNextPage} cursorPointer={canGoNext} bg={canGoBack ? 'gray' : 'muted'}>
+                <RoundContainer onClick={onNextPage} cursorPointer={canGoNext} bg={canGoNext ? 'gray' : 'muted'}>
                     {'>'}
                 </RoundContainer>
             </PaginationContainer>

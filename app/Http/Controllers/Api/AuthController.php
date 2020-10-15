@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Services\UserAuthService;
 use Illuminate\Http\Request;
 
-class ApiAuthController extends Controller
+class AuthController extends Controller
 {
     public function login(Request $request, UserAuthService $userAuthService)
     {
@@ -41,9 +41,9 @@ class ApiAuthController extends Controller
         ];
     }
 
-    public function userInfo()
+    public function userInfo(UserAuthService $userAuthService)
     {
-        $user = UserAuthService::getCurrentUser('api');
+        $user = $userAuthService->getCurrentUser('api');
         return [
             'success' => true,
             // 自分の情報なのでAdmin用のデータを返してしまう

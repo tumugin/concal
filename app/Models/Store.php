@@ -28,6 +28,9 @@ use Webmozart\Assert\Assert;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Store whereStoreName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Store whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Cast[] $casts
+ * @property-read int|null $casts_count
+ * @property-read \App\Models\StoreGroup $storeGroup
  */
 class Store extends Model
 {
@@ -40,8 +43,8 @@ class Store extends Model
                 'store_group_id',
                 'store_disabled',
             ])
-            ->mergeRecursive([
-                'cast_disbled' => $this->store_disabled === 1,
+            ->merge([
+                'store_disabled' => $this->store_disabled === 1,
             ])
             ->mapWithKeys(fn($value, string $key) => [
                 Str::camel($key) => $value
