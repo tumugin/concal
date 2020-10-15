@@ -1,0 +1,19 @@
+env:
+  APP_REFRESH: true
+http:
+  address: 0.0.0.0:9000
+  http2:
+    enabled: true
+    h2c: true
+    maxConcurrentStreams: 128
+  workers:
+    command: 'php ./vendor/bin/rr-worker'
+static:
+  dir: public
+reload:
+  interval: 1s
+  patterns: [ '.php' ]
+  services:
+    http:
+      dirs: [ '' ]
+      recursive: true
