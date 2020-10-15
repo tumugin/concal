@@ -78,6 +78,9 @@
         ],
         "server:roadrunner:setup": [
             "rr get-binary"
+        ],
+        "gen:docs": [
+            "php artisan ide-helper:models --write"
         ]
     }
 }
