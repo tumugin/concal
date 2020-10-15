@@ -10,24 +10,16 @@ class AdminUserController extends Controller
 {
     private const _PAGINATION_COUNT = 10;
 
-    public function index(Request $request)
+    public function index()
     {
-        $request->validate([
-            'page' => 'required|integer',
-        ]);
-        $page = (int)$request->get('page');
-        $userCount = User::count();
-        $users = User::all()
-            ->skip(self::_PAGINATION_COUNT * ($page - 1))
-            ->take(self::_PAGINATION_COUNT)
-            ->getIterator();
-        $users_result = collect($users)->map(function (User $user) {
+        $users = User::query()->paginate(self::_PAGINATION_COUNT);
+        $users_result = collect($users->items())->map(function (User $user) {
             return $user->getAdminAttributes();
         })->all();
         return [
             'success' => true,
             'users' => $users_result,
-            'pageCount' => ceil($userCount / self::_PAGINATION_COUNT),
+            'pageCount' => $users->lastPage(),
         ];
     }
 

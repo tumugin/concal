@@ -12,18 +12,10 @@ class AdminStoreController extends Controller
 {
     private const _PAGINATION_COUNT = 10;
 
-    public function index(Request $request)
+    public function index()
     {
-        $request->validate([
-            'page' => 'required|integer',
-        ]);
-        $page = (int)$request->get('page');
-        $store_count = Store::count();
-        $stores = Store::with('storeGroup')
-            ->skip(self::_PAGINATION_COUNT * ($page - 1))
-            ->take(self::_PAGINATION_COUNT)
-            ->get();
-        $stores_result = $stores->map(function (Store $store) {
+        $stores = Store::with('storeGroup')->paginate(self::_PAGINATION_COUNT);
+        $stores_result = collect($stores->items())->map(function (Store $store) {
             return collect($store->getAdminAttributes())
                 ->merge([
                     'storeGroup' => $store->storeGroup->getAdminAttributes()
@@ -32,7 +24,7 @@ class AdminStoreController extends Controller
         return [
             'success' => true,
             'stores' => $stores_result,
-            'pageCount' => ceil($store_count / self::_PAGINATION_COUNT),
+            'pageCount' => $stores->lastPage(),
         ];
     }
 
