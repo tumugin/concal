@@ -18,7 +18,7 @@ class TopContentsController extends Controller
                 ->merge([
                     'stores' => $item->stores->map(fn($store) => $store->getUserAttributes()),
                 ])
-            );;
+            );
         $recent_updated_attends = CastAttend::query()
             ->with('store')
             ->with('store.storeGroup')
