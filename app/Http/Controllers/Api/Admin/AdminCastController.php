@@ -11,18 +11,10 @@ class AdminCastController extends Controller
 {
     private const _PAGINATION_COUNT = 10;
 
-    public function index(Request $request)
+    public function index()
     {
-        $request->validate([
-            'page' => 'required|integer',
-        ]);
-        $page = (int)$request->get('page');
-        $casts_count = Cast::count();
-        $casts = Cast::with('stores')
-            ->skip(self::_PAGINATION_COUNT * ($page - 1))
-            ->take(self::_PAGINATION_COUNT)
-            ->get();
-        $casts_result = $casts->map(fn(Cast $cast) => collect($cast->getAdminAttributes())->merge(
+        $casts = Cast::with('stores')->paginate(self::_PAGINATION_COUNT);
+        $casts_result = collect($casts->items())->map(fn(Cast $cast) => collect($cast->getAdminAttributes())->merge(
             [
                 'stores' => $cast->stores->map(function (Store $store) {
                     return $store->getAdminAttributes();
@@ -32,7 +24,7 @@ class AdminCastController extends Controller
         return [
             'success' => true,
             'casts' => $casts_result,
-            'pageCount' => ceil($casts_count / self::_PAGINATION_COUNT),
+            'pageCount' => $casts->lastPage(),
         ];
     }
 

@@ -9,24 +9,16 @@ class AdminStoreGroupController
 {
     private const _PAGINATION_COUNT = 10;
 
-    public function index(Request $request)
+    public function index()
     {
-        $request->validate([
-            'page' => 'required|integer',
-        ]);
-        $page = (int)$request->get('page');
-        $store_groups_count = StoreGroup::count();
-        $store_groups = StoreGroup::all()
-            ->skip(self::_PAGINATION_COUNT * ($page - 1))
-            ->take(self::_PAGINATION_COUNT)
-            ->getIterator();
-        $store_groups = collect($store_groups)->map(function (StoreGroup $store_group) {
+        $store_groups = StoreGroup::query()->paginate(self::_PAGINATION_COUNT);
+        $mapped_store_groups = collect($store_groups->items())->map(function (StoreGroup $store_group) {
             return $store_group->getAdminAttributes();
         })->all();
         return [
             'success' => true,
-            'storeGroups' => $store_groups,
-            'pageCount' => ceil($store_groups_count / self::_PAGINATION_COUNT),
+            'storeGroups' => $mapped_store_groups,
+            'pageCount' => $store_groups->lastPage(),
         ];
     }
 
