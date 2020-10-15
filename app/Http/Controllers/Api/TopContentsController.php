@@ -7,14 +7,13 @@ use App\Models\StoreGroup;
 
 class TopContentsController extends Controller
 {
-    const _PAGENATION_PER = 10;
-
     public function index()
     {
         $store_groups = StoreGroup::query()
             ->with('stores')
-            ->paginate(self::_PAGENATION_PER);
-        $mapped_store_groups = collect($store_groups->items())
+            ->limit(10);
+        $mapped_store_groups = $store_groups
+            ->get()
             ->map(fn($item) => collect($item->getUserAttributes())
                 ->merge([
                     'stores' => $item->stores->map(fn($store) => $store->getUserAttributes())
@@ -24,7 +23,6 @@ class TopContentsController extends Controller
             'success' => true,
             'data' => [
                 'storeGroups' => $mapped_store_groups,
-                'nextPage' => $store_groups->hasMorePages() ? $store_groups->currentPage() + 1 : null,
             ]
         ];
     }
