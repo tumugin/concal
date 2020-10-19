@@ -8,7 +8,7 @@ export default function config(
     env: { [key: string]: string | undefined },
     argv: { [key: string]: string | undefined }
 ) {
-    const isProduction = argv.mode === 'import'
+    const isProduction = argv.mode === 'production'
     const styleLoader = isProduction ? MiniCssExtractPlugin.loader : 'style-loader'
     const sourceMapEnabled = !isProduction
     const config: webpack.Configuration = {
