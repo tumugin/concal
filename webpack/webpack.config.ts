@@ -20,9 +20,9 @@ export default function config(
                 name: 'frontend client',
             }) as unknown) as webpack.WebpackPluginInstance,
             // FIXME: 型エラーを直す
-            //(new ManifestPlugin({
-            //    fileName: path.resolve('storage/app/manifest.json'),
-            //}) as unknown) as webpack.WebpackPluginInstance,
+            (new ManifestPlugin({
+                fileName: path.resolve('storage/app/manifest.json'),
+            }) as unknown) as webpack.WebpackPluginInstance,
         ],
     }
     return config
