@@ -13,11 +13,12 @@ export default function config(
         ...base,
         plugins: [
             ...(base.plugins || []),
-            new WebpackBar({
+            // 型エラーを直す
+            (new WebpackBar({
                 color: '#7adad6',
                 profile: true,
                 name: 'frontend dev client',
-            }),
+            }) as unknown) as webpack.WebpackPluginInstance,
             new HtmlWebpackPlugin({
                 filename: 'index.html',
                 template: path.resolve('resources/html/template.html'),

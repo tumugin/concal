@@ -13,14 +13,16 @@ export default function config(
         ...base,
         plugins: [
             ...(base.plugins || []),
-            new WebpackBar({
+            // FIXME: 型エラーを直す
+            (new WebpackBar({
                 color: '#7adad6',
                 profile: true,
                 name: 'frontend client',
-            }),
-            new ManifestPlugin({
-                fileName: path.resolve('storage/app/manifest.json'),
-            }),
+            }) as unknown) as webpack.WebpackPluginInstance,
+            // FIXME: 型エラーを直す
+            //(new ManifestPlugin({
+            //    fileName: path.resolve('storage/app/manifest.json'),
+            //}) as unknown) as webpack.WebpackPluginInstance,
         ],
     }
     return config
