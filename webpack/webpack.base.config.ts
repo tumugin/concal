@@ -12,13 +12,16 @@ export default function config(
     const styleLoader = isProduction ? MiniCssExtractPlugin.loader : 'style-loader'
     const sourceMapEnabled = !isProduction
     const config: webpack.Configuration = {
+        // FIXME: webpack-dev-serverのバグを回避する為に強制的にtargetを切り替えている
+        // ref: https://github.com/webpack/webpack-dev-server/issues/2758
+        target: isProduction ? 'browserslist' : 'web',
         entry: {
             app: path.resolve('src/main.tsx'),
         },
         output: {
-            filename: 'assets/js/[name].[hash].bundle.js',
+            filename: 'assets/js/[name].[chunkhash].bundle.js',
             path: path.resolve('public/'),
-            chunkFilename: 'assets/js/[name].[hash].bundle.js',
+            chunkFilename: 'assets/js/[name].[chunkhash].bundle.js',
             publicPath: '/',
         },
         devtool: sourceMapEnabled && 'source-map',
@@ -33,14 +36,21 @@ export default function config(
                     },
                 },
             },
-            namedModules: true,
-            noEmitOnErrors: true,
         },
         resolve: {
             extensions: ['.js', '.json', '.ts', '.tsx'],
             modules: [path.resolve('src/'), 'node_modules'],
             alias: {
                 '@': path.resolve('src/'),
+            },
+            fallback: {
+                tty: false,
+                os: false,
+                stream: false,
+                crypto: false,
+                https: false,
+                http: false,
+                zlib: false,
             },
         },
         module: {
@@ -81,7 +91,7 @@ export default function config(
                         loader: 'url-loader',
                         options: {
                             limit: 10000,
-                            name: 'assets/img/[name].[hash:7].[ext]',
+                            name: 'assets/img/[name].[chunkhash:7].[ext]',
                         },
                     },
                 },
@@ -91,7 +101,7 @@ export default function config(
                         loader: 'url-loader',
                         options: {
                             limit: 10000,
-                            name: 'assets/media/[name].[hash:7].[ext]',
+                            name: 'assets/media/[name].[chunkhash:7].[ext]',
                         },
                     },
                 },
@@ -101,7 +111,7 @@ export default function config(
                         loader: 'url-loader',
                         options: {
                             limit: 10000,
-                            name: 'assets/fonts/[name].[hash:7].[ext]',
+                            name: 'assets/fonts/[name].[chunkhash:7].[ext]',
                         },
                     },
                 },
@@ -120,7 +130,10 @@ export default function config(
             ],
         },
         plugins: [
-            new MiniCssExtractPlugin({ filename: 'assets/css/common.[chunkhash].css' }),
+            // FIXME: 型エラーを直す
+            (new MiniCssExtractPlugin({
+                filename: 'assets/css/common.[chunkhash].css',
+            }) as unknown) as webpack.WebpackPluginInstance,
             new ForkTsCheckerWebpackPlugin({
                 typescript: {
                     diagnosticOptions: {
