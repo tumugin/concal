@@ -12,6 +12,9 @@ export default function config(
     const styleLoader = isProduction ? MiniCssExtractPlugin.loader : 'style-loader'
     const sourceMapEnabled = !isProduction
     const config: webpack.Configuration = {
+        // FIXME: webpack-dev-serverのバグを回避する為に強制的にtargetを切り替えている
+        // ref: https://github.com/webpack/webpack-dev-server/issues/2758
+        target: isProduction ? 'browserslist' : 'web',
         entry: {
             app: path.resolve('src/main.tsx'),
         },
