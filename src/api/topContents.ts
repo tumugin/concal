@@ -1,10 +1,20 @@
 import { UserCast, UserCastAttend, UserStore, UserStoreGroup } from 'api/types'
 import Axios from 'axios'
 
+export interface TopContentsStoreGroup extends UserStoreGroup {
+    stores: UserStore[]
+}
+
+export interface TopContentsRecentUpdatedAttends extends UserCastAttend {
+    cast: UserCast
+    store: UserStore
+    storeGroup: UserStoreGroup
+}
+
 interface TopContentsResponse {
     data: {
-        storeGroups: (UserStoreGroup & { stores: UserStore[] })[]
-        recentUpdatedAttends: (UserCastAttend & { cast: UserCast; store: UserStore; storeGroup: UserStoreGroup })[]
+        storeGroups: TopContentsStoreGroup[]
+        recentUpdatedAttends: TopContentsRecentUpdatedAttends[]
     }
 }
 
