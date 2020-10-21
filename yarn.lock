@@ -3461,7 +3461,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest@npm:*, @types/jest@npm:26.x, @types/jest@npm:^26.0.14":
+"@types/jest@npm:*, @types/jest@npm:26.x":
   version: 26.0.14
   resolution: "@types/jest@npm:26.0.14"
   dependencies:
@@ -3478,6 +3478,16 @@ __metadata:
     jest-diff: ^25.2.1
     pretty-format: ^25.2.1
   checksum: fe92624fd7b3b5358ffba8e59108b484de1d01df08dfc66bb597d59d09900db1950717adb8d42ce5f81ba615fa0b8de55fd5446808d92f75b45e08fcbe4cec6e
+  languageName: node
+  linkType: hard
+
+"@types/jest@npm:^26.0.15":
+  version: 26.0.15
+  resolution: "@types/jest@npm:26.0.15"
+  dependencies:
+    jest-diff: ^26.0.0
+    pretty-format: ^26.0.0
+  checksum: 42fe39d582de1d79f9d6b96f3dee43ba2e9336c9d1f0e31c4f2f58bbaa059c9f4295c42a213ea9450f91400515a3abde4aae2673522fc6e11ea33f7e21c25dbe
   languageName: node
   linkType: hard
 
@@ -3966,7 +3976,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/webpack@npm:*, @types/webpack@npm:^4.41.22, @types/webpack@npm:^4.41.8":
+"@types/webpack@npm:*, @types/webpack@npm:^4.41.8":
   version: 4.41.22
   resolution: "@types/webpack@npm:4.41.22"
   dependencies:
@@ -3977,6 +3987,20 @@ __metadata:
     "@types/webpack-sources": "*"
     source-map: ^0.6.0
   checksum: 6d71714711143d6fae23e85e1b22e47959710cf86117050a61ff9e6b41430c8ddd8491269ddfa35fc5ccf8ffe13ed2bf2151682d357dc5aa56e2a38e70de2dba
+  languageName: node
+  linkType: hard
+
+"@types/webpack@npm:^4.41.23":
+  version: 4.41.23
+  resolution: "@types/webpack@npm:4.41.23"
+  dependencies:
+    "@types/anymatch": "*"
+    "@types/node": "*"
+    "@types/tapable": "*"
+    "@types/uglify-js": "*"
+    "@types/webpack-sources": "*"
+    source-map: ^0.6.0
+  checksum: 6ac67beaa88bc23e86c760958669d2739b643b13d624658820f3cdbcab83a9d34a9949faea75de73edcf4df78f9a8480885848ed7e4c82789d2a5bb94fc9478b
   languageName: node
   linkType: hard
 
@@ -7053,7 +7077,7 @@ __metadata:
     "@theme-ui/presets": ^0.3.0
     "@types/generate-password": ^1.5.1
     "@types/html-webpack-plugin": ^3.2.3
-    "@types/jest": ^26.0.14
+    "@types/jest": ^26.0.15
     "@types/mini-css-extract-plugin": ^1.0.0
     "@types/puppeteer": ^3.0.2
     "@types/react": ^16.9.53
@@ -7065,7 +7089,7 @@ __metadata:
     "@types/storybook__addon-storyshots": ^5.3.1
     "@types/styled-components": ^5.1.4
     "@types/toastr": ^2.1.38
-    "@types/webpack": ^4.41.22
+    "@types/webpack": ^4.41.23
     "@types/webpack-dev-server": ^3.11.0
     "@types/webpack-manifest-plugin": ^2.1.0
     "@types/webpack-node-externals": ^2.5.0
@@ -7094,18 +7118,18 @@ __metadata:
     eslint-plugin-node: ^11.1.0
     eslint-plugin-prettier: ^3.1.4
     eslint-plugin-promise: ^4.2.1
-    eslint-plugin-react: ^7.21.4
-    eslint-plugin-react-hooks: ^4.1.2
+    eslint-plugin-react: ^7.21.5
+    eslint-plugin-react-hooks: ^4.2.0
     eslint-plugin-standard: ^4.0.1
     file-loader: ^6.1.1
-    firebase-tools: ^8.12.1
+    firebase-tools: ^8.13.0
     fork-ts-checker-webpack-plugin: ^5.2.0
     friendly-errors-webpack-plugin: ^1.7.0
     generate-password: ^1.5.1
     html-webpack-plugin: ^4.5.0
-    immer: ^7.0.9
+    immer: ^7.0.14
     jest: ^26.6.0
-    mini-css-extract-plugin: ^1.1.0
+    mini-css-extract-plugin: ^1.1.1
     node-notifier: ^8.0.0
     node-sass: ^4.14.1
     null-loader: ^4.0.1
@@ -7113,14 +7137,14 @@ __metadata:
     ora: ^5.1.0
     portfinder: ^1.0.28
     postcss: ^8.1.2
-    postcss-import: ^12.0.1
+    postcss-import: ^13.0.0
     postcss-loader: ^4.0.4
     postcss-url: ^8.0.0
     prettier: ^2.1.2
     puppeteer: ^5.3.1
     raw-loader: ^4.0.2
-    react: ^16.14.0
-    react-dom: ^16.14.0
+    react: ^17.0.0
+    react-dom: ^17.0.0
     react-router-dom: ^5.2.0
     react-table: ^7.6.0
     rebass: ^4.0.7
@@ -7135,7 +7159,7 @@ __metadata:
     thread-loader: ^3.0.0
     toastr: ^2.1.4
     ts-jest: ^26.4.1
-    ts-loader: ^8.0.5
+    ts-loader: ^8.0.6
     ts-node: ^9.0.0
     tslint: ^6.1.3
     tslint-config-prettier: ^1.18.0
@@ -9121,18 +9145,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-react-hooks@npm:^4.1.2":
-  version: 4.1.2
-  resolution: "eslint-plugin-react-hooks@npm:4.1.2"
+"eslint-plugin-react-hooks@npm:^4.2.0":
+  version: 4.2.0
+  resolution: "eslint-plugin-react-hooks@npm:4.2.0"
   peerDependencies:
     eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0
-  checksum: 252496dbaaafa6812fbd3aeaafac1192a1e35238172d8271eb370025b43604e10f04cecec3583da395358a3e6be3ace6958ec938102fe3c1b77caf30f1393c91
+  checksum: 5378d16b5a56431a7a77b56d61464dbbfa343e8607da87b851a6caee44b96e08847147321f5f38de30d20668418691d859f69d9c5262dfb5308856382252096c
   languageName: node
   linkType: hard
 
-"eslint-plugin-react@npm:^7.21.4":
-  version: 7.21.4
-  resolution: "eslint-plugin-react@npm:7.21.4"
+"eslint-plugin-react@npm:^7.21.5":
+  version: 7.21.5
+  resolution: "eslint-plugin-react@npm:7.21.5"
   dependencies:
     array-includes: ^3.1.1
     array.prototype.flatmap: ^1.2.3
@@ -9143,11 +9167,11 @@ __metadata:
     object.fromentries: ^2.0.2
     object.values: ^1.1.1
     prop-types: ^15.7.2
-    resolve: ^1.17.0
+    resolve: ^1.18.1
     string.prototype.matchall: ^4.0.2
   peerDependencies:
     eslint: ^3 || ^4 || ^5 || ^6 || ^7
-  checksum: 5335f0e7d6edffc261bb4d47d276bb59955d33895c36ffbb4c68781ecb1863dbca5ecf6087814d0fc76b4857c69d7bc3df62d7d7f480456e75b52abed15a7858
+  checksum: a7123f6feb287ad7e15d36b1c9fda8f78a0f0d39b9ee2d6479a5f0ad0effb8f60f639ef7449cecabb711095060e487f0950b69478b22768547b909c0de4f3afd
   languageName: node
   linkType: hard
 
@@ -9958,9 +9982,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"firebase-tools@npm:^8.12.1":
-  version: 8.12.1
-  resolution: "firebase-tools@npm:8.12.1"
+"firebase-tools@npm:^8.13.0":
+  version: 8.13.0
+  resolution: "firebase-tools@npm:8.13.0"
   dependencies:
     "@google-cloud/pubsub": ^1.7.0
     JSONStream: ^1.2.1
@@ -10016,7 +10040,7 @@ __metadata:
     ws: ^7.2.3
   bin:
     firebase: ./lib/bin/firebase.js
-  checksum: 8a6279eb41f105f433c04f8548dfec96466b47a4635d71640efe798e3fdbd84d8fc14783ed6ec50ec51c70705bbabafc613d5041672bfa49f1a786dab75581f5
+  checksum: 459dc9b0629fa38aceb1e55f6a58816f2ebc7a3d89cd12fb2b471b3059423bf4ee3bbf8a87ca7323f6b7b07512d80b54a45ebbdea420b4a8c14636cf346300d2
   languageName: node
   linkType: hard
 
@@ -11542,10 +11566,10 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"immer@npm:^7.0.9":
-  version: 7.0.9
-  resolution: "immer@npm:7.0.9"
-  checksum: 20fba3dabd033f9584eb1df9c16210b64c16a536a6376b0dedf153176554d89432ee86409458d8773edd142ddcae75f8e242b1952cd5b61c22767a4538880dd0
+"immer@npm:^7.0.14":
+  version: 7.0.14
+  resolution: "immer@npm:7.0.14"
+  checksum: 7385eff2776998475cc75455a9f23b2fd48ddff5328bbc325712cf0d31f17fade08497e3e64230367ef37f6ea67cfdfe96ec3f3486c7dbae747385b1f61278ef
   languageName: node
   linkType: hard
 
@@ -12670,7 +12694,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"jest-diff@npm:^26.6.0":
+"jest-diff@npm:^26.0.0, jest-diff@npm:^26.6.0":
   version: 26.6.0
   resolution: "jest-diff@npm:26.6.0"
   dependencies:
@@ -14693,16 +14717,16 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"mini-css-extract-plugin@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "mini-css-extract-plugin@npm:1.1.0"
+"mini-css-extract-plugin@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "mini-css-extract-plugin@npm:1.1.1"
   dependencies:
     loader-utils: ^2.0.0
     schema-utils: ^3.0.0
     webpack-sources: ^1.1.0
   peerDependencies:
     webpack: ^4.4.0 || ^5.0.0
-  checksum: 39be1e2815057ee1011a518b30169a9b4853368f789511ee66bb672fc5bf58482a88b4c5581165ea80afc0031a1995e900e7a769114c1a005219e78e59388995
+  checksum: 56fdb3145abaf35d99b2a772da9fbef96b6956169be2405976689777b54d396d37f90b44cd5a063c74f1dbe2f60bbd4db303f2db25d166bbc14cfd428f1d1a64
   languageName: node
   linkType: hard
 
@@ -16424,15 +16448,16 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"postcss-import@npm:^12.0.1":
-  version: 12.0.1
-  resolution: "postcss-import@npm:12.0.1"
+"postcss-import@npm:^13.0.0":
+  version: 13.0.0
+  resolution: "postcss-import@npm:13.0.0"
   dependencies:
-    postcss: ^7.0.1
-    postcss-value-parser: ^3.2.3
+    postcss-value-parser: ^4.0.0
     read-cache: ^1.0.0
     resolve: ^1.1.7
-  checksum: 4495dba0682e7d92b176bfbb4d8d0dee8292592fff46665d7c5275fdd23ad4351c2f0151c6ec4f47edbaaac4def5d0eb7ca82e123337bb091b00a18b4c813689
+  peerDependencies:
+    postcss: ^8.0.0
+  checksum: a91fead97fdd8b3d8ae116f31f9cb2680a786596421c3a711f0db956f32ebaf2ff233f08128d3d1c14eab82c4cf80e6f8448542810c3b76b2fb10ef0e558a9fa
   languageName: node
   linkType: hard
 
@@ -16826,14 +16851,14 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"postcss-value-parser@npm:^3.0.0, postcss-value-parser@npm:^3.2.3":
+"postcss-value-parser@npm:^3.0.0":
   version: 3.3.1
   resolution: "postcss-value-parser@npm:3.3.1"
   checksum: 834603f6bd822846cc20b1f95e648dea67353eb506898cc5fb540b32e9a956c1030754b9503270eb00c61c3734409d7ec94fba2b4f0a89954bc855bad7e9267c
   languageName: node
   linkType: hard
 
-"postcss-value-parser@npm:^4.0.2, postcss-value-parser@npm:^4.1.0":
+"postcss-value-parser@npm:^4.0.0, postcss-value-parser@npm:^4.0.2, postcss-value-parser@npm:^4.1.0":
   version: 4.1.0
   resolution: "postcss-value-parser@npm:4.1.0"
   checksum: 70831403886859289f650550a38889857022c5bbe264fd5d39cfad5207b3e1d33422edc031c1a922f3ae29d0dff98837a8bf126c840374d2b0079e7d57cf7d71
@@ -16933,7 +16958,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"pretty-format@npm:^26.4.0, pretty-format@npm:^26.6.0":
+"pretty-format@npm:^26.0.0, pretty-format@npm:^26.4.0, pretty-format@npm:^26.6.0":
   version: 26.6.0
   resolution: "pretty-format@npm:26.6.0"
   dependencies:
@@ -17437,7 +17462,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^16.14.0, react-dom@npm:^16.8.3":
+"react-dom@npm:^16.8.3":
   version: 16.14.0
   resolution: "react-dom@npm:16.14.0"
   dependencies:
@@ -17448,6 +17473,19 @@ fsevents@^1.2.7:
   peerDependencies:
     react: ^16.14.0
   checksum: a13558f0e7c6d1a98684214460bcd4b9005500015b5048fb1b0d2856786b8764dbc713e6b078a5b1a56e17866400e1d862183c7a0a513ae8351de11f6f6749d2
+  languageName: node
+  linkType: hard
+
+"react-dom@npm:^17.0.0":
+  version: 17.0.0
+  resolution: "react-dom@npm:17.0.0"
+  dependencies:
+    loose-envify: ^1.1.0
+    object-assign: ^4.1.1
+    scheduler: ^0.20.0
+  peerDependencies:
+    react: 17.0.0
+  checksum: 0c695ad4fc43d506e49199441806d84632ae714e21efbd1708cefa2fd2fc3a321b9b19e6f9d6fcf0277aa3d4998563821bb443107761ee58c36e419c95e6629d
   languageName: node
   linkType: hard
 
@@ -17680,7 +17718,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react@npm:^16.14.0, react@npm:^16.8.3":
+"react@npm:^16.8.3":
   version: 16.14.0
   resolution: "react@npm:16.14.0"
   dependencies:
@@ -17688,6 +17726,16 @@ fsevents@^1.2.7:
     object-assign: ^4.1.1
     prop-types: ^15.6.2
   checksum: 2769580b22952a52de3b5b2ea0f09cb904030b762d759739f49ab4da0b1f550e5c087ce3728c4be90f423d09481e0c075483c0c30b1ea9c549445c8b12020fd3
+  languageName: node
+  linkType: hard
+
+"react@npm:^17.0.0":
+  version: 17.0.0
+  resolution: "react@npm:17.0.0"
+  dependencies:
+    loose-envify: ^1.1.0
+    object-assign: ^4.1.1
+  checksum: 7dc305794dfcd4b7b20ba0a0e320b701544487fffb3dc64b31712c04989b36fc73fbe7e23b31913d811f5e7030385b468db2c25109608dd5402e5ff94dcbc68f
   languageName: node
   linkType: hard
 
@@ -18327,7 +18375,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"resolve@^1.1.6, resolve@^1.1.7, resolve@^1.10.0, resolve@^1.10.1, resolve@^1.12.0, resolve@^1.13.1, resolve@^1.17.0, resolve@^1.3.2, resolve@^1.9.0":
+"resolve@^1.1.6, resolve@^1.1.7, resolve@^1.10.0, resolve@^1.10.1, resolve@^1.12.0, resolve@^1.13.1, resolve@^1.17.0, resolve@^1.18.1, resolve@^1.3.2, resolve@^1.9.0":
   version: 1.18.1
   resolution: "resolve@npm:1.18.1"
   dependencies:
@@ -18337,7 +18385,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"resolve@patch:resolve@^1.1.6#builtin<compat/resolve>, resolve@patch:resolve@^1.1.7#builtin<compat/resolve>, resolve@patch:resolve@^1.10.0#builtin<compat/resolve>, resolve@patch:resolve@^1.10.1#builtin<compat/resolve>, resolve@patch:resolve@^1.12.0#builtin<compat/resolve>, resolve@patch:resolve@^1.13.1#builtin<compat/resolve>, resolve@patch:resolve@^1.17.0#builtin<compat/resolve>, resolve@patch:resolve@^1.3.2#builtin<compat/resolve>, resolve@patch:resolve@^1.9.0#builtin<compat/resolve>":
+"resolve@patch:resolve@^1.1.6#builtin<compat/resolve>, resolve@patch:resolve@^1.1.7#builtin<compat/resolve>, resolve@patch:resolve@^1.10.0#builtin<compat/resolve>, resolve@patch:resolve@^1.10.1#builtin<compat/resolve>, resolve@patch:resolve@^1.12.0#builtin<compat/resolve>, resolve@patch:resolve@^1.13.1#builtin<compat/resolve>, resolve@patch:resolve@^1.17.0#builtin<compat/resolve>, resolve@patch:resolve@^1.18.1#builtin<compat/resolve>, resolve@patch:resolve@^1.3.2#builtin<compat/resolve>, resolve@patch:resolve@^1.9.0#builtin<compat/resolve>":
   version: 1.18.1
   resolution: "resolve@patch:resolve@npm%3A1.18.1#builtin<compat/resolve>::version=1.18.1&hash=3388aa"
   dependencies:
@@ -18642,6 +18690,16 @@ fsevents@^1.2.7:
     loose-envify: ^1.1.0
     object-assign: ^4.1.1
   checksum: 804f990b9f370cca6d42b65f3cba2cc2bfed4973ee5623bed1ea36a6627842db8c891e2e5ac003f06f9ee892d1d3396921e27fa077346caf0213af05776e8dee
+  languageName: node
+  linkType: hard
+
+"scheduler@npm:^0.20.0":
+  version: 0.20.0
+  resolution: "scheduler@npm:0.20.0"
+  dependencies:
+    loose-envify: ^1.1.0
+    object-assign: ^4.1.1
+  checksum: 092f965d23704e280a79ac4919afbed96548228c58b338e9e6a6ba1e3e48a9ff3db059ac756b071d4112350d07bf3c58a3fe45d88ba44f4616b443f2ee2a4469
   languageName: node
   linkType: hard
 
@@ -20525,9 +20583,9 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"ts-loader@npm:^8.0.5":
-  version: 8.0.5
-  resolution: "ts-loader@npm:8.0.5"
+"ts-loader@npm:^8.0.6":
+  version: 8.0.6
+  resolution: "ts-loader@npm:8.0.6"
   dependencies:
     chalk: ^2.3.0
     enhanced-resolve: ^4.0.0
@@ -20536,7 +20594,7 @@ fsevents@^1.2.7:
     semver: ^6.0.0
   peerDependencies:
     typescript: "*"
-  checksum: 875ce9be26f5e08d43a468b2e578901ed8c987e8807092851dcb5be707bb3f23542946c9825abafea4111d26b39b7dc14b2c26adcb2bcbe06cddb017119af52f
+  checksum: c4721e9857c3d4e8faba811550592e07d702e47bb6116ba57432259dc1aa5792bf069caebd30d39c36e4bba1175b6e46bea75d10bf1d3df3dcbb242df0fc58fd
   languageName: node
   linkType: hard
 

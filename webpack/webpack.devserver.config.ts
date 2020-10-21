@@ -3,13 +3,14 @@ import * as webpack from 'webpack'
 import * as path from 'path'
 import WebpackBar from 'webpackbar'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
+import WebpackDevServer from 'webpack-dev-server'
 
 export default function config(
     env: { [key: string]: string | undefined },
     argv: { [key: string]: string | undefined }
 ) {
     const base = baseConfig(env, argv)
-    const config: webpack.Configuration = {
+    const config: webpack.Configuration & { devServer: WebpackDevServer.Configuration } = {
         ...base,
         plugins: [
             ...(base.plugins || []),
