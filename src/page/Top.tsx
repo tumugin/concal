@@ -5,7 +5,7 @@ import { PageWrapper } from 'components/PageWrapper'
 export function Top() {
     return (
         <PageWrapper>
-            <Heading>店舗グループ/店舗一覧</Heading>
+            <Heading>コンカフェカレンダーへようこそ</Heading>
         </PageWrapper>
     )
 }

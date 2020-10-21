@@ -22,11 +22,13 @@ class TopContentsController extends Controller
         $recent_updated_attends = CastAttend::query()
             ->with('store')
             ->with('store.storeGroup')
+            ->with('cast')
             ->orderByDesc('id')
             ->limit(10)
             ->get()
             ->map(fn($item) => collect($item->getUserAttributes())
                 ->merge([
+                    'cast' => $item->cast->getUserAttributes(),
                     'store' => $item->store->getUserAttributes(),
                     'storeGroup' => $item->store->storeGroup->getUserAttributes(),
                 ])
