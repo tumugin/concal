@@ -34,6 +34,7 @@ use Webmozart\Assert\Assert;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend whereStoreId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\Cast $cast
  */
 class CastAttend extends Model
 {
@@ -134,5 +135,13 @@ class CastAttend extends Model
     public function store(): BelongsTo
     {
         return $this->belongsTo(Store::class);
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function cast(): BelongsTo
+    {
+        return $this->belongsTo(Cast::class);
     }
 }

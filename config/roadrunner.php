@@ -87,7 +87,7 @@ return [
 
         Events\AfterLoopIterationEvent::class => [
             Listeners\ClearInstancesListener::class,
-            // Listeners\ResetDbConnectionsListener::class,
+            Listeners\ResetDbConnectionsListener::class,
             Listeners\RunGarbageCollectorListener::class,
         ],
 

@@ -1,9 +1,9 @@
-import { useStoreContext } from './store'
 import { login, selfInfo } from 'api/auth'
-import produce from 'immer'
 import { useCallback } from 'react'
 import { deleteLocalStorageToken, getLocalStorageToken, setLocalStorageToken } from 'storage/tokenStorage'
 import { LoginException } from 'api/error'
+import { GlobalDispatch, GlobalStore, StoreProvider } from 'store/store'
+import produce from 'immer'
 
 export interface UserStore {
     isLoggedIn: boolean
@@ -29,8 +29,20 @@ export function createUserStore(): UserStore {
 
 const emailRegex = /^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 
+export interface UserStoreReducers {
+    'user/SetSelfState': (global: GlobalStore, dispatch: GlobalDispatch, selfState: SelfState) => void
+}
+
+export function initializeUserStoreReducers() {
+    StoreProvider.addReducer('user/SetSelfState', (global, _, selfState: SelfState) => {
+        return produce(global, (draftState) => {
+            draftState.user.self = selfState
+        })
+    })
+}
+
 export function useUserLogin() {
-    const { setStore } = useStoreContext()
+    const [, setUser] = StoreProvider.useGlobal('user')
     const fetchUserInfo = useFetchUserInfo()
     return useCallback(
         async ({ userIdentifier, password }: { userIdentifier: string; password: string }) => {
@@ -40,21 +52,20 @@ export function useUserLogin() {
                 userName: email ? undefined : userIdentifier,
                 password,
             })
-            setStore((store) =>
-                produce(store, (draftStore) => {
-                    draftStore.user.isLoggedIn = true
-                    draftStore.user.apiToken = apiResult.apiToken
-                })
-            )
+            await setUser({
+                isLoggedIn: true,
+                apiToken: apiResult.apiToken,
+                self: null,
+            })
             setLocalStorageToken(apiResult.apiToken)
             await fetchUserInfo(apiResult.apiToken)
         },
-        [fetchUserInfo, setStore]
+        [fetchUserInfo, setUser]
     )
 }
 
 export function useSavedUserLogin() {
-    const { setStore } = useStoreContext()
+    const [, setUser] = StoreProvider.useGlobal('user')
     const fetchUserInfo = useFetchUserInfo()
     const logout = useUserLogout()
     return useCallback(async () => {
@@ -62,55 +73,53 @@ export function useSavedUserLogin() {
         if (currentToken === null) {
             return
         }
-        setStore((store) =>
-            produce(store, (draftStore) => {
-                draftStore.user.isLoggedIn = true
-                draftStore.user.apiToken = currentToken
-            })
-        )
+        await setUser({
+            isLoggedIn: true,
+            apiToken: currentToken,
+            self: null,
+        })
         try {
             await fetchUserInfo(currentToken)
         } catch (e) {
             if (e instanceof LoginException) {
                 // TODO: どうにかしてエラーを出す
-                logout()
+                await logout()
             } else {
                 throw e
             }
         }
-    }, [fetchUserInfo, logout, setStore])
+    }, [fetchUserInfo, logout, setUser])
 }
 
 export function useUserLogout() {
-    const { setStore } = useStoreContext()
-    return useCallback(() => {
-        setStore((store) =>
-            produce(store, (draftStore) => {
-                draftStore.user.self = null
-                draftStore.user.apiToken = null
-                draftStore.user.isLoggedIn = false
-            })
-        )
+    const [, setUser] = StoreProvider.useGlobal('user')
+    return useCallback(async () => {
+        await setUser({
+            isLoggedIn: false,
+            apiToken: null,
+            self: null,
+        })
         deleteLocalStorageToken()
-    }, [setStore])
+    }, [setUser])
 }
 
 export function useFetchUserInfo() {
-    const { setStore } = useStoreContext()
+    const dispatchSetSelfState = StoreProvider.useDispatch('user/SetSelfState')
     return useCallback(
         async (apiToken: string) => {
             const apiResult = await selfInfo({ apiToken })
-            setStore((store) =>
-                produce(store, (draftStore) => {
-                    draftStore.user.self = apiResult.info
-                })
-            )
+            await dispatchSetSelfState(apiResult.info)
         },
-        [setStore]
+        [dispatchSetSelfState]
     )
 }
 
 export function useApiToken() {
-    const { store } = useStoreContext()
-    return store.user.apiToken
+    const user = useUser()
+    return user.apiToken
+}
+
+export function useUser() {
+    const [user] = StoreProvider.useGlobal('user')
+    return user
 }

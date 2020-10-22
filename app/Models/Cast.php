@@ -56,8 +56,8 @@ class Cast extends Model
                 'cast_color',
                 'cast_disabled',
             ])
-            ->mergeRecursive([
-                'cast_disbled' => $this->cast_disabled === 1,
+            ->merge([
+                'cast_disabled' => $this->cast_disabled === 1,
             ])
             ->mapWithKeys(fn($value, string $key) => [
                 Str::camel($key) => $value

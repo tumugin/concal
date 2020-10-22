@@ -2,19 +2,18 @@ import { Box, Button, Flex, Text } from 'rebass/styled-components'
 import React, { useCallback } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
-import { useStoreContext } from 'store/store'
-import { useUserLogout } from 'store/user'
+import { useUser, useUserLogout } from 'store/user'
 
 export function NavBar() {
     const history = useHistory()
-    const { store } = useStoreContext()
     const logout = useUserLogout()
-    const isLoggedIn = store.user.isLoggedIn
-    const isAdminUser = store.user?.self?.userPrivilege === 'admin'
-    const userName = store.user?.self?.name
+    const user = useUser()
+    const isLoggedIn = user.isLoggedIn
+    const isAdminUser = user?.self?.userPrivilege === 'admin'
+    const userName = user?.self?.name
 
-    const onUserLogout = useCallback(() => {
-        logout()
+    const onUserLogout = useCallback(async () => {
+        await logout()
         history.push('/')
     }, [history, logout])
 
