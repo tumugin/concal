@@ -3,6 +3,7 @@ import { useCallback } from 'react'
 import { deleteLocalStorageToken, getLocalStorageToken, setLocalStorageToken } from 'storage/tokenStorage'
 import { LoginException } from 'api/error'
 import { GlobalDispatch, GlobalStore, StoreProvider } from 'store/store'
+import produce from 'immer'
 
 export interface UserStore {
     isLoggedIn: boolean
@@ -32,14 +33,13 @@ export interface UserStoreReducers {
     'user/SetSelfState': (global: GlobalStore, dispatch: GlobalDispatch, selfState: SelfState) => void
 }
 
-StoreProvider.addReducer('user/SetSelfState', (global, _, selfState: SelfState) => {
-    return {
-        user: {
-            ...global.user,
-            self: selfState,
-        },
-    }
-})
+export function initializeUserStoreReducers() {
+    StoreProvider.addReducer('user/SetSelfState', (global, _, selfState: SelfState) => {
+        return produce(global, (draftState) => {
+            draftState.user.self = selfState
+        })
+    })
+}
 
 export function useUserLogin() {
     const [, setUser] = StoreProvider.useGlobal('user')

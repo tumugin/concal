@@ -1,4 +1,4 @@
-import { createUserStore, UserStore, UserStoreReducers } from 'store/user'
+import { createUserStore, initializeUserStoreReducers, UserStore, UserStoreReducers } from 'store/user'
 import { createTopStore, TopStore } from 'store/top'
 import { createProvider } from 'reactn'
 import addReactNDevTools from 'reactn-devtools'
@@ -15,10 +15,16 @@ function createInitialStore(): GlobalStore {
     }
 }
 
+function initializeReducers() {
+    initializeUserStoreReducers()
+}
+
 export type StoreReducers = UserStoreReducers
 
 export type GlobalDispatch = unknown
 
 export const StoreProvider = createProvider<GlobalStore, StoreReducers>(createInitialStore())
+
+initializeReducers()
 
 addReactNDevTools(StoreProvider)
