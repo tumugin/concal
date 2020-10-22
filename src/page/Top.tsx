@@ -58,36 +58,39 @@ function TopContentsArea() {
                         gridGap: 3,
                     }}
                 >
-                    {top.storeGroups.map((group) => (
-                        <Box key={group.id}>
-                            <Heading as="h3" fontSize={3} marginBottom={3}>
-                                {group.groupName}
-                            </Heading>
-                            <Box
-                                sx={{
-                                    display: 'grid',
-                                    gridGap: 3,
-                                    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                                }}
-                            >
-                                {group.stores.map((store) => (
-                                    <Flex
-                                        key={store.id}
+                    {top.storeGroups.map(
+                        (group) =>
+                            group.stores.length > 0 && (
+                                <Box key={group.id}>
+                                    <Heading as="h3" fontSize={3} marginBottom={3}>
+                                        {group.groupName}
+                                    </Heading>
+                                    <Box
                                         sx={{
-                                            backgroundColor: 'muted',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            textAlign: 'center',
-                                            borderRadius: '6px',
+                                            display: 'grid',
+                                            gridGap: 3,
+                                            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
                                         }}
-                                        padding={3}
                                     >
-                                        {store.storeName}
-                                    </Flex>
-                                ))}
-                            </Box>
-                        </Box>
-                    ))}
+                                        {group.stores.map((store) => (
+                                            <Flex
+                                                key={store.id}
+                                                sx={{
+                                                    backgroundColor: 'muted',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    textAlign: 'center',
+                                                    borderRadius: '6px',
+                                                }}
+                                                padding={3}
+                                            >
+                                                {store.storeName}
+                                            </Flex>
+                                        ))}
+                                    </Box>
+                                </Box>
+                            )
+                    )}
                 </Box>
             </Box>
         </>
