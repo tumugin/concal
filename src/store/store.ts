@@ -1,18 +1,24 @@
-import { useState } from 'react'
-import constate from 'constate'
-import { createUserStore, UserStore } from 'store/user'
+import { createUserStore, UserStore, UserStoreReducers } from 'store/user'
+import { createTopStore, TopStore } from 'store/top'
+import { createProvider } from 'reactn'
+import addReactNDevTools from 'reactn-devtools'
 
-interface Store {
+export interface GlobalStore {
     user: UserStore
+    top: TopStore
 }
 
-function createInitialStore(): Store {
+function createInitialStore(): GlobalStore {
     return {
         user: createUserStore(),
+        top: createTopStore(),
     }
 }
 
-export const [StoreProvider, useStoreContext] = constate(() => {
-    const [store, setStore] = useState(createInitialStore())
-    return { store, setStore }
-})
+export type StoreReducers = UserStoreReducers
+
+export type GlobalDispatch = unknown
+
+export const StoreProvider = createProvider<GlobalStore, StoreReducers>(createInitialStore())
+
+addReactNDevTools(StoreProvider)

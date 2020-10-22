@@ -7104,7 +7104,6 @@ __metadata:
     babel-loader: ^8.1.0
     babel-plugin-styled-components: ^1.11.1
     chalk: ^4.1.0
-    constate: ^3.0.1
     copy-webpack-plugin: ^6.2.1
     css-loader: ^5.0.0
     cssnano: ^4.1.10
@@ -7147,7 +7146,10 @@ __metadata:
     react-dom: ^17.0.0
     react-router-dom: ^5.2.0
     react-table: ^7.6.0
+    reactn: ^2.2.7
+    reactn-devtools: ^1.1.0
     rebass: ^4.0.7
+    redux: ^4.0.5
     rimraf: ^3.0.2
     sass-loader: ^10.0.3
     semver: ^7.3.2
@@ -7264,15 +7266,6 @@ __metadata:
   version: 1.0.0
   resolution: "constants-browserify@npm:1.0.0"
   checksum: 108cd8ebfaf3c7fa77c443ca89ec63e41411e341d8b066b1c68d992598f1b75891fbd5370d67a1929a7813be71605884c40c107c1e760d12ebcedf49d31b0c44
-  languageName: node
-  linkType: hard
-
-"constate@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "constate@npm:3.0.1"
-  peerDependencies:
-    react: ^16.8.0
-  checksum: 480bb42eacbd399915812d824fe7747404986d0916498e6dc30d9ce53561ddb15221ed190c4d947e1b9f3712e3ee5a4884e62e5583ab1870a3992a598a6dce83
   languageName: node
   linkType: hard
 
@@ -17748,6 +17741,31 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"reactn-devtools@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "reactn-devtools@npm:1.1.0"
+  dependencies:
+    redux-devtools-extension: ^2.13.8
+  peerDependencies:
+    reactn: ^2.1.4
+    redux: ^4.0.0
+  checksum: bc5c8fc1514828c2e6392d1b5eb9b49b4623ebfc519e743e6da823eb7601c87ebd64ca1d9c520a0ad4eb4bcad27638a1cf99ddd35fe7dcca7d27e29d49172efa
+  languageName: node
+  linkType: hard
+
+"reactn@npm:^2.2.7":
+  version: 2.2.7
+  resolution: "reactn@npm:2.2.7"
+  dependencies:
+    use-force-update: ^1.0.5
+  peerDependencies:
+    "@types/react": ^16.8.0
+    react: "*"
+    react-dom: "*"
+  checksum: 5cc8f594f2c2b70d7eeed297c71e8bcd162ee11d421ded6f5cac14add6d8f64d320581a2e0bcc2ce51326fd8fe5bced86eabcbe970d7246ce2f58e16278c1275
+  languageName: node
+  linkType: hard
+
 "read-cache@npm:^1.0.0":
   version: 1.0.0
   resolution: "read-cache@npm:1.0.0"
@@ -17988,6 +18006,25 @@ fsevents@^1.2.7:
   version: 2.0.0
   resolution: "reduce-flatten@npm:2.0.0"
   checksum: 216ce860c78081b83f255cad4d032361677e4aea87dacecd387e62505e1e4a50dd947b3ce9166b70d8b9aaa45215c1b512c518b5384e5067ee7d29011da0efb4
+  languageName: node
+  linkType: hard
+
+"redux-devtools-extension@npm:^2.13.8":
+  version: 2.13.8
+  resolution: "redux-devtools-extension@npm:2.13.8"
+  peerDependencies:
+    redux: ^3.1.0 || ^4.0.0
+  checksum: 4375a0698238f658ca93e35209e488e2c493e1cbb449c52bbd4a6a0d118547bc38e0a0af594801cb3abe7d460508792f095614b54006bb7373e14515cd110a4f
+  languageName: node
+  linkType: hard
+
+"redux@npm:^4.0.5":
+  version: 4.0.5
+  resolution: "redux@npm:4.0.5"
+  dependencies:
+    loose-envify: ^1.4.0
+    symbol-observable: ^1.2.0
+  checksum: 112739c2fb83ae2e18335d942a883b3ee14ebada31ff3a7924511a1f38a4278a762f5823491f3eb5083492de601ed76cb2687295c7d5db9a6e098c2542cdc05b
   languageName: node
   linkType: hard
 
@@ -19959,6 +19996,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"symbol-observable@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "symbol-observable@npm:1.2.0"
+  checksum: 268834a1d4cba19d40f367e5c2755f612969c8418e43a3be17408e392802a667f8bb542893440d58a080a8ea8da05ea98e27e472b9f4ff6fbda78a21a1a41c53
+  languageName: node
+  linkType: hard
+
 "symbol-tree@npm:^3.2.4":
   version: 3.2.4
   resolution: "symbol-tree@npm:3.2.4"
@@ -21292,6 +21336,13 @@ typescript@^4.0.3:
   peerDependencies:
     react: ^16.8.0
   checksum: 7fe5dd89e5a06a8869779e329938a223e7ff26b80b679d1b578251f792aefbb816704573373582ea118e852d156467fc1c718afdf95efaf37723958fc2407690
+  languageName: node
+  linkType: hard
+
+"use-force-update@npm:^1.0.5":
+  version: 1.0.7
+  resolution: "use-force-update@npm:1.0.7"
+  checksum: 2146df593b0f6c7f460cc6ab75cc8f3769899072ae5d5b5f3e1444cb1076d397cab5bd16c766bbbe615db3b5b456b22039af63a600bd305fc3aa6698f445b852
   languageName: node
   linkType: hard
 
