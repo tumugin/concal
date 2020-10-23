@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
-import { Box, Flex, Heading, Text } from 'rebass/styled-components'
+import { Box, Heading } from 'rebass/styled-components'
 import { PageWrapper } from 'components/PageWrapper'
 import { useLoadTopContents, useTop } from 'store/top'
-import dayjs from 'dayjs'
+import { CastAttendInfoBox } from 'components/CastAttendInfoBox'
+import { GroupAndStoreList } from 'components/GroupAndStoreList'
 
 export function Top() {
     const top = useTop()
@@ -30,65 +31,12 @@ function TopContentsArea() {
                 marginY={3}
             >
                 {top.recentUpdatedAttends.map((attend) => (
-                    <Box
-                        key={attend.id}
-                        sx={{
-                            borderRadius: '4px',
-                            backgroundColor: 'muted',
-                            borderLeft: (t) => `8px solid ${t.colors.primary}`,
-                        }}
-                        padding={2}
-                        paddingLeft={3}
-                    >
-                        <Text fontSize={3} fontWeight="bold">
-                            {attend.cast.castName}
-                        </Text>
-                        <Text fontSize={2}>
-                            {dayjs(attend.startTime).format('MM/DD HH:mm')}～{dayjs(attend.endTime).format('HH:mm')}
-                        </Text>
-                        <Text>{attend.store.storeName}</Text>
-                    </Box>
+                    <CastAttendInfoBox key={attend.id} attend={attend} />
                 ))}
             </Box>
             <Heading marginTop={4}>グループ・店舗</Heading>
             <Box marginY={3}>
-                <Box
-                    sx={{
-                        display: 'grid',
-                        gridGap: 3,
-                    }}
-                >
-                    {top.storeGroups.map((group) => (
-                        <Box key={group.id}>
-                            <Heading as="h3" fontSize={3} marginBottom={3}>
-                                {group.groupName}
-                            </Heading>
-                            <Box
-                                sx={{
-                                    display: 'grid',
-                                    gridGap: 3,
-                                    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                                }}
-                            >
-                                {group.stores.map((store) => (
-                                    <Flex
-                                        key={store.id}
-                                        sx={{
-                                            backgroundColor: 'muted',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            textAlign: 'center',
-                                            borderRadius: '6px',
-                                        }}
-                                        padding={3}
-                                    >
-                                        {store.storeName}
-                                    </Flex>
-                                ))}
-                            </Box>
-                        </Box>
-                    ))}
-                </Box>
+                <GroupAndStoreList groups={top.storeGroups} />
             </Box>
         </>
     )
