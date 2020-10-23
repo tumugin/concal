@@ -12,6 +12,7 @@ export function StoreLinkBox({ store }: { store: UserStore }) {
                 justifyContent: 'center',
                 textAlign: 'center',
                 borderRadius: '6px',
+                height: '100%',
             }}
             padding={3}
         >
