@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react'
-import { Box, Heading } from 'rebass/styled-components'
+import { Box, Button, Flex, Heading } from 'rebass/styled-components'
 import { PageWrapper } from 'components/PageWrapper'
 import { useLoadTopContents, useTop } from 'store/top'
 import { CastAttendInfoBox } from 'components/CastAttendInfoBox'
 import { GroupAndStoreList } from 'components/GroupAndStoreList'
+import { Link } from 'react-router-dom'
+import styled from 'styled-components'
 
 export function Top() {
     const top = useTop()
@@ -20,24 +22,46 @@ export function Top() {
 function TopContentsArea() {
     const top = useTop()
     return (
-        <>
-            <Heading>最近更新された勤務情報</Heading>
-            <Box
-                sx={{
-                    display: 'grid',
-                    gridGap: 3,
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                }}
-                marginY={3}
-            >
-                {top.recentUpdatedAttends.map((attend) => (
-                    <CastAttendInfoBox key={attend.id} attend={attend} />
-                ))}
+        <Box
+            sx={{
+                display: 'grid',
+                gridGap: 4,
+            }}
+        >
+            <Box>
+                <Heading>グループ・店舗</Heading>
+                <Box marginY={3}>
+                    <GroupAndStoreList groups={top.storeGroups} />
+                </Box>
+                <Flex sx={{ justifyContent: 'center' }}>
+                    <StyledLink to="/groups">
+                        <Button marginTop={3} sx={{ width: '100%' }}>
+                            もっと見る
+                        </Button>
+                    </StyledLink>
+                </Flex>
             </Box>
-            <Heading marginTop={4}>グループ・店舗</Heading>
-            <Box marginY={3}>
-                <GroupAndStoreList groups={top.storeGroups} />
+            <Box>
+                <Heading>最近更新された勤務情報</Heading>
+                <Box
+                    sx={{
+                        display: 'grid',
+                        gridGap: 3,
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                    }}
+                    marginTop={3}
+                >
+                    {top.recentUpdatedAttends.map((attend) => (
+                        <CastAttendInfoBox key={attend.id} attend={attend} />
+                    ))}
+                </Box>
             </Box>
-        </>
+        </Box>
     )
 }
+
+const StyledLink = styled(Link)`
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+`
