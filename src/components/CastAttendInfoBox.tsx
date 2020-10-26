@@ -16,7 +16,7 @@ export function CastAttendInfoBox({ attend }: { attend: TopContentsRecentUpdated
                 sx={{
                     borderRadius: '4px',
                     backgroundColor: 'muted',
-                    borderLeft: (t) => `8px solid ${t.colors.primary}`,
+                    borderLeft: (t) => `8px solid ${attend.cast.castColor ?? t.colors.primary}`,
                 }}
                 padding={2}
                 paddingLeft={3}
