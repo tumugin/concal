@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Cast;
 use App\Models\Store;
 
-class StoresController extends Controller
+class StoreController extends Controller
 {
     private const _PAGINATION_COUNT = 10;
 
@@ -21,9 +21,11 @@ class StoresController extends Controller
         })->all();
         return [
             'success' => true,
-            'stores' => $stores_result,
-            'pageCount' => $stores->lastPage(),
-            'nextPage' => $stores->hasMorePages() ? $stores->currentPage() + 1 : null,
+            'data' => [
+                'stores' => $stores_result,
+                'pageCount' => $stores->lastPage(),
+                'nextPage' => $stores->hasMorePages() ? $stores->currentPage() + 1 : null,
+            ],
         ];
     }
 
@@ -40,7 +42,9 @@ class StoresController extends Controller
             );
         return [
             'success' => true,
-            'store' => $store_info,
+            'data' => [
+                'store' => $store_info,
+            ],
         ];
     }
 }

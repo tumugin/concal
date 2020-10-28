@@ -20,8 +20,10 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/token/revoke', 'Api\AuthController@revokeTokens');
     Route::get('/self', 'Api\AuthController@userInfo');
 });
-Route::apiResource('top_contents', 'Api\TopContentsController')
+Route::apiResource('top_contents', 'Api\TopContentController')
     ->only(['index']);
+Route::apiResource('store_groups', 'Api\StoreGroupController')
+    ->only(['index', 'show']);
 
 // admin apis
 Route::group(['middleware' => ['auth:api', 'can:has-admin-privilege'], 'prefix' => 'admin'], function () {

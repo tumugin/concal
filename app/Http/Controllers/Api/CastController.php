@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Cast;
 use App\Models\Store;
 
-class CastsController extends Controller
+class CastController extends Controller
 {
     private const _PAGINATION_COUNT = 10;
 
@@ -22,9 +22,11 @@ class CastsController extends Controller
         );
         return [
             'success' => true,
-            'casts' => $casts_result,
-            'pageCount' => $casts->lastPage(),
-            'nextPage' => $casts->hasMorePages() ? $casts->currentPage() + 1 : null,
+            'data' => [
+                'casts' => $casts_result,
+                'pageCount' => $casts->lastPage(),
+                'nextPage' => $casts->hasMorePages() ? $casts->currentPage() + 1 : null,
+            ],
         ];
     }
 
@@ -32,12 +34,14 @@ class CastsController extends Controller
     {
         return [
             'success' => true,
-            'cast' => collect($cast->getUserAttributes())->merge([
-                'stores' => $cast
-                    ->stores()
-                    ->get()
-                    ->map(fn(Store $store) => $store->getUserAttributes())
-            ]),
+            'data' => [
+                'cast' => collect($cast->getUserAttributes())->merge([
+                    'stores' => $cast
+                        ->stores()
+                        ->get()
+                        ->map(fn(Store $store) => $store->getUserAttributes())
+                ]),
+            ],
         ];
     }
 }
