@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CastAttend;
 use App\Models\StoreGroup;
 
-class TopContentsController extends Controller
+class TopContentController extends Controller
 {
     public function index()
     {
