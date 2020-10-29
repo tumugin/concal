@@ -9,12 +9,11 @@ class StoreGroupController extends Controller
 {
     public function index()
     {
-        $store_groups = collect(
+        $store_groups =
             StoreGroup::query()
                 ->with('stores')
-                ->paginate(10)
-                ->items()
-        )
+                ->paginate(10);
+        $mapped_store_groups = collect($store_groups->items())
             ->map(fn($item) => collect($item->getUserAttributes())
                 ->merge([
                     'stores' => $item->stores->map(fn($store) => $store->getUserAttributes()),
@@ -23,7 +22,7 @@ class StoreGroupController extends Controller
         return [
             'success' => true,
             'data' => [
-                'storeGroups' => $store_groups,
+                'storeGroups' => $mapped_store_groups,
                 'pageCount' => $store_groups->lastPage(),
                 'nextPage' => $store_groups->hasMorePages() ? $store_groups->currentPage() + 1 : null,
             ],

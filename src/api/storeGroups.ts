@@ -14,7 +14,7 @@ export interface StoreGroupsResponse {
 }
 
 export async function getStoreGroups({ page }: { page: number }) {
-    const result = await Axios.get<StoreGroupsResponse>('/api/top_contents', { params: { page } })
+    const result = await Axios.get<StoreGroupsResponse>('/api/store_groups', { params: { page } })
     return result.data
 }
 
@@ -26,6 +26,6 @@ export interface StoreGroupResponse {
 }
 
 export async function getStoreGroup({ id }: { page: number; id: number }) {
-    const result = await Axios.get<StoreGroupResponse>(`/api/top_contents/${id}`)
+    const result = await Axios.get<StoreGroupResponse>(`/api/store_groups/${id}`)
     return result.data
 }
