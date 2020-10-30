@@ -130,15 +130,6 @@ class Cast extends Model
         return $this->hasMany(CastAttend::class);
     }
 
-    public function recentCastAttend()
-    {
-        $now = DB::raw('NOW()');
-        return $this
-            ->castAttends()
-            ->where('end_time', '>', $now)
-            ->orderBy('end_time');
-    }
-
     public function storeCasts(): HasMany
     {
         return $this->hasMany(StoreCast::class);
