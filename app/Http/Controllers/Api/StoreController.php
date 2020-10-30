@@ -31,14 +31,14 @@ class StoreController extends Controller
 
     public function show(Store $store)
     {
-        $casts = $store->casts()->with('castAttends');
+        $casts = $store->casts()->with('recentCastAttend');
         $store_info = collect($store->getUserAttributes())
             ->merge(
                 [
                     'storeGroup' => $store->storeGroup()->first()->getUserAttributes(),
                     'casts' => $casts->get()->map(
                         function (Cast $cast) {
-                            $recent_cast_attend = $cast->recentCastAttend();
+                            $recent_cast_attend = $cast->recentCastAttend->first();
                             return collect($cast->getUserAttributes())->merge([
                                 'recentAttend' => $recent_cast_attend ? $recent_cast_attend->getUserAttributes() : null,
                             ]);
