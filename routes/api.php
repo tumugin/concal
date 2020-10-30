@@ -24,6 +24,8 @@ Route::apiResource('top_contents', 'Api\TopContentController')
     ->only(['index']);
 Route::apiResource('store_groups', 'Api\StoreGroupController')
     ->only(['index', 'show']);
+Route::apiResource('stores', 'Api\StoreController')
+    ->only(['index', 'show']);
 
 // admin apis
 Route::group(['middleware' => ['auth:api', 'can:has-admin-privilege'], 'prefix' => 'admin'], function () {
