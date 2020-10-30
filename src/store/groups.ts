@@ -1,5 +1,5 @@
 import { getStoreGroups, StoreGroup } from 'api/storeGroups'
-import { GlobalDispatch, GlobalStore, StoreProvider } from 'store/store'
+import { GlobalDispatch, GlobalStore, StoreProvider } from 'store'
 import produce from 'immer'
 import { useCallback } from 'react'
 

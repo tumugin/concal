@@ -1,5 +1,5 @@
 import { getTopContents, TopContentsRecentUpdatedAttends, TopContentsStoreGroup } from 'api/topContents'
-import { StoreProvider } from 'store/store'
+import { StoreProvider } from 'store'
 import { useCallback } from 'react'
 
 export interface TopStore {
