@@ -16,7 +16,12 @@ class TopContentController extends Controller
             ->get()
             ->map(fn($item) => collect($item->getUserAttributes())
                 ->merge([
-                    'stores' => $item->stores->map(fn($store) => $store->getUserAttributes()),
+                    'stores' => $item
+                        ->stores
+                        ->where('store_disabled', '!=', true)
+                        ->map(
+                            fn($store) => $store->getUserAttributes()
+                        ),
                 ])
             );
         $recent_updated_attends = CastAttend::query()

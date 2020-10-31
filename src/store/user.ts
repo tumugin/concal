@@ -2,7 +2,7 @@ import { login, selfInfo } from 'api/auth'
 import { useCallback } from 'react'
 import { deleteLocalStorageToken, getLocalStorageToken, setLocalStorageToken } from 'storage/tokenStorage'
 import { LoginException } from 'api/error'
-import { GlobalDispatch, GlobalStore, StoreProvider } from 'store/store'
+import { GlobalDispatch, GlobalStore, StoreProvider } from 'store'
 import produce from 'immer'
 
 export interface UserStore {

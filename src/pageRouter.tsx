@@ -18,6 +18,7 @@ import { ManageCast } from 'page/admin/casts/manageCast'
 import { ManageBelongingStores } from 'page/admin/casts/manageBelongingStores'
 import { ManageAttends } from 'page/admin/casts/manageAttends'
 import { Groups } from 'page/Groups'
+import { Store } from 'page/Stores'
 
 export default function PageRouter() {
     return (
@@ -26,6 +27,7 @@ export default function PageRouter() {
             <Switch>
                 <Route path="/" component={Top} exact />
                 <Route path="/groups" component={Groups} exact />
+                <Route path="/stores/:id" component={Store} exact />
                 <Route path="/login" component={Login} exact />
                 <Route path="/admin/users" component={AdminUsers} exact />
                 <Route path="/admin/users/new" component={CreateUser} exact />

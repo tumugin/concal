@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Cast;
 use App\Models\Store;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\DB;
 
 class StoreController extends Controller
 {
@@ -31,12 +33,23 @@ class StoreController extends Controller
 
     public function show(Store $store)
     {
+        $casts = $store->casts()->with('castAttends', function (HasMany $query) use ($store) {
+            $query
+                ->where('store_id', '=', $store->id)
+                ->where('end_time', '>', DB::raw('NOW()'))
+                ->orderBy('end_time');
+        });
         $store_info = collect($store->getUserAttributes())
             ->merge(
                 [
                     'storeGroup' => $store->storeGroup()->first()->getUserAttributes(),
-                    'casts' => $store->casts()->get()->map(
-                        fn(Cast $cast) => $cast->getUserAttributes()
+                    'casts' => $casts->get()->map(
+                        function (Cast $cast) {
+                            $recent_cast_attend = $cast->castAttends->first();
+                            return collect($cast->getUserAttributes())->merge([
+                                'recentAttend' => $recent_cast_attend ? $recent_cast_attend->getUserAttributes() : null,
+                            ]);
+                        }
                     )
                 ]
             );

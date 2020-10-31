@@ -1,34 +1,42 @@
-import { createUserStore, initializeUserStoreReducers, UserStore, UserStoreReducers } from 'store/user'
-import { createTopStore, TopStore } from 'store/top'
-import { createProvider } from 'reactn'
-import addReactNDevTools from 'reactn-devtools'
-import { createGroupsStore, GroupsStore, GroupStoreReducers, initializeGroupStoreReducers } from 'store/groups'
+import { getStore, Store } from 'api/store'
+import { GlobalDispatch, GlobalStore, StoreProvider } from 'store/index'
+import { useCallback } from 'react'
+import produce from 'immer'
 
-export interface GlobalStore {
-    user: UserStore
-    top: TopStore
-    groups: GroupsStore
-}
-
-function createInitialStore(): GlobalStore {
-    return {
-        user: createUserStore(),
-        top: createTopStore(),
-        groups: createGroupsStore(),
+export interface StoreStore {
+    stores: {
+        [storeId: number]: Store | undefined
     }
 }
 
-function initializeReducers() {
-    initializeUserStoreReducers()
-    initializeGroupStoreReducers()
+export function createStoreStore() {
+    const store: StoreStore = {
+        stores: {},
+    }
+    return store
 }
 
-export type StoreReducers = UserStoreReducers & GroupStoreReducers
+export interface StoreStoreReducers {
+    'stores/setStore': (global: GlobalStore, dispatch: GlobalDispatch, store: Store) => void
+}
 
-export type GlobalDispatch = unknown
+export function initializeStoreStoreReducers() {
+    StoreProvider.addReducer('stores/setStore', (global, _, store: Store) => {
+        return produce(global, (draftState) => {
+            draftState.stores.stores[store.id] = store
+        })
+    })
+}
 
-export const StoreProvider = createProvider<GlobalStore, StoreReducers>(createInitialStore())
+export function useStore(storeId: number) {
+    const [stores] = StoreProvider.useGlobal('stores')
+    return stores.stores[storeId]
+}
 
-initializeReducers()
-
-addReactNDevTools(StoreProvider)
+export function useLoadStore(storeId: number) {
+    const dispatchStoresSetStore = StoreProvider.useDispatch('stores/setStore')
+    return useCallback(async () => {
+        const storeResponse = await getStore({ storeId })
+        await dispatchStoresSetStore(storeResponse.store)
+    }, [dispatchStoresSetStore, storeId])
+}

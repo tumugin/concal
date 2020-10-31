@@ -16,7 +16,12 @@ class StoreGroupController extends Controller
         $mapped_store_groups = collect($store_groups->items())
             ->map(fn($item) => collect($item->getUserAttributes())
                 ->merge([
-                    'stores' => $item->stores->map(fn($store) => $store->getUserAttributes()),
+                    'stores' => $item
+                        ->stores
+                        ->where('store_disabled', '!=', true)
+                        ->map(
+                            fn($store) => $store->getUserAttributes()
+                        ),
                 ])
             );
         return [
