@@ -27,7 +27,8 @@ class AdminCastAttendController extends Controller
             )
             ->whereBetween(
                 'end_time',
-                [$request->get('startTime'), $request->get('endTime')]
+                [$request->get('startTime'), $request->get('endTime')],
+                'or',
             )
             ->with('store')
             ->with('store.storeGroup')
