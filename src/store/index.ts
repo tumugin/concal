@@ -4,12 +4,19 @@ import { createProvider } from 'reactn'
 import addReactNDevTools from 'reactn-devtools'
 import { createGroupsStore, GroupsStore, GroupStoreReducers, initializeGroupStoreReducers } from 'store/groups'
 import { createStoreStore, initializeStoreStoreReducers, StoreStore, StoreStoreReducers } from 'store/store'
+import {
+    createStoreAttendsStore,
+    initializeStoreAttendsReducers,
+    StoreAttendsReducers,
+    StoreAttendsStore,
+} from 'store/storeAttends'
 
 export interface GlobalStore {
     user: UserStore
     top: TopStore
     groups: GroupsStore
     stores: StoreStore
+    storeAttends: StoreAttendsStore
 }
 
 function createInitialStore(): GlobalStore {
@@ -18,6 +25,7 @@ function createInitialStore(): GlobalStore {
         top: createTopStore(),
         groups: createGroupsStore(),
         stores: createStoreStore(),
+        storeAttends: createStoreAttendsStore(),
     }
 }
 
@@ -25,9 +33,10 @@ function initializeReducers() {
     initializeUserStoreReducers()
     initializeGroupStoreReducers()
     initializeStoreStoreReducers()
+    initializeStoreAttendsReducers()
 }
 
-export type StoreReducers = UserStoreReducers & GroupStoreReducers & StoreStoreReducers
+export type StoreReducers = UserStoreReducers & GroupStoreReducers & StoreStoreReducers & StoreAttendsReducers
 
 export type GlobalDispatch = unknown
 

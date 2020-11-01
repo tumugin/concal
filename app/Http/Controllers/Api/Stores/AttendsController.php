@@ -22,7 +22,8 @@ class AttendsController extends Controller
             )
             ->whereBetween(
                 'end_time',
-                [$request->get('startDate'), $request->get('endDate')]
+                [$request->get('startDate'), $request->get('endDate')],
+                'or',
             )
             ->with('cast')
             ->get();

@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom'
 import { useLoadStore, useStore } from 'store/store'
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { PageWrapper } from 'components/PageWrapper'
 import { Box, Heading } from 'rebass/styled-components'
 import { CastInfoBoxWithAttend } from 'components/CastInfoBoxWithAttend'
@@ -11,6 +11,18 @@ export function Store() {
     const parsedId = parseInt(id)
     const store = useStore(parsedId)
     const loadStore = useLoadStore(parsedId)
+    const todayAttendCasts = useMemo(
+        () =>
+            store?.casts.filter((cast) => {
+                if (!cast.recentAttend) {
+                    return false
+                }
+                const startTimeDayDiff = Math.abs(dayjs(cast.recentAttend.startTime).diff(dayjs(), 'day'))
+                const endTimeDayDiff = Math.abs(dayjs(cast.recentAttend.endTime).diff(dayjs(), 'day'))
+                return startTimeDayDiff === 0 || endTimeDayDiff === 0
+            }) ?? [],
+        [store]
+    )
 
     useEffect(() => {
         void loadStore()
@@ -19,15 +31,6 @@ export function Store() {
     if (!store) {
         return null
     }
-
-    const todayAttendCasts = store.casts.filter((cast) => {
-        if (!cast.recentAttend) {
-            return false
-        }
-        const startTimeDayDiff = Math.abs(dayjs(cast.recentAttend.startTime).diff(dayjs(), 'day'))
-        const endTimeDayDiff = Math.abs(dayjs(cast.recentAttend.endTime).diff(dayjs(), 'day'))
-        return startTimeDayDiff === 0 || endTimeDayDiff === 0
-    })
 
     return (
         <PageWrapper>
