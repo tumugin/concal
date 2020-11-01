@@ -1,8 +1,8 @@
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { useLoadStore, useStore } from 'store/store'
 import React, { useEffect, useMemo } from 'react'
 import { PageWrapper } from 'components/PageWrapper'
-import { Box, Heading } from 'rebass/styled-components'
+import { Box, Button, Heading } from 'rebass/styled-components'
 import { CastInfoBoxWithAttend } from 'components/CastInfoBoxWithAttend'
 import dayjs from 'dayjs'
 
@@ -37,6 +37,11 @@ export function Store() {
             <Heading>{store.storeName}</Heading>
             <Box fontSize={2} marginTop={1}>
                 {store.storeGroup.groupName}
+            </Box>
+            <Box marginTop={3}>
+                <Link to={`/stores/${id}/attends`}>
+                    <Button>この店舗の出勤カレンダーを表示</Button>
+                </Link>
             </Box>
             {todayAttendCasts.length > 0 && (
                 <>
