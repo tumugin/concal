@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Cast;
 use App\Models\Store;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\DB;
 
 class StoreController extends Controller
 {
@@ -36,7 +36,7 @@ class StoreController extends Controller
         $casts = $store->casts()->with('castAttends', function (HasMany $query) use ($store) {
             $query
                 ->where('store_id', '=', $store->id)
-                ->where('end_time', '>', DB::raw('NOW()'))
+                ->where('end_time', '>', Carbon::now())
                 ->orderBy('end_time');
         });
         $store_info = collect($store->getUserAttributes())

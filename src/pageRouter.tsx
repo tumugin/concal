@@ -18,7 +18,7 @@ import { ManageCast } from 'page/admin/casts/manageCast'
 import { ManageBelongingStores } from 'page/admin/casts/manageBelongingStores'
 import { ManageAttends } from 'page/admin/casts/manageAttends'
 import { Groups } from 'page/Groups'
-import { Store } from 'page/Stores'
+import { Store } from 'page/Stores/show'
 
 export default function PageRouter() {
     return (
