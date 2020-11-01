@@ -11,6 +11,7 @@ import startOfWeek from 'date-fns/startOfWeek'
 import getDay from 'date-fns/getDay'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import styled from 'styled-components'
+import ja from 'date-fns/locale/ja'
 
 export function StoreAttends() {
     const { id } = useParams<{ id: string }>()
@@ -37,13 +38,26 @@ export function StoreAttends() {
     )
 }
 
+function wrappedLocaleFunction(
+    date: Date | number,
+    ft: string,
+    options: {
+        weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6
+        firstWeekContainsDate?: number
+        useAdditionalWeekYearTokens?: boolean
+        useAdditionalDayOfYearTokens?: boolean
+    }
+) {
+    // どうしてこうなった.... オプションで指定させてくれ....
+    return format(date, ft, { ...options, locale: ja })
+}
+
 function CalenderArea() {
     const locales = {
-        'en-US': require('date-fns/locale/en-US'),
-        'ja-JP': require('date-fns/locale/ja'),
+        ja: ja,
     }
     const localizer = dateFnsLocalizer({
-        format,
+        format: wrappedLocaleFunction,
         parse,
         startOfWeek,
         getDay,
