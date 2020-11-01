@@ -1,17 +1,16 @@
 import { PageWrapper } from 'components/PageWrapper'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Box, Heading } from 'rebass/styled-components'
 import dayjs from 'dayjs'
 import { useParams } from 'react-router-dom'
 import { useLoadStoreAttends, useStoreAttends } from 'store/storeAttends'
-import { Calendar, dateFnsLocalizer } from 'react-big-calendar'
-import format from 'date-fns/format'
-import parse from 'date-fns/parse'
-import startOfWeek from 'date-fns/startOfWeek'
-import getDay from 'date-fns/getDay'
+import { Calendar } from 'react-big-calendar'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import styled from 'styled-components'
-import ja from 'date-fns/locale/ja'
+import { getCalendarLocalizer } from 'utils/calendar'
+import { StoreAttendData } from 'api/storeAttends'
+
+type YearMonth = { year: number; month: number }
 
 export function StoreAttends() {
     const { id } = useParams<{ id: string }>()
@@ -21,6 +20,11 @@ export function StoreAttends() {
 
     const loadStoreAttends = useLoadStoreAttends({ storeId, year, month })
     const storeAttends = useStoreAttends({ storeId, year, month })
+
+    const onYearMonthChange = useCallback((yearMonth: YearMonth) => {
+        setYear(yearMonth.year)
+        setMonth(yearMonth.month)
+    }, [])
 
     useEffect(() => {
         if (storeAttends === null) {
@@ -32,40 +36,38 @@ export function StoreAttends() {
         <PageWrapper>
             <Heading>店舗ごとの出勤一覧</Heading>
             <Box marginTop={3}>
-                <CalenderArea />
+                <CalenderArea attends={storeAttends ?? []} onYearMonthChange={onYearMonthChange} />
             </Box>
         </PageWrapper>
     )
 }
 
-function wrappedLocaleFunction(
-    date: Date | number,
-    ft: string,
-    options: {
-        weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6
-        firstWeekContainsDate?: number
-        useAdditionalWeekYearTokens?: boolean
-        useAdditionalDayOfYearTokens?: boolean
-    }
-) {
-    // どうしてこうなった.... オプションで指定させてくれ....
-    return format(date, ft, { ...options, locale: ja })
-}
-
-function CalenderArea() {
-    const locales = {
-        ja: ja,
-    }
-    const localizer = dateFnsLocalizer({
-        format: wrappedLocaleFunction,
-        parse,
-        startOfWeek,
-        getDay,
-        locales,
-    })
+function CalenderArea({
+    attends,
+    onYearMonthChange,
+}: {
+    attends: StoreAttendData[]
+    onYearMonthChange: (yearMonth: YearMonth) => void
+}) {
+    const localizer = getCalendarLocalizer()
+    const onNavigate = useCallback(
+        (newDate: Date) => {
+            onYearMonthChange({ year: newDate.getFullYear(), month: newDate.getMonth() + 1 })
+        },
+        [onYearMonthChange]
+    )
+    const events = useMemo(
+        () =>
+            attends.map((attend) => ({
+                title: attend.cast.castShortName ?? attend.cast.castName,
+                start: dayjs(attend.startTime).toDate(),
+                end: dayjs(attend.endTime).toDate(),
+            })),
+        [attends]
+    )
     return (
         <CalenderWrapper>
-            <Calendar localizer={localizer} events={[]} startAccessor="start" endAccessor="end" />
+            <Calendar localizer={localizer} events={events} onNavigate={onNavigate} />
         </CalenderWrapper>
     )
 }
