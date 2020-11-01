@@ -79,12 +79,18 @@ export function useStoreAttends({ storeId, year, month }: { storeId: number; yea
 export function useLoadStoreAttends({ storeId, year, month }: { storeId: number; year: number; month: number }) {
     const dispatchSetStoreAttendsOfMonth = StoreProvider.useDispatch('storeAttends/setStoreAttendsOfMonth')
     return useCallback(async () => {
-        const startDate = dayjs().year(year).month(month).date(1)
+        const startDate = dayjs()
+            .year(year)
+            .month(month - 1)
+            .date(1)
+            .hour(0)
+            .minute(0)
+            .second(0)
         const endDate = startDate.add(startDate.daysInMonth(), 'day')
         const result = await getStoreAttend({
             storeId,
-            startDate: startDate.format('YYYY-MM-DD'),
-            endDate: endDate.format('YYYY-MM-DD'),
+            startDate: startDate.toISOString(),
+            endDate: endDate.toISOString(),
         })
         await dispatchSetStoreAttendsOfMonth({ storeId, year, month, attends: result.data.attends })
     }, [dispatchSetStoreAttendsOfMonth, month, storeId, year])
