@@ -7137,6 +7137,7 @@ __metadata:
     copy-webpack-plugin: ^6.2.1
     css-loader: ^5.0.0
     cssnano: ^4.1.10
+    date-fns: ^2.16.1
     dayjs: ^1.9.3
     eslint: ^7.11.0
     eslint-config-prettier: ^6.13.0
@@ -7976,6 +7977,13 @@ __metadata:
   version: 4.1.0
   resolution: "date-arithmetic@npm:4.1.0"
   checksum: 4c3ed0125dec83033c720f9ac46bf956c1ba7d032aef5bd97411d120c6e2985006add94eaf37ba608ec23a0d57bd43e73d35fb5b0c9d485a0279d96b667c3ba5
+  languageName: node
+  linkType: hard
+
+"date-fns@npm:^2.16.1":
+  version: 2.16.1
+  resolution: "date-fns@npm:2.16.1"
+  checksum: fbe5d9aa1dc4c92c7cf9c0b31e58f532ac9fe059f85fc622641b1ac9c673150329620ea6bf941a8ba10e8e677aa0b6ccdc04ce001f81e70fd49acd1760edcba0
   languageName: node
   linkType: hard
 
