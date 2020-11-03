@@ -28,6 +28,10 @@ Route::apiResource('stores', 'Api\StoreController')
     ->only(['index', 'show']);
 Route::apiResource('stores.attends', 'Api\Stores\AttendsController')
     ->only(['index']);
+Route::apiResource('casts', 'Api\CastController')
+    ->only(['show']);
+Route::apiResource('casts.attends', 'Api\Casts\AttendsController')
+    ->only(['index']);
 
 // admin apis
 Route::group(['middleware' => ['auth:api', 'can:has-admin-privilege'], 'prefix' => 'admin'], function () {
