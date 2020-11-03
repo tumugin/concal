@@ -5,10 +5,11 @@ import dayjs from 'dayjs'
 import { useParams } from 'react-router-dom'
 import { useLoadStoreAttends, useStoreAttends } from 'store/storeAttends'
 import { Calendar } from 'react-big-calendar'
-import 'react-big-calendar/lib/css/react-big-calendar.css'
+import 'styles/react-big-calendar-dark.scss'
 import styled from 'styled-components'
 import { getCalendarLocalizer } from 'utils/calendar'
 import { StoreAttendData } from 'api/storeAttends'
+import { useLoadStore, useStore } from 'store/store'
 
 type YearMonth = { year: number; month: number }
 
@@ -20,6 +21,8 @@ export function StoreAttends() {
 
     const loadStoreAttends = useLoadStoreAttends({ storeId, year, month })
     const storeAttends = useStoreAttends({ storeId, year, month })
+    const store = useStore(storeId)
+    const loadStore = useLoadStore(storeId)
 
     const onYearMonthChange = useCallback((yearMonth: YearMonth) => {
         setYear(yearMonth.year)
@@ -27,14 +30,21 @@ export function StoreAttends() {
     }, [])
 
     useEffect(() => {
-        if (storeAttends === null) {
+        if (!storeAttends) {
             void loadStoreAttends()
         }
-    }, [loadStoreAttends, storeAttends])
+        if (!store) {
+            void loadStore()
+        }
+    }, [loadStore, loadStoreAttends, store, storeAttends])
+
+    if (!store) {
+        return null
+    }
 
     return (
         <PageWrapper>
-            <Heading>店舗ごとの出勤一覧</Heading>
+            <Heading>{store.storeName}の出勤カレンダー</Heading>
             <Box marginTop={3}>
                 <CalenderArea attends={storeAttends ?? []} onYearMonthChange={onYearMonthChange} />
             </Box>
@@ -67,7 +77,7 @@ function CalenderArea({
     )
     return (
         <CalenderWrapper>
-            <Calendar localizer={localizer} events={events} onNavigate={onNavigate} />
+            <Calendar localizer={localizer} events={events} onNavigate={onNavigate} popup />
         </CalenderWrapper>
     )
 }

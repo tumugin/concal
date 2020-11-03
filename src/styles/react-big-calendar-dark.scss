@@ -1,0 +1,41 @@
+$out-of-range-color: lighten(#333, 40%);
+$out-of-range-bg-color: lighten(#333, 70%);
+
+$calendar-border: hsl(210, 50%, 60%);
+$cell-border: hsl(210, 50%, 60%);
+
+$border-color: rgb(187, 153, 255);
+
+$segment-width: percentage(1 / 7);
+
+$time-selection-color: white;
+$time-selection-bg-color: rgba(0, 0, 0, .50);
+$date-selection-bg-color: rgba(0, 0, 0, .10);
+
+
+$event-bg: #3174ad;
+$event-border: darken(#3174ad, 10%);
+$event-outline: #3b99fc;
+$event-color: #fff;
+$event-border-radius: 5px;
+$event-padding: 2px 5px;
+$event-zindex: 4;
+
+$btn-color: hsl(210, 50%, 96%);
+$btn-bg: hsl(230, 25%, 18%);
+$btn-border: hsl(210, 50%, 60%);
+
+$current-time-color: #74ad31;
+
+$rbc-css-prefix: rbc-i;
+
+$today-highlight-bg: rgba(0, 0, 0, .50);
+$out-of-range-bg-color: rgba(0, 0, 0, .20);
+
+@import 'node_modules/react-big-calendar/lib/sass/styles';
+
+.rbc-day-slot {
+    .rbc-time-slot {
+        border-top: none;
+    }
+}
