@@ -25,6 +25,7 @@ class AttendsController extends Controller
                 [$request->get('startDate'), $request->get('endDate')],
                 'or',
             )
+            ->where('store_id', '=', $store->id)
             ->with('cast')
             ->get();
         $mapped_attends = $attends->map(
