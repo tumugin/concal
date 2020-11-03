@@ -5,12 +5,10 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Cast;
 use App\Models\CastAttend;
-use App\Models\Store;
-use App\Models\StoreGroup;
 use App\Services\UserAuthService;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class AdminCastAttendController extends Controller
 {
@@ -21,14 +19,15 @@ class AdminCastAttendController extends Controller
             'endTime' => 'required|date',
         ]);
         $attends = CastAttend::whereCastId($cast->id)
-            ->whereBetween(
-                'start_time',
-                [$request->get('startTime'), $request->get('endTime')],
-            )
-            ->whereBetween(
-                'end_time',
-                [$request->get('startTime'), $request->get('endTime')],
-                'or',
+            ->where(
+                fn(Builder $query) => $query->whereBetween(
+                    'start_time',
+                    [$request->get('startTime'), $request->get('endTime')],
+                )->whereBetween(
+                    'end_time',
+                    [$request->get('startTime'), $request->get('endTime')],
+                    'or',
+                )
             )
             ->with('store')
             ->with('store.storeGroup')

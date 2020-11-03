@@ -33,12 +33,11 @@ class StoreController extends Controller
 
     public function show(Store $store)
     {
-        $casts = $store->casts()->with('castAttends', function (HasMany $query) use ($store) {
-            $query
-                ->where('store_id', '=', $store->id)
-                ->where('end_time', '>', Carbon::now())
-                ->orderBy('end_time');
-        });
+        $casts = $store->casts()->with('castAttends', fn(HasMany $query) => $query
+            ->where('store_id', '=', $store->id)
+            ->where('end_time', '>', Carbon::now())
+            ->orderBy('end_time')
+        );
         $store_info = collect($store->getUserAttributes())
             ->merge(
                 [
