@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Stores;
 use App\Http\Controllers\Controller;
 use App\Models\CastAttend;
 use App\Models\Store;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class AttendsController extends Controller
@@ -16,14 +17,15 @@ class AttendsController extends Controller
             'endDate' => 'required|date',
         ]);
         $attends = CastAttend::whereStoreId($store->id)
-            ->whereBetween(
-                'start_time',
-                [$request->get('startDate'), $request->get('endDate')],
-            )
-            ->whereBetween(
-                'end_time',
-                [$request->get('startDate'), $request->get('endDate')],
-                'or',
+            ->where(
+                fn(Builder $query) => $query->whereBetween(
+                    'start_time',
+                    [$request->get('startDate'), $request->get('endDate')],
+                )->whereBetween(
+                    'end_time',
+                    [$request->get('startDate'), $request->get('endDate')],
+                    'or',
+                )
             )
             ->where('store_id', '=', $store->id)
             ->with('cast')
