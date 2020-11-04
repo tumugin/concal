@@ -19,8 +19,8 @@ const GridWrapper = styled.div`
     display: grid;
     width: fit-content;
     grid-auto-flow: row;
-    grid-column-gap: 48px;
-    grid-row-gap: 16px;
+    grid-column-gap: ${({ theme }) => theme.space[4]}px;
+    grid-row-gap: ${({ theme }) => theme.space[3]}px;
     grid-template-columns: auto auto;
     align-items: center;
 `
