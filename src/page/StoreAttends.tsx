@@ -1,6 +1,6 @@
-import { PageWrapper } from 'components/PageWrapper'
+import { PageWrapperForCalendar, PageWrapperForCalendarHeader } from 'components/PageWrapper'
 import React, { useCallback, useEffect, useState } from 'react'
-import { Box, Heading } from 'rebass/styled-components'
+import { Heading } from 'rebass/styled-components'
 import dayjs from 'dayjs'
 import { useParams } from 'react-router-dom'
 import { useLoadStoreAttends, useStoreAttends } from 'store/storeAttends'
@@ -37,11 +37,13 @@ export function StoreAttends() {
     }
 
     return (
-        <PageWrapper>
-            <Heading>{store.storeName}の出勤カレンダー</Heading>
-            <Box marginTop={3}>
+        <>
+            <PageWrapperForCalendarHeader>
+                <Heading>{store.storeName}の出勤カレンダー</Heading>
+            </PageWrapperForCalendarHeader>
+            <PageWrapperForCalendar paddingTop={3}>
                 <CastAttendCalendar attends={storeAttends ?? []} onYearMonthChange={onYearMonthChange} />
-            </Box>
-        </PageWrapper>
+            </PageWrapperForCalendar>
+        </>
     )
 }
