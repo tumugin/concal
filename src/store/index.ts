@@ -10,6 +10,7 @@ import {
     StoreAttendsReducers,
     StoreAttendsStore,
 } from 'store/storeAttends'
+import { CastStore, CastStoreReducers, createCastStore, initializeCastStoreReducers } from 'store/cast'
 
 export interface GlobalStore {
     user: UserStore
@@ -17,6 +18,7 @@ export interface GlobalStore {
     groups: GroupsStore
     stores: StoreStore
     storeAttends: StoreAttendsStore
+    casts: CastStore
 }
 
 function createInitialStore(): GlobalStore {
@@ -26,6 +28,7 @@ function createInitialStore(): GlobalStore {
         groups: createGroupsStore(),
         stores: createStoreStore(),
         storeAttends: createStoreAttendsStore(),
+        casts: createCastStore(),
     }
 }
 
@@ -34,9 +37,14 @@ function initializeReducers() {
     initializeGroupStoreReducers()
     initializeStoreStoreReducers()
     initializeStoreAttendsReducers()
+    initializeCastStoreReducers()
 }
 
-export type StoreReducers = UserStoreReducers & GroupStoreReducers & StoreStoreReducers & StoreAttendsReducers
+export type StoreReducers = UserStoreReducers &
+    GroupStoreReducers &
+    StoreStoreReducers &
+    StoreAttendsReducers &
+    CastStoreReducers
 
 export type GlobalDispatch = unknown
 
