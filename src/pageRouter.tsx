@@ -20,6 +20,7 @@ import { ManageAttends } from 'page/admin/casts/manageAttends'
 import { Groups } from 'page/Groups'
 import { Store } from 'page/Stores/show'
 import { StoreAttends } from 'page/StoreAttends'
+import { Cast } from 'page/Casts/show'
 
 export default function PageRouter() {
     return (
@@ -30,6 +31,7 @@ export default function PageRouter() {
                 <Route path="/groups" component={Groups} exact />
                 <Route path="/stores/:id" component={Store} exact />
                 <Route path="/stores/:id/attends" component={StoreAttends} exact />
+                <Route path="/casts/:id" component={Cast} exact />
                 <Route path="/login" component={Login} exact />
                 <Route path="/admin/users" component={AdminUsers} exact />
                 <Route path="/admin/users/new" component={CreateUser} exact />

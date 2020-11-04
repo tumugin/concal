@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cast;
+use App\Models\CastAttend;
 use App\Models\Store;
+use Carbon\Carbon;
 
 class CastController extends Controller
 {
@@ -32,14 +34,31 @@ class CastController extends Controller
 
     public function show(Cast $cast)
     {
+        $recent_cast_attends = $cast->castAttends()
+            ->with('store')
+            ->where('end_time', '>', Carbon::now())
+            ->orderBy('end_time')
+            ->limit(10)
+            ->get();
+        $stores = $cast
+            ->stores()
+            ->with('storeGroup')
+            ->get();
         return [
             'success' => true,
             'data' => [
                 'cast' => collect($cast->getUserAttributes())->merge([
-                    'stores' => $cast
-                        ->stores()
-                        ->get()
-                        ->map(fn(Store $store) => $store->getUserAttributes())
+                    'stores' => $stores
+                        ->map(fn(Store $store) => collect($store->getUserAttributes())
+                            ->merge([
+                                'storeGroup' => $store->storeGroup->getUserAttributes()
+                            ])
+                        ),
+                    'recentAttends' => $recent_cast_attends->map(
+                        fn(CastAttend $attend) => collect($attend->getUserAttributes())->merge([
+                            'store' => $attend->store->getUserAttributes()
+                        ])
+                    ),
                 ]),
             ],
         ];
