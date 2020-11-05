@@ -5,6 +5,7 @@ import { PageWrapper } from 'components/PageWrapper'
 import { Box, Button, Heading } from 'rebass/styled-components'
 import { CastInfoBoxWithAttend } from 'components/CastInfoBoxWithAttend'
 import dayjs from 'dayjs'
+import { Grid250 } from 'components/Grid250'
 
 export function Store() {
     const { id } = useParams<{ id: string }>()
@@ -48,35 +49,21 @@ export function Store() {
                     <Heading as="h3" marginTop={3} fontSize={3}>
                         本日の出勤キャスト
                     </Heading>
-                    <Box
-                        sx={{
-                            display: 'grid',
-                            gridGap: 3,
-                            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                        }}
-                        marginTop={3}
-                    >
+                    <Grid250 marginTop={3}>
                         {todayAttendCasts.map((cast) => (
                             <CastInfoBoxWithAttend cast={cast} key={cast.id} />
                         ))}
-                    </Box>
+                    </Grid250>
                 </>
             )}
             <Heading as="h3" marginTop={3} fontSize={3}>
                 在籍キャスト
             </Heading>
-            <Box
-                sx={{
-                    display: 'grid',
-                    gridGap: 3,
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                }}
-                marginTop={3}
-            >
+            <Grid250 marginTop={3}>
                 {store.casts.map((cast) => (
                     <CastInfoBoxWithAttend cast={cast} key={cast.id} />
                 ))}
-            </Box>
+            </Grid250>
         </PageWrapper>
     )
 }

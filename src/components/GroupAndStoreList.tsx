@@ -4,6 +4,7 @@ import { StoreLinkBox } from 'components/StoreLinkBox'
 import React from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import { Grid250 } from 'components/Grid250'
 
 interface GroupWithStores extends UserStoreGroup {
     stores: UserStore[]
@@ -28,19 +29,13 @@ function GroupView({ group }: { group: GroupWithStores }) {
             <Heading as="h3" fontSize={3} marginBottom={3}>
                 {group.groupName}
             </Heading>
-            <Box
-                sx={{
-                    display: 'grid',
-                    gridGap: 3,
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                }}
-            >
+            <Grid250>
                 {group.stores.map((store) => (
                     <NoStyleLink key={store.id} to={`/stores/${store.id}`}>
                         <StoreLinkBox key={store.id} store={store} />
                     </NoStyleLink>
                 ))}
-            </Box>
+            </Grid250>
         </Box>
     )
 }

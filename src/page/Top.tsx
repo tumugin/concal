@@ -6,6 +6,7 @@ import { CastAttendInfoBox } from 'components/CastAttendInfoBox'
 import { GroupAndStoreList } from 'components/GroupAndStoreList'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { Grid250 } from 'components/Grid250'
 
 export function Top() {
     const top = useTop()
@@ -43,18 +44,11 @@ function TopContentsArea() {
             </Box>
             <Box>
                 <Heading>最近更新された勤務情報</Heading>
-                <Box
-                    sx={{
-                        display: 'grid',
-                        gridGap: 3,
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                    }}
-                    marginTop={3}
-                >
+                <Grid250 marginTop={3}>
                     {top.recentUpdatedAttends.map((attend) => (
                         <CastAttendInfoBox key={attend.id} attend={attend} />
                     ))}
-                </Box>
+                </Grid250>
             </Box>
         </Box>
     )
