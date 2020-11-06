@@ -3,6 +3,8 @@ import React, { useCallback } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { useUser, useUserLogout } from 'store/user'
+import { responsiveMobileMaxWidth } from 'styles/responsive'
+import Swal from 'sweetalert2'
 
 export function NavBar() {
     const history = useHistory()
@@ -13,8 +15,16 @@ export function NavBar() {
     const userName = user?.self?.name
 
     const onUserLogout = useCallback(async () => {
-        await logout()
-        history.push('/')
+        const dialogResult = await Swal.fire({
+            icon: 'question',
+            title: 'ログアウトしますか？',
+            showCancelButton: true,
+            showConfirmButton: true,
+        })
+        if (dialogResult.isConfirmed) {
+            await logout()
+            history.push('/')
+        }
     }, [history, logout])
 
     return (
@@ -34,14 +44,21 @@ export function NavBar() {
                     </Link>
                 )}
                 {isLoggedIn && (
-                    <Flex>
+                    <DesktopLoggedInHeader>
                         <SenpaiNameText mr={3}>
                             ようこそ<SenpaiName>{userName}</SenpaiName>センパイ!
                         </SenpaiNameText>
                         <Button variant="outline" mr={2} onClick={onUserLogout}>
                             ログアウト
                         </Button>
-                    </Flex>
+                    </DesktopLoggedInHeader>
+                )}
+                {isLoggedIn && (
+                    <MobileLoggedInHeader>
+                        <Button variant="outline" mr={2} onClick={onUserLogout}>
+                            @{userName}
+                        </Button>
+                    </MobileLoggedInHeader>
                 )}
             </Flex>
             {isAdminUser && (
@@ -66,6 +83,18 @@ export function NavBar() {
         </>
     )
 }
+
+const DesktopLoggedInHeader = styled(Flex)`
+    @media screen and (max-width: ${responsiveMobileMaxWidth}) {
+        display: none;
+    }
+`
+
+const MobileLoggedInHeader = styled(Flex)`
+    @media screen and (min-width: ${responsiveMobileMaxWidth}) {
+        display: none;
+    }
+`
 
 const SenpaiNameText = styled(Text)`
     display: flex;

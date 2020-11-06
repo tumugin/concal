@@ -42,7 +42,7 @@ class StoreController extends Controller
             ->merge(
                 [
                     'storeGroup' => $store->storeGroup()->first()->getUserAttributes(),
-                    'casts' => $casts->get()->map(
+                    'casts' => $casts->where('cast_disabled', '=', false)->get()->map(
                         function (Cast $cast) {
                             $recent_cast_attend = $cast->castAttends->first();
                             return collect($cast->getUserAttributes())->merge([

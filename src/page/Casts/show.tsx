@@ -10,6 +10,8 @@ import { AdminInfoGrid } from 'components/AdminInfoGrid'
 import { Link as RebassLink } from 'rebass/styled-components'
 import { CastColorBlock } from 'components/CastColorBlock'
 import { AttendInfoBox } from 'components/AttendInfoBox'
+import { Note } from 'components/Note'
+import { BootstrapLikeColors } from 'utils/bootstrapLike'
 
 export function Cast() {
     const { id } = useParams<{ id: string }>()
@@ -33,6 +35,7 @@ export function Cast() {
             <Heading as="h3" marginTop={3} marginBottom={3} fontSize={3}>
                 キャストプロフィール
             </Heading>
+            {cast.castDisabled && <Note color={BootstrapLikeColors.alert}>このキャストは既に卒業しています</Note>}
             <AdminInfoGrid
                 data={[
                     {

@@ -7,6 +7,7 @@ import { Note } from 'components/Note'
 import { useUserLogin } from 'store/user'
 import { LoginException } from 'api/error'
 import { useHistory } from 'react-router-dom'
+import { RebassRouterLink } from 'components/RebassRouterLink'
 
 export function Login() {
     const history = useHistory()
@@ -66,7 +67,14 @@ export function Login() {
                         onKeyPress={onKeyPressHandler}
                         disabled={isLoading}
                     />
-                    {isAuthFailed && <Note>パスワードもしくはユーザ名が違います。</Note>}
+                    <Box sx={{ textAlign: 'center' }} mt={2}>
+                        <RebassRouterLink to="/login">パスワードをわすれた(現在準備中)</RebassRouterLink>
+                    </Box>
+                    {isAuthFailed && (
+                        <Box mt={2}>
+                            <Note>パスワードもしくはユーザ名が違います。</Note>
+                        </Box>
+                    )}
                     <CenteringGrid mt={4}>
                         <Button variant="primary" mr={2} onClick={onLogin} disabled={isLoading}>
                             ログイン

@@ -6,6 +6,8 @@ import { Box, Button, Heading } from 'rebass/styled-components'
 import { CastInfoBoxWithAttend } from 'components/CastInfoBoxWithAttend'
 import dayjs from 'dayjs'
 import { Grid250 } from 'components/Grid250'
+import { Note } from 'components/Note'
+import { BootstrapLikeColors } from 'utils/bootstrapLike'
 
 export function Store() {
     const { id } = useParams<{ id: string }>()
@@ -39,6 +41,7 @@ export function Store() {
             <Box fontSize={2} marginTop={1}>
                 {store.storeGroup.groupName}
             </Box>
+            {store.storeDisabled && <Note color={BootstrapLikeColors.alert}>この店舗は既に閉店しています</Note>}
             <Box marginTop={3}>
                 <Link to={`/stores/${id}/attends`}>
                     <Button>この店舗の出勤カレンダーを表示</Button>

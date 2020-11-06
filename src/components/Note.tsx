@@ -1,7 +1,7 @@
 import { Box } from 'rebass/styled-components'
 import React from 'react'
 
-export function Note({ children, tight }: { children: React.ReactNode; tight?: boolean }) {
+export function Note({ children, tight, color }: { children: React.ReactNode; tight?: boolean; color?: string }) {
     return (
         <Box
             sx={{
@@ -12,7 +12,7 @@ export function Note({ children, tight }: { children: React.ReactNode; tight?: b
                 my: 3,
                 bg: 'muted',
                 borderRadius: 4,
-                borderLeft: (t) => `8px solid ${t.colors.primary}`,
+                borderLeft: (t) => `8px solid ${color ?? t.colors.primary}`,
             }}
             css={{ width: tight ? 'fit-content' : undefined }}
         >
