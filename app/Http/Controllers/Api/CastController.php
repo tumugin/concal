@@ -44,7 +44,7 @@ class CastController extends Controller
             ->get();
         $stores = $cast
             ->stores()
-            ->active
+            ->active()
             ->with('storeGroup')
             ->get();
         return [
