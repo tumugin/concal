@@ -5,20 +5,20 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\CastAttend;
 use App\Models\StoreGroup;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TopContentController extends Controller
 {
     public function index()
     {
         $store_groups = StoreGroup::query()
-            ->with('stores')
+            ->with('stores', fn(HasMany $builder) => $builder->active())
             ->limit(10)
             ->get()
             ->map(fn($item) => collect($item->getUserAttributes())
                 ->merge([
                     'stores' => $item
                         ->stores
-                        ->where('store_disabled', '!=', true)
                         ->map(
                             fn($store) => $store->getUserAttributes()
                         ),

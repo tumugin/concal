@@ -4,21 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\StoreGroup;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class StoreGroupController extends Controller
 {
     public function index()
     {
-        $store_groups =
-            StoreGroup::query()
-                ->with('stores')
-                ->paginate(10);
+        $store_groups = StoreGroup::query()
+            ->with('stores', fn(HasMany $builder) => $builder->active())
+            ->paginate(10);
         $mapped_store_groups = collect($store_groups->items())
             ->map(fn($item) => collect($item->getUserAttributes())
                 ->merge([
                     'stores' => $item
                         ->stores
-                        ->where('store_disabled', '!=', true)
                         ->map(
                             fn($store) => $store->getUserAttributes()
                         ),
@@ -45,7 +44,10 @@ class StoreGroupController extends Controller
             'success' => true,
             'data' => [
                 'storeGroup' => $group->getUserAttributes(),
-                'stores' => $group->stores->map(fn($store) => $store->getUserAttributes()),
+                'stores' => $group
+                    ->stores
+                    ->active()
+                    ->map(fn($store) => $store->getUserAttributes()),
             ],
         ];
     }

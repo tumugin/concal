@@ -14,7 +14,7 @@ class StoreController extends Controller
 
     public function index()
     {
-        $stores = Store::with('storeGroup')->paginate(self::_PAGINATION_COUNT);
+        $stores = Store::active()->with('storeGroup')->paginate(self::_PAGINATION_COUNT);
         $stores_result = collect($stores->items())->map(function (Store $store) {
             return collect($store->getUserAttributes())
                 ->merge([
@@ -33,7 +33,7 @@ class StoreController extends Controller
 
     public function show(Store $store)
     {
-        $casts = $store->casts()->with('castAttends', fn(HasMany $query) => $query
+        $casts = $store->casts()->active()->with('castAttends', fn(HasMany $query) => $query
             ->where('store_id', '=', $store->id)
             ->where('end_time', '>', Carbon::now())
             ->orderBy('end_time')
