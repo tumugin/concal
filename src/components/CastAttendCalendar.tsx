@@ -27,12 +27,27 @@ export function CastAttendCalendar({
                 title: attend.cast.castShortName ?? attend.cast.castName,
                 start: dayjs(attend.startTime).toDate(),
                 end: dayjs(attend.endTime).toDate(),
+                color: attend.cast.castColor,
             })),
         [attends]
     )
+    const eventStyleGetter = useCallback((event: typeof events[0]) => {
+        return {
+            style: {
+                backgroundColor: event.color ?? undefined,
+            },
+        }
+    }, [])
+
     return (
         <CalenderWrapper>
-            <Calendar localizer={localizer} events={events} onNavigate={onNavigate} popup />
+            <Calendar
+                localizer={localizer}
+                events={events}
+                onNavigate={onNavigate}
+                eventPropGetter={eventStyleGetter}
+                popup
+            />
         </CalenderWrapper>
     )
 }
