@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta property="og:title" content="{{ $title }}" />
+    <meta property="og:title" content="{{ $og_title }}" />
     <meta property="og:description" content="{{ $description }}" />
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:title" content="{{ $title }}" />

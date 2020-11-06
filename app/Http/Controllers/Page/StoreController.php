@@ -10,7 +10,7 @@ class StoreController extends Controller
     public function show(Store $store)
     {
         return SPAPageUtils::renderSPAPage([
-            'title' => "{$store->store_name} - コンカフェカレンダー",
+            'og_title' => "{$store->store_name} - コンカフェカレンダー",
         ]);
     }
 }

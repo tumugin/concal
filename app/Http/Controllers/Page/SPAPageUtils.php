@@ -14,6 +14,7 @@ class SPAPageUtils
             'app_js_path' => $manifest['app.js'],
             'vendor_js_path' => $manifest['vendor.js'],
             'title' => $options['title'] ?? 'コンカフェカレンダー',
+            'og_title' => $options['og_title'] ?? 'コンカフェカレンダー',
             'description' => $options['description'] ?? 'コンカフェカレンダーはキャストの出勤情報などが調べられるウェブサイトです',
         ]);
     }
