@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 
 class TopPageController extends Controller
 {
-    public function renderTopPage()
+    public function index()
     {
         return SPAPageUtils::renderSPAPage();
     }

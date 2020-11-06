@@ -13,4 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', '\App\Http\Controllers\Page\TopPageController@renderTopPage');
+Route::resource('/', '\App\Http\Controllers\Page\TopPageController')
+    ->only('index');
+Route::resource('stores', '\App\Http\Controllers\Page\StoreController')
+    ->only('show');
