@@ -53,7 +53,12 @@ export default function StoreAttends() {
                 <Heading>{store.storeName}の出勤カレンダー</Heading>
             </PageWrapperForCalendarHeader>
             <PageWrapperForCalendar paddingTop={3}>
-                <CastAttendCalendar attends={storeAttends ?? []} onYearMonthChange={onYearMonthChange} />
+                <CastAttendCalendar
+                    attends={storeAttends ?? []}
+                    onYearMonthChange={onYearMonthChange}
+                    year={year}
+                    month={month}
+                />
             </PageWrapperForCalendar>
         </>
     )
