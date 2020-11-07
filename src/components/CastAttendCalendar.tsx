@@ -6,6 +6,7 @@ import { Calendar } from 'react-big-calendar'
 import styled from 'styled-components'
 import { Box } from 'rebass/styled-components'
 import 'styles/react-big-calendar-dark.scss'
+import { responsiveMobileMaxWidth } from 'styles/responsive'
 
 export function CastAttendCalendar({
     attends,
@@ -54,4 +55,8 @@ export function CastAttendCalendar({
 
 const CalenderWrapper = styled(Box)`
     height: calc(100vh - 300px);
+
+    @media screen and (max-width: ${responsiveMobileMaxWidth}) {
+        height: 110vh;
+    }
 `

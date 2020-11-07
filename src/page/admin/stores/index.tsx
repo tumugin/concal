@@ -6,6 +6,7 @@ import { getStores, StoreData } from 'api/admin/store'
 import { AdminBasicTable } from 'components/AdminBasicTable'
 import { PaginationController } from 'components/PaginationController'
 import { Link } from 'react-router-dom'
+import { Badge } from 'components/Badge'
 
 export function AdminStores() {
     const apiToken = useApiToken()
@@ -17,6 +18,7 @@ export function AdminStores() {
         id: item.id,
         storeName: item.storeName,
         storeGroupName: item.storeGroup.groupName,
+        storeStatus: item.storeDisabled ? <Badge type="danger">閉店中</Badge> : <Badge type="success">開店中</Badge>,
     }))
 
     const createOperationNode = (item: { id: number }) => {
@@ -53,6 +55,10 @@ export function AdminStores() {
                             Header: '店舗グループ',
                             accessor: 'storeGroupName',
                             width: 250,
+                        },
+                        {
+                            Header: '店舗状態',
+                            accessor: 'storeStatus',
                         },
                     ]}
                     data={mappedStoreData}
