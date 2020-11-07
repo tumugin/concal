@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Page\Admin;
+namespace App\Http\Controllers\Page\Admin\Casts;
 
 use App\Http\Controllers\Page\SPAPageUtils;
 use App\Models\Cast;
 
-class CastAttendController
+class StoreController
 {
     public function index(Cast $cast)
     {
