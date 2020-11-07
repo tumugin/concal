@@ -14,7 +14,7 @@ import styled from 'styled-components'
 import { unreachableCode } from 'types/util'
 import toastr from 'toastr'
 
-export function ManageAttends() {
+export default function ManageAttends() {
     const { id } = useParams<{ id: string }>()
     const castId = parseInt(id)
     const apiToken = useApiToken()

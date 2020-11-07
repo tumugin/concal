@@ -14,7 +14,7 @@ import { Note } from 'components/Note'
 import { BootstrapLikeColors } from 'utils/bootstrapLike'
 import { deleteStoreGroup, getStoreGroup, StoreGroupData, updateStoreGroup } from 'api/admin/storeGroup'
 
-export function ManageGroup() {
+export default function ManageGroup() {
     const history = useHistory()
     const apiToken = useApiToken()
     const [isLoading, setIsLoading] = useState(false)

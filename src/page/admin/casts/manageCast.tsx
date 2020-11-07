@@ -18,7 +18,7 @@ import { CastColorBlock } from 'components/CastColorBlock'
 import toastr from 'toastr'
 import { RebassRouterLink } from 'components/RebassRouterLink'
 
-export function ManageCast() {
+export default function ManageCast() {
     const history = useHistory()
     const { id } = useParams<{ id: string }>()
     const apiToken = useApiToken()

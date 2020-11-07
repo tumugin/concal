@@ -10,7 +10,7 @@ import { AdminInfoBox } from 'components/AdminInfoBox'
 import { Input, Label } from '@rebass/forms/styled-components'
 import { addStore } from 'api/admin/store'
 
-export function CreateStore() {
+export default function CreateStore() {
     const history = useHistory()
     const apiToken = useApiToken()
     const { id } = useParams<{ id: string }>()

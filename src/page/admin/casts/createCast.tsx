@@ -11,7 +11,7 @@ import { Input, Label } from '@rebass/forms/styled-components'
 import { Textarea } from '@rebass/forms'
 import { addCast } from 'api/admin/casts'
 
-export function CreateCast() {
+export default function CreateCast() {
     const history = useHistory()
     const apiToken = useApiToken()
     const [isLoading, setIsLoading] = useState(false)

@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import { AdminBasicTable } from 'components/AdminBasicTable'
 import { PaginationController } from 'components/PaginationController'
 
-export function AdminGroups() {
+export default function AdminGroups() {
     const apiToken = useApiToken()
     const [storeGroups, setStoreGroups] = useState<StoreGroupData[]>([])
     const [totalPages, setTotalPages] = useState(0)

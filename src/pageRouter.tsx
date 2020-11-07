@@ -1,20 +1,6 @@
 import React, { Suspense } from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { NavBar } from 'components/NavBar'
-import { AdminCasts } from 'page/admin/casts'
-import { AdminGroups } from 'page/admin/groups'
-import { AdminStores } from 'page/admin/stores'
-import { AdminUsers } from 'page/admin/users'
-import { CreateUser } from 'page/admin/users/createUser'
-import { ManageUser } from 'page/admin/users/manageUser'
-import { CreateGroup } from 'page/admin/groups/createGroup'
-import { ManageGroup } from 'page/admin/groups/manageGroup'
-import { CreateStore } from 'page/admin/groups/createStore'
-import { ManageStore } from 'page/admin/stores/manageStore'
-import { CreateCast } from 'page/admin/casts/createCast'
-import { ManageCast } from 'page/admin/casts/manageCast'
-import { ManageBelongingStores } from 'page/admin/casts/manageBelongingStores'
-import { ManageAttends } from 'page/admin/casts/manageAttends'
 import { useUser } from 'store/user'
 import { Forbidden } from 'page/Forbidden'
 
@@ -27,6 +13,20 @@ export default function PageRouter() {
     const StoreAttends = React.lazy(() => import('page/StoreAttends'))
     const Cast = React.lazy(() => import('page/Casts/show'))
     const Login = React.lazy(() => import('page/Login'))
+    const AdminCasts = React.lazy(() => import('page/admin/casts'))
+    const AdminGroups = React.lazy(() => import('page/admin/groups'))
+    const AdminStores = React.lazy(() => import('page/admin/stores'))
+    const AdminUsers = React.lazy(() => import('page/admin/users'))
+    const CreateUser = React.lazy(() => import('page/admin/users/createUser'))
+    const ManageUser = React.lazy(() => import('page/admin/users/manageUser'))
+    const CreateGroup = React.lazy(() => import('page/admin/groups/createGroup'))
+    const ManageGroup = React.lazy(() => import('page/admin/groups/manageGroup'))
+    const CreateStore = React.lazy(() => import('page/admin/groups/createStore'))
+    const ManageStore = React.lazy(() => import('page/admin/stores/manageStore'))
+    const CreateCast = React.lazy(() => import('page/admin/casts/createCast'))
+    const ManageCast = React.lazy(() => import('page/admin/casts/manageCast'))
+    const ManageBelongingStores = React.lazy(() => import('page/admin/casts/manageBelongingStores'))
+    const ManageAttends = React.lazy(() => import('page/admin/casts/manageAttends'))
 
     return (
         <BrowserRouter>
