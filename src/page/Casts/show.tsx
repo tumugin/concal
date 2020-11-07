@@ -13,7 +13,7 @@ import { AttendInfoBox } from 'components/AttendInfoBox'
 import { Note } from 'components/Note'
 import { BootstrapLikeColors } from 'utils/bootstrapLike'
 
-export function Cast() {
+export default function Cast() {
     const { id } = useParams<{ id: string }>()
     const parsedId = parseInt(id)
     const cast = useCast(parsedId)

@@ -9,7 +9,7 @@ import { LoginException } from 'api/error'
 import { useHistory } from 'react-router-dom'
 import { RebassRouterLink } from 'components/RebassRouterLink'
 
-export function Login() {
+export default function Login() {
     const history = useHistory()
     const [userIdentifier, setUserIdentifier] = useState('')
     const [password, setPassword] = useState('')

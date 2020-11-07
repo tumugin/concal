@@ -1,5 +1,5 @@
 import { getStoreGroups, StoreGroup } from 'api/storeGroups'
-import { GlobalDispatch, GlobalStore, StoreProvider } from 'store'
+import { GlobalDispatch, GlobalStore, StoreProvider, StoreProviderType } from 'store'
 import produce from 'immer'
 import { useCallback } from 'react'
 
@@ -31,13 +31,13 @@ export interface GroupStoreReducers {
     ) => void
 }
 
-export function initializeGroupStoreReducers() {
-    StoreProvider.addReducer('groups/setIsLoading', (global, _, isLoading: boolean) => {
+export function initializeGroupStoreReducers(provider: StoreProviderType) {
+    provider.addReducer('groups/setIsLoading', (global, _, isLoading: boolean) => {
         return produce(global, (draftState) => {
             draftState.groups.isLoading = isLoading
         })
     })
-    StoreProvider.addReducer(
+    provider.addReducer(
         'groups/appendStoreGroups',
         (global, _, { storeGroups, nextPage }: { storeGroups: StoreGroup[]; nextPage: number | null }) => {
             return produce(global, (draftState) => {

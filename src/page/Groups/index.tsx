@@ -4,14 +4,14 @@ import { PageWrapper } from 'components/PageWrapper'
 import { Box, Button, Flex, Heading } from 'rebass/styled-components'
 import { GroupAndStoreList } from 'components/GroupAndStoreList'
 
-export function Groups() {
+export default function Groups() {
     const groups = useGroups()
     const loadNextPage = useLoadNextPage()
     useEffect(() => {
-        if (!groups.initialPageLoaded) {
+        if (!groups.initialPageLoaded && !groups.isLoading) {
             void loadNextPage()
         }
-    }, [groups.initialPageLoaded, loadNextPage])
+    }, [groups.initialPageLoaded, groups.isLoading, loadNextPage])
 
     return (
         <PageWrapper>

@@ -6,8 +6,8 @@ import { deep } from '@theme-ui/presets'
 // @ts-ignore
 import preset from '@rebass/preset'
 import PageRouter from 'pageRouter'
-import { StoreProvider } from 'store'
-import React, { useEffect } from 'react'
+import { initializeStore, StoreProvider } from 'store'
+import React, { useEffect, useState } from 'react'
 import { Box } from 'rebass/styled-components'
 import { Normalize } from 'styled-normalize'
 import { useSavedUserLogin } from 'store/user'
@@ -24,9 +24,13 @@ export function App() {
 
 function AppWithStore() {
     const savedUserLogin = useSavedUserLogin()
+    const [loginCompleted, setLoginCompleted] = useState(false)
 
     useEffect(() => {
-        void savedUserLogin()
+        ;(async () => {
+            await savedUserLogin()
+            setLoginCompleted(true)
+        })()
     }, [savedUserLogin])
 
     return (
@@ -41,7 +45,7 @@ function AppWithStore() {
                         lineHeight: 'body',
                     }}
                 >
-                    <PageRouter />
+                    {loginCompleted && <PageRouter />}
                 </WrapperBox>
             </ThemeProvider>
         </>

@@ -7,7 +7,7 @@ import { useLoadStoreAttends, useStoreAttends } from 'store/storeAttends'
 import { useLoadStore, useStore } from 'store/store'
 import { CastAttendCalendar } from 'components/CastAttendCalendar'
 
-export function StoreAttends() {
+export default function StoreAttends() {
     const { id } = useParams<{ id: string }>()
     const storeId = parseInt(id)
     const [year, setYear] = useState(dayjs().year())

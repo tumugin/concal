@@ -32,12 +32,17 @@ function createInitialStore(): GlobalStore {
     }
 }
 
+export function initializeStore() {
+    addReactNDevTools(StoreProvider)
+    initializeReducers()
+}
+
 function initializeReducers() {
-    initializeUserStoreReducers()
-    initializeGroupStoreReducers()
-    initializeStoreStoreReducers()
-    initializeStoreAttendsReducers()
-    initializeCastStoreReducers()
+    initializeUserStoreReducers(StoreProvider)
+    initializeGroupStoreReducers(StoreProvider)
+    initializeStoreStoreReducers(StoreProvider)
+    initializeStoreAttendsReducers(StoreProvider)
+    initializeCastStoreReducers(StoreProvider)
 }
 
 export type StoreReducers = UserStoreReducers &
@@ -49,7 +54,6 @@ export type StoreReducers = UserStoreReducers &
 export type GlobalDispatch = unknown
 
 export const StoreProvider = createProvider<GlobalStore, StoreReducers>(createInitialStore())
+export type StoreProviderType = typeof StoreProvider
 
-initializeReducers()
-
-addReactNDevTools(StoreProvider)
+initializeStore()
