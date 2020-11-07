@@ -32,14 +32,17 @@ Route::group(['prefix' => 'admin'], function () {
         ->only(['show', 'index', 'create']);
     Route::resource('groups', '\App\Http\Controllers\Page\Admin\StoreGroupController')
         ->only(['show', 'index', 'create']);
-    Route::resource('groups.stores', '\App\Http\Controllers\Page\Admin\StoreGroupController')
+    Route::resource('groups.stores', '\App\Http\Controllers\Page\Admin\Groups\StoreController')
         ->shallow()
         ->only(['create']);
     Route::resource('stores', '\App\Http\Controllers\Page\Admin\StoreController')
         ->only(['show', 'index', 'create']);
     Route::resource('casts', '\App\Http\Controllers\Page\Admin\CastController')
         ->only(['show', 'index', 'create']);
-    Route::resource('casts.attends', '\App\Http\Controllers\Page\Admin\StoreGroupController')
+    Route::resource('casts.attends', '\App\Http\Controllers\Page\Admin\Casts\AttendController')
+        ->shallow()
+        ->only(['index']);
+    Route::resource('casts.stores', '\App\Http\Controllers\Page\Admin\Casts\StoreController')
         ->shallow()
         ->only(['index']);
 });
