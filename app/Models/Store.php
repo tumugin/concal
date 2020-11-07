@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -31,9 +32,21 @@ use Webmozart\Assert\Assert;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Cast[] $casts
  * @property-read int|null $casts_count
  * @property-read \App\Models\StoreGroup $storeGroup
+ * @method static Builder|Store active()
  */
 class Store extends Model
 {
+    /**
+     * 閉店していない営業中の店舗を返す
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('store_disabled', '=', 'false');
+    }
+
     public function getAdminAttributes(): array
     {
         return collect($this->getAttributes())

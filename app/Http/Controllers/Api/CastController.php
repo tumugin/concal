@@ -14,10 +14,12 @@ class CastController extends Controller
 
     public function index()
     {
-        $casts = Cast::with('stores')->paginate(self::_PAGINATION_COUNT);
+        $casts = Cast::active()
+            ->with('stores')
+            ->paginate(self::_PAGINATION_COUNT);
         $casts_result = collect($casts->items())->map(fn(Cast $cast) => collect($cast->getUserAttributes())->merge(
             [
-                'stores' => $cast->stores->map(function (Store $store) {
+                'stores' => $cast->stores->active->map(function (Store $store) {
                     return $store->getUserAttributes();
                 }),
             ])
@@ -42,6 +44,7 @@ class CastController extends Controller
             ->get();
         $stores = $cast
             ->stores()
+            ->active
             ->with('storeGroup')
             ->get();
         return [

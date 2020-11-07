@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -41,9 +42,21 @@ use Webmozart\Assert\Assert;
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Store[] $stores
  * @property-read int|null $stores_count
+ * @method static Builder|Cast active()
  */
 class Cast extends Model
 {
+    /**
+     * 現役のキャストを返す
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('cast_disabled', '=', false);
+    }
+
     public function getAdminAttributes(): array
     {
         return collect($this->getAttributes())
