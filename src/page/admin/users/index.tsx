@@ -49,7 +49,7 @@ export function AdminUsers() {
         <PageWrapper>
             <Heading>ユーザ一覧</Heading>
             <Flex mt={4}>
-                <Link to={`/admin/users/new`}>
+                <Link to={`/admin/users/create`}>
                     <Button>新規追加</Button>
                 </Link>
             </Flex>

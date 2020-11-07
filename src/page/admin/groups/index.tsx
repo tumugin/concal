@@ -41,7 +41,7 @@ export function AdminGroups() {
         <PageWrapper>
             <Heading>店舗グループ一覧</Heading>
             <Flex mt={4}>
-                <Link to={`/admin/groups/new`}>
+                <Link to={`/admin/groups/create`}>
                     <Button>新規追加</Button>
                 </Link>
             </Flex>
