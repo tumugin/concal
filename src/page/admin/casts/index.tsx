@@ -64,7 +64,7 @@ export function AdminCasts() {
         <PageWrapper>
             <Heading>キャスト一覧</Heading>
             <Flex mt={4}>
-                <Link to={`/admin/casts/new`}>
+                <Link to={`/admin/casts/create`}>
                     <Button>新規追加</Button>
                 </Link>
             </Flex>

@@ -34,17 +34,17 @@ export default function PageRouter() {
                 <Route path="/casts/:id" component={Cast} exact />
                 <Route path="/login" component={Login} exact />
                 <Route path="/admin/users" component={AdminUsers} exact />
-                <Route path="/admin/users/new" component={CreateUser} exact />
+                <Route path="/admin/users/create" component={CreateUser} exact />
                 <Route path="/admin/users/:id" component={ManageUser} exact />
                 <Route path="/admin/casts" component={AdminCasts} exact />
-                <Route path="/admin/casts/new" component={CreateCast} exact />
+                <Route path="/admin/casts/create" component={CreateCast} exact />
                 <Route path="/admin/casts/:id" component={ManageCast} exact />
                 <Route path="/admin/casts/:id/stores" component={ManageBelongingStores} exact />
                 <Route path="/admin/casts/:id/attends" component={ManageAttends} exact />
                 <Route path="/admin/groups" component={AdminGroups} exact />
-                <Route path="/admin/groups/new" component={CreateGroup} exact />
+                <Route path="/admin/groups/create" component={CreateGroup} exact />
                 <Route path="/admin/groups/:id" component={ManageGroup} exact />
-                <Route path="/admin/groups/:id/new_store" component={CreateStore} exact />
+                <Route path="/admin/groups/:id/stores/create" component={CreateStore} exact />
                 <Route path="/admin/stores" component={AdminStores} exact />
                 <Route path="/admin/stores/:id" component={ManageStore} exact />
             </Switch>

@@ -13,4 +13,33 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', '\App\Http\Controllers\Page\TopPageController@renderTopPage');
+Route::resource('/', '\App\Http\Controllers\Page\TopPageController')
+    ->only('index');
+Route::resource('stores', '\App\Http\Controllers\Page\StoreController')
+    ->only('show');
+Route::resource('stores.attends', '\App\Http\Controllers\Page\Stores\AttendsController')
+    ->only('index');
+Route::resource('casts', '\App\Http\Controllers\Page\CastController')
+    ->only('show');
+Route::resource('groups', '\App\Http\Controllers\Page\StoreGroupController')
+    ->only('index');
+Route::resource('login', '\App\Http\Controllers\Page\LoginController')
+    ->only('index');
+
+// admin
+Route::group(['prefix' => 'admin'], function () {
+    Route::resource('users', '\App\Http\Controllers\Page\Admin\UserController')
+        ->only(['show', 'index', 'create']);
+    Route::resource('groups', '\App\Http\Controllers\Page\Admin\StoreGroupController')
+        ->only(['show', 'index', 'create']);
+    Route::resource('groups.stores', '\App\Http\Controllers\Page\Admin\StoreGroupController')
+        ->shallow()
+        ->only(['create']);
+    Route::resource('stores', '\App\Http\Controllers\Page\Admin\StoreController')
+        ->only(['show', 'index', 'create']);
+    Route::resource('casts', '\App\Http\Controllers\Page\Admin\CastController')
+        ->only(['show', 'index', 'create']);
+    Route::resource('casts.attends', '\App\Http\Controllers\Page\Admin\StoreGroupController')
+        ->shallow()
+        ->only(['index']);
+});

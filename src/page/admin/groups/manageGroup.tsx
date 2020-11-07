@@ -97,7 +97,7 @@ export function ManageGroup() {
                         ]}
                     />
                     <Box mt={3}>
-                        <Link to={`/admin/groups/${id}/new_store`}>
+                        <Link to={`/admin/groups/${id}/stores/create`}>
                             <Button>このグループに店舗を追加する</Button>
                         </Link>
                     </Box>
