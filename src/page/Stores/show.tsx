@@ -9,7 +9,7 @@ import { Grid250 } from 'components/Grid250'
 import { Note } from 'components/Note'
 import { BootstrapLikeColors } from 'utils/bootstrapLike'
 
-export function Store() {
+export default function Store() {
     const { id } = useParams<{ id: string }>()
     const parsedId = parseInt(id)
     const store = useStore(parsedId)
@@ -28,8 +28,10 @@ export function Store() {
     )
 
     useEffect(() => {
-        void loadStore()
-    }, [loadStore])
+        if (!store) {
+            void loadStore()
+        }
+    }, [loadStore, store])
 
     if (!store) {
         return null

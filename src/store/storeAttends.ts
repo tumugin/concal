@@ -1,5 +1,5 @@
 import { getStoreAttend, StoreAttendData } from 'api/storeAttends'
-import { GlobalDispatch, GlobalStore, StoreProvider } from 'store/index'
+import { GlobalDispatch, GlobalStore, StoreProvider, StoreProviderType } from 'store/index'
 import { useCallback } from 'react'
 import dayjs from 'dayjs'
 import produce from 'immer'
@@ -40,8 +40,8 @@ export interface StoreAttendsReducers {
     ) => void
 }
 
-export function initializeStoreAttendsReducers() {
-    StoreProvider.addReducer(
+export function initializeStoreAttendsReducers(provider: StoreProviderType) {
+    provider.addReducer(
         'storeAttends/setStoreAttendsOfMonth',
         (global, _, { storeId, year, month, attends }: SetStoreAttendsOfMonthPayload) => {
             return produce(global, (draftState) => {

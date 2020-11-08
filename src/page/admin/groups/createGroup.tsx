@@ -10,7 +10,7 @@ import { Box, Button, Flex, Heading } from 'rebass/styled-components'
 import { AdminInfoBox } from 'components/AdminInfoBox'
 import { Input, Label } from '@rebass/forms/styled-components'
 
-export function CreateGroup() {
+export default function CreateGroup() {
     const history = useHistory()
     const apiToken = useApiToken()
     const [isLoading, setIsLoading] = useState(false)

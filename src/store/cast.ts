@@ -1,5 +1,5 @@
 import { Cast, getCast } from 'api/cast'
-import { GlobalDispatch, GlobalStore, StoreProvider } from 'store/index'
+import { GlobalDispatch, GlobalStore, StoreProvider, StoreProviderType } from 'store/index'
 import produce from 'immer'
 import { useCallback } from 'react'
 
@@ -20,8 +20,8 @@ export interface CastStoreReducers {
     'casts/setCast': (global: GlobalStore, dispatch: GlobalDispatch, cast: Cast) => void
 }
 
-export function initializeCastStoreReducers() {
-    StoreProvider.addReducer('casts/setCast', (global, _, cast: Cast) => {
+export function initializeCastStoreReducers(provider: StoreProviderType) {
+    provider.addReducer('casts/setCast', (global, _, cast: Cast) => {
         return produce(global, (draftState) => {
             draftState.casts.casts[cast.id] = cast
         })

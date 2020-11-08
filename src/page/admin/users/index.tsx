@@ -8,7 +8,7 @@ import { AdminBasicTable } from 'components/AdminBasicTable'
 import { Link } from 'react-router-dom'
 import { Badge } from 'components/Badge'
 
-export function AdminUsers() {
+export default function AdminUsers() {
     const apiToken = useApiToken()
     const [userData, setUserData] = useState<UserData[]>([])
     const [totalPages, setTotalPages] = useState(0)

@@ -14,7 +14,7 @@ import toastr from 'toastr'
 import Swal from 'sweetalert2'
 import { Badge } from 'components/Badge'
 
-export function ManageStore() {
+export default function ManageStore() {
     const history = useHistory()
     const apiToken = useApiToken()
     const [isLoading, setIsLoading] = useState(false)

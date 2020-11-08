@@ -1,5 +1,5 @@
 import { getStore, Store } from 'api/store'
-import { GlobalDispatch, GlobalStore, StoreProvider } from 'store/index'
+import { GlobalDispatch, GlobalStore, StoreProvider, StoreProviderType } from 'store/index'
 import { useCallback } from 'react'
 import produce from 'immer'
 
@@ -20,8 +20,8 @@ export interface StoreStoreReducers {
     'stores/setStore': (global: GlobalStore, dispatch: GlobalDispatch, store: Store) => void
 }
 
-export function initializeStoreStoreReducers() {
-    StoreProvider.addReducer('stores/setStore', (global, _, store: Store) => {
+export function initializeStoreStoreReducers(provider: StoreProviderType) {
+    provider.addReducer('stores/setStore', (global, _, store: Store) => {
         return produce(global, (draftState) => {
             draftState.stores.stores[store.id] = store
         })

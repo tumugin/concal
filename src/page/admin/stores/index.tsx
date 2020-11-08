@@ -8,7 +8,7 @@ import { PaginationController } from 'components/PaginationController'
 import { Link } from 'react-router-dom'
 import { Badge } from 'components/Badge'
 
-export function AdminStores() {
+export default function AdminStores() {
     const apiToken = useApiToken()
     const [storeData, setStoreData] = useState<StoreData[]>([])
     const [totalPages, setTotalPages] = useState(0)

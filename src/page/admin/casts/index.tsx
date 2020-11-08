@@ -9,7 +9,7 @@ import { PaginationController } from 'components/PaginationController'
 import { Badge } from 'components/Badge'
 import { RebassRouterLink } from 'components/RebassRouterLink'
 
-export function AdminCasts() {
+export default function AdminCasts() {
     const apiToken = useApiToken()
     const [castData, setCastData] = useState<CastData[]>([])
     const [totalPages, setTotalPages] = useState(0)

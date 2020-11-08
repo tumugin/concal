@@ -13,7 +13,7 @@ import toastr from 'toastr'
 import Swal from 'sweetalert2'
 import { AdminInfoBox } from 'components/AdminInfoBox'
 
-export function CreateUser() {
+export default function CreateUser() {
     const history = useHistory()
     const apiToken = useApiToken()
     const [isLoading, setIsLoading] = useState(false)

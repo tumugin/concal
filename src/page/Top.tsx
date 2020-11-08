@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Grid250 } from 'components/Grid250'
 
-export function Top() {
+export default function Top() {
     const top = useTop()
     const loadTopContents = useLoadTopContents()
     useEffect(() => {

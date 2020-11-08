@@ -15,7 +15,7 @@ import produce from 'immer'
 import toastr from 'toastr'
 import Swal from 'sweetalert2'
 
-export function ManageBelongingStores() {
+export default function ManageBelongingStores() {
     const { id } = useParams<{ id: string }>()
     const apiToken = useApiToken()
     const [draftStoreId, setDraftStoreId] = useState('')

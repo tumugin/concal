@@ -17,7 +17,7 @@ import { BootstrapLikeColors } from 'utils/bootstrapLike'
 import toastr from 'toastr'
 import Swal from 'sweetalert2'
 
-export function ManageUser() {
+export default function ManageUser() {
     const history = useHistory()
     const apiToken = useApiToken()
     const { id } = useParams<{ id: string }>()
