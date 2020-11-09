@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\VerifyApiKey;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -41,6 +42,7 @@ class Kernel extends HttpKernel
 
         'api' => [
             'throttle:60,1',
+            VerifyApiKey::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
