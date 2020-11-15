@@ -9,6 +9,7 @@
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0",
+        "htmlmin/htmlmin": "^8.0",
         "laravel/framework": "^8.0",
         "laravel/legacy-factories": "^1.0",
         "laravel/passport": "^10.0",

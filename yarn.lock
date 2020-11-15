@@ -7572,6 +7572,7 @@ __metadata:
     babel-plugin-styled-components: ^1.11.1
     chalk: ^4.1.0
     copy-webpack-plugin: ^6.2.1
+    crypto-browserify: ^3.12.0
     css-loader: ^5.0.0
     cssnano: ^4.1.10
     date-fns: ^2.16.1
@@ -8030,7 +8031,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"crypto-browserify@npm:^3.11.0":
+"crypto-browserify@npm:^3.11.0, crypto-browserify@npm:^3.12.0":
   version: 3.12.0
   resolution: "crypto-browserify@npm:3.12.0"
   dependencies:
