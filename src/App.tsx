@@ -6,7 +6,7 @@ import { deep } from '@theme-ui/presets'
 // @ts-ignore
 import preset from '@rebass/preset'
 import PageRouter from 'pageRouter'
-import { initializeStore, StoreProvider } from 'store'
+import { StoreProvider } from 'store'
 import React, { useEffect, useState } from 'react'
 import { Box } from 'rebass/styled-components'
 import { Normalize } from 'styled-normalize'

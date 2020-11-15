@@ -176,6 +176,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         \App\Providers\AdminGateProvider::class,
 
+        // minify html
+        HTMLMin\HTMLMin\HTMLMinServiceProvider::class
     ],
 
     /*
