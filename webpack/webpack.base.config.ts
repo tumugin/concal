@@ -47,7 +47,7 @@ export default function config(
                 tty: false,
                 os: false,
                 stream: false,
-                crypto: false,
+                crypto: 'crypto-browserify',
                 https: false,
                 http: false,
                 zlib: false,
@@ -141,6 +141,9 @@ export default function config(
                         syntactic: true,
                     },
                 },
+            }),
+            new webpack.DefinePlugin({
+                'process.browser': true,
             }),
         ],
     }
