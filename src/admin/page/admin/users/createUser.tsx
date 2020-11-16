@@ -21,7 +21,7 @@ export default function CreateUser() {
     const [userName, setUserName] = useState('')
     const [name, setName] = useState('')
     const [password, setPassword] = useState('')
-    const [userPrivilege, setUserPrivilege] = useState<'admin' | 'user'>('user')
+    const [userPrivilege, setUserPrivilege] = useState<'user'>('user')
 
     const resetAll = useCallback(() => {
         setEmail('')
@@ -126,16 +126,7 @@ export default function CreateUser() {
                             />
                             一般ユーザ
                         </Label>
-                        <Label ml={2}>
-                            <Radio
-                                name="userPrivilege"
-                                onChange={() => setUserPrivilege('admin')}
-                                checked={userPrivilege === 'admin'}
-                            />
-                            特権ユーザ
-                        </Label>
                     </Flex>
-                    <Note tight>特権ユーザとして登録すると、何でも出来るユーザとして登録されるので注意！！！！</Note>
                 </Box>
                 <Box mt={4}>
                     <Button variant="outline" onClick={resetAll}>

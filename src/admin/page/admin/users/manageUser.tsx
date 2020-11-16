@@ -231,7 +231,7 @@ export default function ManageUser() {
                             一般ユーザ
                         </Label>
                     </Flex>
-                    <Note tight>特権ユーザとして登録すると、何でも出来るユーザとして登録されるので注意！！！！</Note>
+                    <Note tight>現状は一般ユーザしかない</Note>
                     <Button bg={BootstrapLikeColors.danger} onClick={updateUserPrivilege}>
                         変更を反映する
                     </Button>
