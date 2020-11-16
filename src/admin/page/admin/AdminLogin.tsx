@@ -45,7 +45,7 @@ export default function AdminLogin() {
 
     return (
         <PageWrapper>
-            <Heading>ログイン</Heading>
+            <Heading>管理画面ログイン</Heading>
             <CenteringWrapper>
                 <LoginBox>
                     <Label>メールアドレス・ユーザID</Label>

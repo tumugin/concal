@@ -2,7 +2,7 @@ import { Box, Button, Flex, Text } from 'rebass/styled-components'
 import React, { useCallback } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
-import { useUser, useUserLogout } from 'store/user'
+import { useUser, useUserLogout } from 'admin/store/user'
 import { responsiveMobileMaxWidth } from 'styles/responsive'
 import Swal from 'sweetalert2'
 
@@ -22,14 +22,14 @@ export function AdminNavBar() {
         })
         if (dialogResult.isConfirmed) {
             await logout()
-            history.push('/')
+            history.push('/admin/')
         }
     }, [history, logout])
 
     return (
         <>
             <Flex px={3} py={2} color="white" bg="black" alignItems="center">
-                <TitleLink to="/admin">
+                <TitleLink to="/admin/">
                     <Text p={2} fontWeight="bold">
                         コンカフェカレンダー管理画面
                     </Text>

@@ -12,7 +12,6 @@ import { Box } from 'rebass/styled-components'
 import { Normalize } from 'styled-normalize'
 import { useSavedUserLogin } from 'store/user'
 import '@sweetalert2/theme-dark/dark.scss'
-import 'toastr/build/toastr.css'
 
 export function App() {
     return (
