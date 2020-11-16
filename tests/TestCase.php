@@ -15,11 +15,6 @@ abstract class TestCase extends BaseTestCase
     protected ?string $userApiKey = null;
     protected array $apiKeyHeader = [];
 
-    public function setupPassport(): void
-    {
-        $this->artisan('passport:client --personal --no-interaction --name=test_client');
-    }
-
     public function setupAdminUserAndLogin(): void
     {
         $user = factory(AdminUser::class)->create();

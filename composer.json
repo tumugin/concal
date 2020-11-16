@@ -12,7 +12,6 @@
         "htmlmin/htmlmin": "^8.0",
         "laravel/framework": "^8.0",
         "laravel/legacy-factories": "^1.0",
-        "laravel/passport": "^10.0",
         "laravel/tinker": "^2.0",
         "league/csv": "^9.6",
         "nesbot/carbon": "^2.38",
