@@ -11,9 +11,9 @@ class AdminGateProvider extends ServiceProvider
 {
     public function boot()
     {
-        Gate::define('has-admin-privilege', function (AdminUser $user) {
+        Gate::define('has-admin-privilege', function ($user) {
             // ユーザにAdmin APIの存在を知らせない為に404を返す
-            return $user !== null ? Response::allow() : Response::deny(null, 404);
+            return $user instanceof AdminUser ? Response::allow() : Response::deny(null, 404);
         });
     }
 }

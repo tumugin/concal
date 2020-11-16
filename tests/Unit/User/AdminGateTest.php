@@ -3,6 +3,7 @@
 namespace Tests\Unit\User;
 
 use App\Models\AdminUser;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -28,6 +29,13 @@ class AdminGateTest extends TestCase
         );
         Auth::login($created_user);
         $this->assertEquals(Gate::allows('has-admin-privilege'), $is_admin);
+    }
+
+    public function testNormalUserCanNotLogin(): void
+    {
+        $user = factory(User::class)->create();
+        Auth::login($user);
+        $this->assertEquals(Gate::allows('has-admin-privilege'), false);
     }
 
     public function adminGateTestDataProvider(): array

@@ -51,10 +51,8 @@ class User extends Authenticatable implements JWTSubject
         'password',
     ];
 
-    const USER_PRIVILEGE_ADMIN = 'admin';
     const USER_PRIVILEGE_USER = 'user';
     const USER_PRIVILEGES = [
-        self::USER_PRIVILEGE_ADMIN,
         self::USER_PRIVILEGE_USER,
     ];
 
