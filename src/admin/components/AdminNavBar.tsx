@@ -29,14 +29,14 @@ export function AdminNavBar() {
     return (
         <>
             <Flex px={3} py={2} color="white" bg="black" alignItems="center">
-                <TitleLink to="/">
+                <TitleLink to="/admin">
                     <Text p={2} fontWeight="bold">
                         コンカフェカレンダー管理画面
                     </Text>
                 </TitleLink>
                 <Box mx="auto" />
                 {!isLoggedIn && (
-                    <Link to="/login">
+                    <Link to="/admin/login">
                         <Button variant="outline" mr={2}>
                             ログイン
                         </Button>
@@ -60,23 +60,25 @@ export function AdminNavBar() {
                     </MobileLoggedInHeader>
                 )}
             </Flex>
-            <AdminMenu px={3} py={1} bg="muted">
-                <AdminMenuText p={2} fontWeight="bold">
-                    管理者メニュー
-                </AdminMenuText>
-                <TitleLink to="/admin/users">
-                    <AdminMenuText p={2}>ユーザ管理</AdminMenuText>
-                </TitleLink>
-                <TitleLink to="/admin/groups">
-                    <AdminMenuText p={2}>店舗グループ管理</AdminMenuText>
-                </TitleLink>
-                <TitleLink to="/admin/stores">
-                    <AdminMenuText p={2}>店舗管理</AdminMenuText>
-                </TitleLink>
-                <TitleLink to="/admin/casts">
-                    <AdminMenuText p={2}>キャスト・出勤管理</AdminMenuText>
-                </TitleLink>
-            </AdminMenu>
+            {isLoggedIn && (
+                <AdminMenu px={3} py={1} bg="muted">
+                    <AdminMenuText p={2} fontWeight="bold">
+                        管理者メニュー
+                    </AdminMenuText>
+                    <TitleLink to="/admin/users">
+                        <AdminMenuText p={2}>ユーザ管理</AdminMenuText>
+                    </TitleLink>
+                    <TitleLink to="/admin/groups">
+                        <AdminMenuText p={2}>店舗グループ管理</AdminMenuText>
+                    </TitleLink>
+                    <TitleLink to="/admin/stores">
+                        <AdminMenuText p={2}>店舗管理</AdminMenuText>
+                    </TitleLink>
+                    <TitleLink to="/admin/casts">
+                        <AdminMenuText p={2}>キャスト・出勤管理</AdminMenuText>
+                    </TitleLink>
+                </AdminMenu>
+            )}
         </>
     )
 }

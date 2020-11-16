@@ -8,16 +8,16 @@ export default function config(
     env: { [key: string]: string | undefined },
     argv: { [key: string]: string | undefined }
 ) {
-    const base = baseConfig(env, argv)
+    const base = baseConfig(env, argv, 'admin/assets/css/common.[chunkhash].css')
     const config: webpack.Configuration = {
         ...base,
         entry: {
             app: path.resolve('src/admin/admin-main.tsx'),
         },
         output: {
-            filename: 'assets/js/[name].[chunkhash].bundle.js',
-            path: path.resolve('public/admin/'),
-            chunkFilename: 'assets/js/[name].[chunkhash].bundle.js',
+            filename: 'admin/assets/js/[name].[chunkhash].bundle.js',
+            path: path.resolve('public/'),
+            chunkFilename: 'admin/assets/js/[name].[chunkhash].bundle.js',
             publicPath: '/',
         },
         plugins: [

@@ -20,12 +20,16 @@ export default function AdminPageRouter() {
     const ManageCast = React.lazy(() => import('admin/page/admin/casts/manageCast'))
     const ManageBelongingStores = React.lazy(() => import('admin/page/admin/casts/manageBelongingStores'))
     const ManageAttends = React.lazy(() => import('admin/page/admin/casts/manageAttends'))
+    const AdminTop = React.lazy(() => import('admin/page/admin/AdminTop'))
+    const AdminLogin = React.lazy(() => import('admin/page/admin/AdminLogin'))
 
     return (
         <BrowserRouter>
             <AdminNavBar />
             <Suspense fallback={null}>
                 <Switch>
+                    <Route path="/admin/" component={isAdmin ? AdminTop : AdminLogin} exact />
+                    <Route path="/admin/login" component={AdminLogin} exact />
                     <Route path="/admin/users" component={isAdmin ? AdminUsers : Forbidden} exact />
                     <Route path="/admin/users/create" component={isAdmin ? CreateUser : Forbidden} exact />
                     <Route path="/admin/users/:id" component={isAdmin ? ManageUser : Forbidden} exact />
