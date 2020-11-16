@@ -13,7 +13,7 @@ class ApiAuthControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->setupPassport();
+        $this->setupApiKey();
     }
 
     private const _TEST_USER_DATA = [
@@ -32,13 +32,15 @@ class ApiAuthControllerTest extends TestCase
             self::_TEST_USER_DATA['email'],
             User::USER_PRIVILEGE_USER
         );
-        $response = $this->postJson(
-            '/api/login',
-            [
-                'email' => self::_TEST_USER_DATA['email'],
-                'password' => self::_TEST_USER_DATA['password'],
-            ]
-        );
+        $response = $this
+            ->withHeaders($this->apiKeyHeader)
+            ->postJson(
+                '/api/login',
+                [
+                    'email' => self::_TEST_USER_DATA['email'],
+                    'password' => self::_TEST_USER_DATA['password'],
+                ]
+            );
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'apiToken',
@@ -54,13 +56,15 @@ class ApiAuthControllerTest extends TestCase
             self::_TEST_USER_DATA['email'],
             User::USER_PRIVILEGE_USER
         );
-        $response = $this->postJson(
-            '/api/login',
-            [
-                'userName' => self::_TEST_USER_DATA['user_name'],
-                'password' => self::_TEST_USER_DATA['password'],
-            ]
-        );
+        $response = $this
+            ->withHeaders($this->apiKeyHeader)
+            ->postJson(
+                '/api/login',
+                [
+                    'userName' => self::_TEST_USER_DATA['user_name'],
+                    'password' => self::_TEST_USER_DATA['password'],
+                ]
+            );
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'apiToken',
@@ -70,29 +74,18 @@ class ApiAuthControllerTest extends TestCase
     public function testLoginFailed(): void
     {
         factory(User::class)->create();
-        $response = $this->postJson(
-            '/api/login',
-            [
-                'userName' => 'hoge',
-                'password' => 'hoge',
-            ]
-        );
+        $response = $this
+            ->withHeaders($this->apiKeyHeader)
+            ->postJson(
+                '/api/login',
+                [
+                    'userName' => 'hoge',
+                    'password' => 'hoge',
+                ]
+            );
         $response->assertStatus(401);
         $response->assertJsonStructure([
             'error',
         ]);
-    }
-
-    public function testRevokeTokens(): void
-    {
-        $user = factory(User::class)->create();
-        $token = $user->createApiToken();
-        $response = $this
-            ->withToken($token)
-            ->postJson(
-                '/api/token/revoke',
-                []
-            );
-        $response->assertStatus(200);
     }
 }

@@ -12,13 +12,13 @@
         "htmlmin/htmlmin": "^8.0",
         "laravel/framework": "^8.0",
         "laravel/legacy-factories": "^1.0",
-        "laravel/passport": "^10.0",
         "laravel/tinker": "^2.0",
         "league/csv": "^9.6",
         "nesbot/carbon": "^2.38",
         "sentry/sentry-laravel": "^2.2",
         "spiral/roadrunner": "^1.8",
         "spiral/roadrunner-laravel": "^3.6",
+        "tymon/jwt-auth": "^1.0",
         "webmozart/assert": "^1.9"
     },
     "require-dev": {

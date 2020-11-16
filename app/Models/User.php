@@ -7,7 +7,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use Laravel\Passport\HasApiTokens;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+use Tymon\JWTAuth\JWT;
 use Webmozart\Assert\Assert;
 
 /**
@@ -42,18 +43,16 @@ use Webmozart\Assert\Assert;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUserPrivilege($value)
  * @mixin \Eloquent
  */
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
-    use HasApiTokens, Notifiable;
+    use Notifiable;
 
     protected $hidden = [
         'password',
     ];
 
-    const USER_PRIVILEGE_ADMIN = 'admin';
     const USER_PRIVILEGE_USER = 'user';
     const USER_PRIVILEGES = [
-        self::USER_PRIVILEGE_ADMIN,
         self::USER_PRIVILEGE_USER,
     ];
 
@@ -110,33 +109,13 @@ class User extends Authenticatable
     }
 
     /**
-     * ユーザが管理者権限を持っているかどうか返す
-     *
-     * @return bool
-     */
-    public function isAdmin(): bool
-    {
-        return $this->user_privilege === self::USER_PRIVILEGE_ADMIN;
-    }
-
-    /**
      * 新しくAPIトークンを発行して発行されたトークンを返す
      *
      * @return string
      */
     public function createApiToken(): string
     {
-        return $this->createToken('api_token')->accessToken;
-    }
-
-    /**
-     * ユーザが所有している全ての認証トークンを失効させる
-     */
-    public function revokeAllPersonalAccessTokens(): void
-    {
-        foreach ($this->tokens as $token) {
-            $token->revoke();
-        }
+        return resolve(JWT::class)->fromUser($this);
     }
 
     /**
@@ -253,5 +232,25 @@ class User extends Authenticatable
         $user->save();
 
         return $user;
+    }
+
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }

@@ -9,16 +9,16 @@ class CastController
 {
     public function show(Cast $cast)
     {
-        return SPAPageUtils::renderSPAPage();
+        return SPAPageUtils::renderAdminSPAPage();
     }
 
     public function index()
     {
-        return SPAPageUtils::renderSPAPage();
+        return SPAPageUtils::renderAdminSPAPage();
     }
 
     public function create()
     {
-        return SPAPageUtils::renderSPAPage();
+        return SPAPageUtils::renderAdminSPAPage();
     }
 }

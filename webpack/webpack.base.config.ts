@@ -6,7 +6,8 @@ import { ForkTsCheckerWebpackPlugin } from 'fork-ts-checker-webpack-plugin/lib/F
 
 export default function config(
     env: { [key: string]: string | undefined },
-    argv: { [key: string]: string | undefined }
+    argv: { [key: string]: string | undefined },
+    cssFileName = 'assets/css/common.[chunkhash].css'
 ) {
     const isProduction = argv.mode === 'production'
     const styleLoader = isProduction ? MiniCssExtractPlugin.loader : 'style-loader'
@@ -132,7 +133,7 @@ export default function config(
         plugins: [
             // FIXME: 型エラーを直す
             (new MiniCssExtractPlugin({
-                filename: 'assets/css/common.[chunkhash].css',
+                filename: cssFileName,
             }) as unknown) as webpack.WebpackPluginInstance,
             new ForkTsCheckerWebpackPlugin({
                 typescript: {

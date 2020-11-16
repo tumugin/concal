@@ -9,16 +9,16 @@ class StoreController
 {
     public function show(Store $store)
     {
-        return SPAPageUtils::renderSPAPage();
+        return SPAPageUtils::renderAdminSPAPage();
     }
 
     public function index()
     {
-        return SPAPageUtils::renderSPAPage();
+        return SPAPageUtils::renderAdminSPAPage();
     }
 
     public function create()
     {
-        return SPAPageUtils::renderSPAPage();
+        return SPAPageUtils::renderAdminSPAPage();
     }
 }

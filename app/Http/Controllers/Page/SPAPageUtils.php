@@ -20,4 +20,17 @@ class SPAPageUtils
             'description' => $options['description'] ?? 'コンカフェカレンダーはキャストの出勤情報などが調べられるウェブサイトです',
         ]);
     }
+
+    public static function renderAdminSPAPage(array $options = [])
+    {
+        $raw_manifest = File::get(storage_path('app/admin-manifest.json'));
+        $manifest = json_decode($raw_manifest, true);
+        return view('adminspapage', [
+            'app_js_path' => $manifest['app.js'] ?? null,
+            'app_css_path' => $manifest['app.css'] ?? null,
+            'vendor_js_path' => $manifest['vendor.js'] ?? null,
+            'vendor_css_path' => $manifest['vendor.css'] ?? null,
+            'title' => $options['title'] ?? 'コンカフェカレンダー管理画面',
+        ]);
+    }
 }

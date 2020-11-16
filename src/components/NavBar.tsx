@@ -11,7 +11,6 @@ export function NavBar() {
     const logout = useUserLogout()
     const user = useUser()
     const isLoggedIn = user.isLoggedIn
-    const isAdminUser = user?.self?.userPrivilege === 'admin'
     const userName = user?.self?.name
 
     const onUserLogout = useCallback(async () => {
@@ -61,25 +60,6 @@ export function NavBar() {
                     </MobileLoggedInHeader>
                 )}
             </Flex>
-            {isAdminUser && (
-                <AdminMenu px={3} py={1} bg="muted">
-                    <AdminMenuText p={2} fontWeight="bold">
-                        管理者メニュー
-                    </AdminMenuText>
-                    <TitleLink to="/admin/users">
-                        <AdminMenuText p={2}>ユーザ管理</AdminMenuText>
-                    </TitleLink>
-                    <TitleLink to="/admin/groups">
-                        <AdminMenuText p={2}>店舗グループ管理</AdminMenuText>
-                    </TitleLink>
-                    <TitleLink to="/admin/stores">
-                        <AdminMenuText p={2}>店舗管理</AdminMenuText>
-                    </TitleLink>
-                    <TitleLink to="/admin/casts">
-                        <AdminMenuText p={2}>キャスト・出勤管理</AdminMenuText>
-                    </TitleLink>
-                </AdminMenu>
-            )}
         </>
     )
 }
@@ -108,13 +88,4 @@ const SenpaiName = styled.span`
 const TitleLink = styled(Link)`
     color: white;
     text-decoration: none;
-`
-
-const AdminMenu = styled(Flex)`
-    white-space: nowrap;
-    overflow: auto;
-`
-
-const AdminMenuText = styled(Text)`
-    min-width: unset;
 `

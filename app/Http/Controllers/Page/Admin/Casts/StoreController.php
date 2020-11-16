@@ -9,6 +9,6 @@ class StoreController
 {
     public function index(Cast $cast)
     {
-        return SPAPageUtils::renderSPAPage();
+        return SPAPageUtils::renderAdminSPAPage();
     }
 }
