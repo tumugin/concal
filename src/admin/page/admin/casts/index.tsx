@@ -1,7 +1,7 @@
 import { PageWrapper } from 'components/PageWrapper'
 import { Box, Button, Flex, Heading, Link as RebassLink } from 'rebass/styled-components'
 import React, { useEffect, useState } from 'react'
-import { useApiToken } from 'store/user'
+import { useApiToken } from 'admin/store/user'
 import { CastData, getCasts } from 'admin/api/casts'
 import { Link } from 'react-router-dom'
 import { AdminBasicTable } from 'admin/components/AdminBasicTable'

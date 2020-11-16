@@ -1,7 +1,7 @@
 import { PageWrapper } from 'components/PageWrapper'
 import { Box, Button, Heading } from 'rebass/styled-components'
 import React, { useEffect, useState } from 'react'
-import { useApiToken } from 'store/user'
+import { useApiToken } from 'admin/store/user'
 import { getStores, StoreData } from 'admin/api/store'
 import { AdminBasicTable } from 'admin/components/AdminBasicTable'
 import { PaginationController } from 'components/PaginationController'

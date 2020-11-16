@@ -1,7 +1,7 @@
 import { PageWrapper } from 'components/PageWrapper'
 import { Box, Button, Flex, Heading } from 'rebass/styled-components'
 import React, { useEffect, useState } from 'react'
-import { useApiToken } from 'store/user'
+import { useApiToken } from 'admin/store/user'
 import { getStoreGroups, StoreGroupData } from 'admin/api/storeGroup'
 import { Link } from 'react-router-dom'
 import { AdminBasicTable } from 'admin/components/AdminBasicTable'

@@ -1,4 +1,4 @@
-import { useApiToken } from 'store/user'
+import { useApiToken } from 'admin/store/user'
 import React, { useCallback, useState } from 'react'
 import { Box, Button, Flex, Heading } from 'rebass/styled-components'
 import { PageWrapper } from 'components/PageWrapper'

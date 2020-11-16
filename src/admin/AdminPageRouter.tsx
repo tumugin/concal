@@ -1,11 +1,11 @@
 import React, { Suspense } from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { Forbidden } from 'page/Forbidden'
-import { useUser } from 'store/user'
+import { useUser } from 'admin/store/user'
 import { AdminNavBar } from 'admin/components/AdminNavBar'
 
-export default function PageRouter() {
-    const isAdmin = useUser().self?.userPrivilege === 'admin'
+export default function AdminPageRouter() {
+    const isAdmin = useUser().self?.userPrivilege !== undefined
     const AdminCasts = React.lazy(() => import('admin/page/admin/casts'))
     const AdminGroups = React.lazy(() => import('admin/page/admin/groups'))
     const AdminStores = React.lazy(() => import('admin/page/admin/stores'))

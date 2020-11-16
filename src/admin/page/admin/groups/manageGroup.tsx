@@ -1,5 +1,5 @@
 import { Link, useHistory, useParams } from 'react-router-dom'
-import { useApiToken } from 'store/user'
+import { useApiToken } from 'admin/store/user'
 import React, { useCallback, useEffect, useState } from 'react'
 import { unreachableCode } from 'types/util'
 import toastr from 'toastr'

@@ -8,7 +8,7 @@ import { Note } from 'components/Note'
 import styled from 'styled-components'
 import dayjs from 'dayjs'
 import { addAttend } from 'admin/api/attends'
-import { useApiToken } from 'store/user'
+import { useApiToken } from 'admin/store/user'
 import toastr from 'toastr'
 
 export function CastAttendAddEditor({
