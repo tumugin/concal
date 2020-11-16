@@ -6,7 +6,7 @@ export interface UserData {
     userName: string
     name: string
     email: string
-    userPrivilege: 'admin' | 'user'
+    userPrivilege: 'user'
 }
 
 export async function getUsers({ apiToken }: ApiKeyParam, { page }: { page: number }) {

@@ -19,12 +19,7 @@ export default function AdminUsers() {
         userName: item.userName,
         name: item.name,
         email: item.email,
-        userPrivilege:
-            item.userPrivilege === 'admin' ? (
-                <Badge type="danger">特権ユーザ</Badge>
-            ) : (
-                <Badge type="success">一般ユーザ</Badge>
-            ),
+        userPrivilege: <Badge type="success">一般ユーザ</Badge>,
     }))
     const createOperationNode = (item: { id: number }) => {
         return (

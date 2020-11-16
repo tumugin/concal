@@ -28,7 +28,7 @@ export default function ManageUser() {
     const [userName, setUserName] = useState('')
     const [name, setName] = useState('')
     const [password, setPassword] = useState('')
-    const [userPrivilege, setUserPrivilege] = useState<'admin' | 'user'>('user')
+    const [userPrivilege, setUserPrivilege] = useState<'user'>('user')
 
     const onGeneratePassword = useCallback(() => {
         setPassword(
@@ -166,12 +166,7 @@ export default function ManageUser() {
                             },
                             {
                                 name: 'ユーザ権限',
-                                value:
-                                    userData.userPrivilege === 'admin' ? (
-                                        <Badge type="danger">特権ユーザ</Badge>
-                                    ) : (
-                                        <Badge type="success">一般ユーザ</Badge>
-                                    ),
+                                value: <Badge type="success">一般ユーザ</Badge>,
                             },
                         ]}
                     />
@@ -234,14 +229,6 @@ export default function ManageUser() {
                                 checked={userPrivilege === 'user'}
                             />
                             一般ユーザ
-                        </Label>
-                        <Label ml={2}>
-                            <Radio
-                                name="userPrivilege"
-                                onChange={() => setUserPrivilege('admin')}
-                                checked={userPrivilege === 'admin'}
-                            />
-                            特権ユーザ
                         </Label>
                     </Flex>
                     <Note tight>特権ユーザとして登録すると、何でも出来るユーザとして登録されるので注意！！！！</Note>
