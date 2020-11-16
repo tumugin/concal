@@ -13,12 +13,11 @@ class AdminUserAuthService
     /**
      * Auth::guardから現在ログイン中のユーザを取得する
      *
-     * @param string|null $guard_name
      * @return AdminUser
      */
-    public static function getCurrentUser(?string $guard_name): AdminUser
+    public static function getCurrentUser(): AdminUser
     {
-        $user = Auth::guard($guard_name)->user();
+        $user = Auth::guard('admin_api')->user();
         if ($user === null) {
             throw new \Exception('Must be logged in to get current user.');
         }
@@ -33,11 +32,10 @@ class AdminUserAuthService
      * @param string|null $user_name
      * @param string|null $mail_address
      * @param string $password
-     * @param string|null $guard_name
      * @return AdminUser
      * @throws LoginFailedException
      */
-    public static function attemptLogin(?string $user_name, ?string $mail_address, string $password, ?string $guard_name): AdminUser
+    public static function attemptLogin(?string $user_name, ?string $mail_address, string $password): AdminUser
     {
         Assert::stringNotEmpty($password);
         Assert::nullOrEmail($mail_address);
@@ -58,8 +56,8 @@ class AdminUserAuthService
             'password' => $password,
         ], $credentials_fields);
 
-        if (Auth::guard($guard_name)->attempt($credentials)) {
-            return Auth::guard($guard_name)->user();
+        if (Auth::guard('admin_api')->attempt($credentials)) {
+            return Auth::guard('admin_api')->user();
         }
         throw new LoginFailedException();
     }

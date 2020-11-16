@@ -17,7 +17,6 @@ Route::post('/login', 'Api\AuthController@login');
 
 // user apis
 Route::group(['middleware' => ['auth:api']], function () {
-    Route::post('/token/revoke', 'Api\AuthController@revokeTokens');
     Route::get('/self', 'Api\AuthController@userInfo');
 });
 Route::apiResource('top_contents', 'Api\TopContentController')
@@ -53,7 +52,6 @@ Route::group(['prefix' => 'admin'], function () {
         Route::apiResource('casts.attends', 'Api\Admin\AdminCastAttendController', ['as' => 'api.admin'])
             ->shallow();
         // self
-        Route::post('/token/revoke', 'Api\Admin\AdminAuthController@revokeTokens');
         Route::get('/self', 'Api\Admin\AdminAuthController@userInfo');
     });
 });

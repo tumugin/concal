@@ -20,7 +20,7 @@ class AuthController extends Controller
         $password = $request->post('password');
 
         try {
-            $user = $userAuthService->attemptLogin($user_name, $email, $password, 'api');
+            $user = $userAuthService->attemptLogin($user_name, $email, $password);
             return [
                 'success' => true,
                 'apiToken' => $user->createApiToken(),
@@ -32,16 +32,9 @@ class AuthController extends Controller
         }
     }
 
-    public function revokeTokens()
-    {
-        return [
-            'success' => true,
-        ];
-    }
-
     public function userInfo(UserAuthService $userAuthService)
     {
-        $user = $userAuthService->getCurrentUser('api');
+        $user = $userAuthService->getCurrentUser();
         return [
             'success' => true,
             // 自分の情報なのでAdmin用のデータを返してしまう

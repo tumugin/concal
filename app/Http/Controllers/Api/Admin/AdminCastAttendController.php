@@ -74,7 +74,7 @@ class AdminCastAttendController extends Controller
         CastAttend::addAttendance(
             $cast->id,
             (int)$request->post('storeId'),
-            AdminUserAuthService::getCurrentUser('admin_api')->id,
+            AdminUserAuthService::getCurrentUser()->id,
             Carbon::parse($request->post('startTime')),
             Carbon::parse($request->post('endTime')),
             $request->post('attendInfo') ?? ''
@@ -94,7 +94,7 @@ class AdminCastAttendController extends Controller
         ]);
         $cast_attend->updateAttendance(
             (int)$request->post('storeId'),
-            AdminUserAuthService::getCurrentUser('admin_api')->id,
+            AdminUserAuthService::getCurrentUser()->id,
             Carbon::parse($request->post('startTime')),
             Carbon::parse($request->post('endTime')),
             $request->post('attendInfo') ?? ''

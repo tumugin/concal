@@ -89,18 +89,4 @@ class ApiAuthControllerTest extends TestCase
             'error',
         ]);
     }
-
-    public function testRevokeTokens(): void
-    {
-        $user = factory(User::class)->create();
-        $token = $user->createApiToken();
-        $response = $this
-            ->withHeaders($this->apiKeyHeader)
-            ->withToken($token)
-            ->postJson(
-                '/api/token/revoke',
-                []
-            );
-        $response->assertStatus(200);
-    }
 }

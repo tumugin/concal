@@ -20,7 +20,7 @@ class AdminAuthController extends Controller
         $password = $request->post('password');
 
         try {
-            $user = $userAuthService->attemptLogin($user_name, $email, $password, 'admin_web');
+            $user = $userAuthService->attemptLogin($user_name, $email, $password);
             return [
                 'success' => true,
                 'apiToken' => $user->createApiToken(),
@@ -41,7 +41,7 @@ class AdminAuthController extends Controller
 
     public function userInfo(AdminUserAuthService $userAuthService)
     {
-        $user = $userAuthService->getCurrentUser('admin_api');
+        $user = $userAuthService->getCurrentUser();
         return [
             'success' => true,
             'info' => $user->getAdminAttributes(),
