@@ -5,6 +5,7 @@ namespace Tests;
 use App\Models\AdminUser;
 use App\Models\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Support\Facades\Config;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -12,6 +13,7 @@ abstract class TestCase extends BaseTestCase
 
     protected ?string $adminApiKey = null;
     protected ?string $userApiKey = null;
+    protected array $apiKeyHeader = [];
 
     public function setupPassport(): void
     {
@@ -32,5 +34,13 @@ abstract class TestCase extends BaseTestCase
         $user->user_privilege = User::USER_PRIVILEGE_USER;
         $user->save();
         $this->userApiKey = $user->createApiToken();
+    }
+
+    public function setupApiKey(): void
+    {
+        Config::set('apikey.app_api_key', 'test_key');
+        $this->apiKeyHeader = [
+            'X-API-KEY' => 'test_key'
+        ];
     }
 }

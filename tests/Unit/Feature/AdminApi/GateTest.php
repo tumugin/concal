@@ -16,11 +16,13 @@ class GateTest extends TestCase
         $this->setupPassport();
         $this->setupAdminUserAndLogin();
         $this->setupNormalUserAndLogin();
+        $this->setupApiKey();
     }
 
     public function testAdminUserCanUse()
     {
         $result = $this
+            ->withHeaders($this->apiKeyHeader)
             ->withToken($this->adminApiKey)
             ->getJson(URL::route('api.admin.info'));
         $result->assertStatus(200);
@@ -29,6 +31,7 @@ class GateTest extends TestCase
     public function testNormalUserCanNotUse()
     {
         $result = $this
+            ->withHeaders($this->apiKeyHeader)
             ->withToken($this->userApiKey)
             ->getJson(URL::route('api.admin.info'));
         $result->assertStatus(403);
@@ -37,6 +40,7 @@ class GateTest extends TestCase
     public function testUnauthorizedUserCanNotUse()
     {
         $result = $this
+            ->withHeaders($this->apiKeyHeader)
             ->getJson(URL::route('api.admin.info'));
         $result->assertStatus(401);
     }

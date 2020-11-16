@@ -15,11 +15,13 @@ class UserTest extends TestCase
         parent::setUp();
         $this->setupPassport();
         $this->setupAdminUserAndLogin();
+        $this->setupApiKey();
     }
 
     public function testGetAllUsers()
     {
         $result = $this
+            ->withHeaders($this->apiKeyHeader)
             ->withToken($this->adminApiKey)
             ->getJson(URL::route('api.admin.users.index', [
                 'page' => 1,
