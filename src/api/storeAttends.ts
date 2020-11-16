@@ -20,7 +20,7 @@ export async function getStoreAttend({
     startDate: string
     endDate: string
 }) {
-    const result = await Axios.get<StoreAttendResponse>(`http://localhost:9000/api/stores/${storeId}/attends`, {
+    const result = await Axios.get<StoreAttendResponse>(`/api/stores/${storeId}/attends`, {
         params: {
             startDate,
             endDate,
