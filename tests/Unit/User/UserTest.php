@@ -73,20 +73,4 @@ class UserTest extends TestCase
         $apiToken = $user->createApiToken();
         $this->assertNotEmpty($apiToken);
     }
-
-    public function testRevokeAllPersonalAccessTokens(): void
-    {
-        $user = factory(User::class)->create();
-        $user->createApiToken();
-        $this->assertEquals(1, $user->tokens->count());
-        $user->revokeAllPersonalAccessTokens();
-        $this->assertEquals(
-            0,
-            $user->tokens->where('revoked', '=', false)->count()
-        );
-        $this->assertEquals(
-            1,
-            $user->tokens->where('revoked', '=', true)->count()
-        );
-    }
 }

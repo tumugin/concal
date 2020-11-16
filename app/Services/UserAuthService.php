@@ -13,17 +13,13 @@ class UserAuthService
     /**
      * Auth::guardから現在ログイン中のユーザを取得する
      *
-     * @param string|null $guard_name
      * @return User
      */
-    public static function getCurrentUser($guard_name): User
+    public static function getCurrentUser(): User
     {
-        $user = Auth::guard($guard_name)->user();
+        $user = Auth::guard('api')->user();
         if ($user === null) {
             throw new \Exception('Must be logged in to get current user.');
-        }
-        if (!$user instanceof User) {
-            throw new \Exception('Invalid User class.');
         }
         return $user;
     }
@@ -36,11 +32,10 @@ class UserAuthService
      * @param string|null $user_name
      * @param string|null $mail_address
      * @param string $password
-     * @param string|null $guard_name
      * @return User
      * @throws LoginFailedException
      */
-    public static function attemptLogin(?string $user_name, ?string $mail_address, string $password, ?string $guard_name): User
+    public static function attemptLogin(?string $user_name, ?string $mail_address, string $password): User
     {
         Assert::stringNotEmpty($password);
         Assert::nullOrEmail($mail_address);
@@ -61,8 +56,8 @@ class UserAuthService
             'password' => $password,
         ], $credentials_fields);
 
-        if (Auth::guard($guard_name)->attempt($credentials)) {
-            return Auth::user();
+        if (Auth::guard('api')->attempt($credentials)) {
+            return Auth::guard('api')->user();
         }
         throw new LoginFailedException();
     }

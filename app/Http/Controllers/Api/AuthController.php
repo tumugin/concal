@@ -20,7 +20,7 @@ class AuthController extends Controller
         $password = $request->post('password');
 
         try {
-            $user = $userAuthService->attemptLogin($user_name, $email, $password, 'web');
+            $user = $userAuthService->attemptLogin($user_name, $email, $password, 'api');
             return [
                 'success' => true,
                 'apiToken' => $user->createApiToken(),
@@ -32,10 +32,8 @@ class AuthController extends Controller
         }
     }
 
-    public function revokeTokens(UserAuthService $userAuthService)
+    public function revokeTokens()
     {
-        $user = $userAuthService->getCurrentUser('api');
-        $user->revokeAllPersonalAccessTokens();
         return [
             'success' => true,
         ];

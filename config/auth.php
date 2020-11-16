@@ -47,12 +47,12 @@ return [
         ],
 
         'api' => [
-            'driver' => 'passport',
+            'driver' => 'jwt',
             'provider' => 'users',
         ],
 
         'admin_api' => [
-            'driver' => 'passport',
+            'driver' => 'jwt',
             'provider' => 'admin_users',
         ],
     ],

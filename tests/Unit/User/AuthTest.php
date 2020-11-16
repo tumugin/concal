@@ -17,8 +17,7 @@ class AuthTest extends TestCase
         $auth_user = UserAuthService::attemptLogin(
             $test_user->user_name,
             null,
-            'uju_macha_milk',
-            'web'
+            'uju_macha_milk'
         );
         $this->assertEquals(
             $test_user->getAttributes(),
@@ -26,7 +25,7 @@ class AuthTest extends TestCase
         );
         $this->assertEquals(
             $test_user->getAttributes(),
-            UserAuthService::getCurrentUser('web')->getAttributes()
+            UserAuthService::getCurrentUser()->getAttributes()
         );
     }
 
@@ -36,8 +35,7 @@ class AuthTest extends TestCase
         $auth_user = UserAuthService::attemptLogin(
             null,
             $test_user->email,
-            'uju_macha_milk',
-            'web'
+            'uju_macha_milk'
         );
         $this->assertEquals(
             $test_user->getAttributes(),
@@ -45,7 +43,7 @@ class AuthTest extends TestCase
         );
         $this->assertEquals(
             $test_user->getAttributes(),
-            UserAuthService::getCurrentUser('web')->getAttributes()
+            UserAuthService::getCurrentUser()->getAttributes()
         );
     }
 }

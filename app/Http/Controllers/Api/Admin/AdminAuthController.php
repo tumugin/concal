@@ -32,10 +32,8 @@ class AdminAuthController extends Controller
         }
     }
 
-    public function revokeTokens(AdminUserAuthService $userAuthService)
+    public function revokeTokens()
     {
-        $user = $userAuthService->getCurrentUser('admin_api');
-        $user->revokeAllPersonalAccessTokens();
         return [
             'success' => true,
         ];

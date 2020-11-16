@@ -34,7 +34,7 @@ class GateTest extends TestCase
             ->withHeaders($this->apiKeyHeader)
             ->withToken($this->userApiKey)
             ->getJson(URL::route('api.admin.info'));
-        $result->assertStatus(403);
+        $result->assertStatus(401);
     }
 
     public function testUnauthorizedUserCanNotUse()

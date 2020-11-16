@@ -19,6 +19,7 @@
         "sentry/sentry-laravel": "^2.2",
         "spiral/roadrunner": "^1.8",
         "spiral/roadrunner-laravel": "^3.6",
+        "tymon/jwt-auth": "^1.0",
         "webmozart/assert": "^1.9"
     },
     "require-dev": {

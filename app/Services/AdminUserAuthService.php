@@ -59,7 +59,7 @@ class AdminUserAuthService
         ], $credentials_fields);
 
         if (Auth::guard($guard_name)->attempt($credentials)) {
-            return Auth::user();
+            return Auth::guard($guard_name)->user();
         }
         throw new LoginFailedException();
     }
