@@ -34,19 +34,26 @@ Route::apiResource('casts.attends', 'Api\Casts\AttendsController')
     ->only(['index']);
 
 // admin apis
-Route::group(['middleware' => ['auth:api', 'can:has-admin-privilege'], 'prefix' => 'admin'], function () {
-    // info
-    Route::get('info', 'Api\Admin\AdminSystemInfoController')
-        ->name('api.admin.info');
-    // users
-    Route::apiResource('users', 'Api\Admin\AdminUserController', ['as' => 'api.admin']);
-    // stores
-    Route::apiResource('stores', 'Api\Admin\AdminStoreController', ['as' => 'api.admin']);
-    // store group
-    Route::apiResource('groups', 'Api\Admin\AdminStoreGroupController', ['as' => 'api.admin']);
-    // cast
-    Route::apiResource('casts', 'Api\Admin\AdminCastController', ['as' => 'api.admin']);
-    // cast attend
-    Route::apiResource('casts.attends', 'Api\Admin\AdminCastAttendController', ['as' => 'api.admin'])
-        ->shallow();
+Route::group(['prefix' => 'admin'], function () {
+    Route::post('/login', 'Api\Admin\AdminAuthController@login');
+
+    Route::group(['middleware' => ['auth:admin_api', 'can:has-admin-privilege']], function () {
+        // info
+        Route::get('info', 'Api\Admin\AdminSystemInfoController')
+            ->name('api.admin.info');
+        // users
+        Route::apiResource('users', 'Api\Admin\AdminUserController', ['as' => 'api.admin']);
+        // stores
+        Route::apiResource('stores', 'Api\Admin\AdminStoreController', ['as' => 'api.admin']);
+        // store group
+        Route::apiResource('groups', 'Api\Admin\AdminStoreGroupController', ['as' => 'api.admin']);
+        // cast
+        Route::apiResource('casts', 'Api\Admin\AdminCastController', ['as' => 'api.admin']);
+        // cast attend
+        Route::apiResource('casts.attends', 'Api\Admin\AdminCastAttendController', ['as' => 'api.admin'])
+            ->shallow();
+        // self
+        Route::post('/token/revoke', 'Api\Admin\AdminAuthController@revokeTokens');
+        Route::get('/self', 'Api\Admin\AdminAuthController@userInfo');
+    });
 });

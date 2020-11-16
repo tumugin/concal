@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Cast;
 use App\Models\CastAttend;
-use App\Services\UserAuthService;
+use App\Services\AdminUserAuthService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -74,7 +74,7 @@ class AdminCastAttendController extends Controller
         CastAttend::addAttendance(
             $cast->id,
             (int)$request->post('storeId'),
-            UserAuthService::getCurrentUser('api')->id,
+            AdminUserAuthService::getCurrentUser('admin_api')->id,
             Carbon::parse($request->post('startTime')),
             Carbon::parse($request->post('endTime')),
             $request->post('attendInfo') ?? ''
@@ -94,7 +94,7 @@ class AdminCastAttendController extends Controller
         ]);
         $cast_attend->updateAttendance(
             (int)$request->post('storeId'),
-            UserAuthService::getCurrentUser('api')->id,
+            AdminUserAuthService::getCurrentUser('admin_api')->id,
             Carbon::parse($request->post('startTime')),
             Carbon::parse($request->post('endTime')),
             $request->post('attendInfo') ?? ''
