@@ -22,8 +22,8 @@ class CreateAdminUsersTable extends Migration
             $table->string('user_privilege', 100);
             $table->rememberToken();
             $table->timestamps();
-            $table->index('user_name', 'user_name');
-            $table->index('email', 'email');
+            $table->index('user_name', 'admin_user_name');
+            $table->index('email', 'admin_email');
         });
     }
 

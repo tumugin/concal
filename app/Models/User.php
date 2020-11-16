@@ -110,16 +110,6 @@ class User extends Authenticatable
     }
 
     /**
-     * ユーザが管理者権限を持っているかどうか返す
-     *
-     * @return bool
-     */
-    public function isAdmin(): bool
-    {
-        return $this->user_privilege === self::USER_PRIVILEGE_ADMIN;
-    }
-
-    /**
      * 新しくAPIトークンを発行して発行されたトークンを返す
      *
      * @return string

@@ -101,7 +101,7 @@ class AdminUser extends Authenticatable
      */
     public function createApiToken(): string
     {
-        return $this->createToken('api_token')->accessToken;
+        return $this->createToken('admin_api_token')->accessToken;
     }
 
     /**

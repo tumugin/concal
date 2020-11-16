@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\User;
 
-use App\Models\User;
+use App\Models\AdminUser;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -19,14 +19,13 @@ class AdminGateTest extends TestCase
      */
     public function testAdminGate(array $test_user_data, bool $is_admin): void
     {
-        $created_user = User::createUser(
+        $created_user = AdminUser::createUser(
             $test_user_data['user_name'],
             $test_user_data['name'],
             $test_user_data['password'],
             $test_user_data['email'],
             $test_user_data['user_privilege']
         );
-        $this->assertEquals($is_admin, $created_user->isAdmin());
         Auth::login($created_user);
         $this->assertEquals(Gate::allows('has-admin-privilege'), $is_admin);
     }
@@ -41,20 +40,20 @@ class AdminGateTest extends TestCase
                     'name' => '東城アミナ',
                     'password' => 'Amina_12241224',
                     'email' => 'amina@example.com',
-                    'user_privilege' => User::USER_PRIVILEGE_ADMIN,
+                    'user_privilege' => AdminUser::USER_PRIVILEGE_ADMIN,
                 ],
                 true,
             ],
-            // 一般ユーザ
+            // 管理者ユーザ(更に強い)
             [
                 [
                     'user_name' => 'kana',
                     'name' => '葉山カナ',
                     'password' => 'kana_kana_Kana_1210',
                     'email' => 'kana@example.com',
-                    'user_privilege' => User::USER_PRIVILEGE_USER,
+                    'user_privilege' => AdminUser::USER_PRIVILEGE_SUPER_ADMIN,
                 ],
-                false,
+                true,
             ],
         ];
     }

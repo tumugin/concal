@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use App\Models\AdminUser;
 use App\Models\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
@@ -19,8 +20,8 @@ abstract class TestCase extends BaseTestCase
 
     public function setupAdminUserAndLogin(): void
     {
-        $user = factory(User::class)->create();
-        $user->user_privilege = User::USER_PRIVILEGE_ADMIN;
+        $user = factory(AdminUser::class)->create();
+        $user->user_privilege = AdminUser::USER_PRIVILEGE_SUPER_ADMIN;
         $user->save();
         $this->adminApiKey = $user->createApiToken();
     }
