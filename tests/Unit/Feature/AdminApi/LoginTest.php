@@ -1,12 +1,13 @@
 <?php
 
-namespace Feature;
+namespace Tests\Unit\Feature\AdminApi;
 
+use App\Models\AdminUser;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class ApiAuthControllerTest extends TestCase
+class LoginTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -25,17 +26,17 @@ class ApiAuthControllerTest extends TestCase
 
     public function testLoginWithEMail(): void
     {
-        User::createUser(
+        AdminUser::createUser(
             self::_TEST_USER_DATA['user_name'],
             self::_TEST_USER_DATA['name'],
             self::_TEST_USER_DATA['password'],
             self::_TEST_USER_DATA['email'],
-            User::USER_PRIVILEGE_USER
+            AdminUser::USER_PRIVILEGE_ADMIN
         );
         $response = $this
             ->withHeaders($this->apiKeyHeader)
             ->postJson(
-                '/api/login',
+                '/api/admin/login',
                 [
                     'email' => self::_TEST_USER_DATA['email'],
                     'password' => self::_TEST_USER_DATA['password'],
@@ -49,17 +50,17 @@ class ApiAuthControllerTest extends TestCase
 
     public function testLoginWithUserName(): void
     {
-        User::createUser(
+        AdminUser::createUser(
             self::_TEST_USER_DATA['user_name'],
             self::_TEST_USER_DATA['name'],
             self::_TEST_USER_DATA['password'],
             self::_TEST_USER_DATA['email'],
-            User::USER_PRIVILEGE_USER
+            AdminUser::USER_PRIVILEGE_ADMIN
         );
         $response = $this
             ->withHeaders($this->apiKeyHeader)
             ->postJson(
-                '/api/login',
+                '/api/admin/login',
                 [
                     'userName' => self::_TEST_USER_DATA['user_name'],
                     'password' => self::_TEST_USER_DATA['password'],
@@ -71,13 +72,37 @@ class ApiAuthControllerTest extends TestCase
         ]);
     }
 
-    public function testLoginFailed(): void
+    public function testCanNotLoginWithNormalUser(): void
     {
-        factory(User::class)->create();
+        User::createUser(
+            self::_TEST_USER_DATA['user_name'],
+            self::_TEST_USER_DATA['name'],
+            self::_TEST_USER_DATA['password'],
+            self::_TEST_USER_DATA['email'],
+            User::USER_PRIVILEGE_USER
+        );
         $response = $this
             ->withHeaders($this->apiKeyHeader)
             ->postJson(
-                '/api/login',
+                '/api/admin/login',
+                [
+                    'userName' => self::_TEST_USER_DATA['user_name'],
+                    'password' => self::_TEST_USER_DATA['password'],
+                ]
+            );
+        $response->assertStatus(401);
+        $response->assertJsonStructure([
+            'error',
+        ]);
+    }
+
+    public function testLoginFailed(): void
+    {
+        factory(AdminUser::class)->create();
+        $response = $this
+            ->withHeaders($this->apiKeyHeader)
+            ->postJson(
+                '/api/admin/login',
                 [
                     'userName' => 'hoge',
                     'password' => 'hoge',
