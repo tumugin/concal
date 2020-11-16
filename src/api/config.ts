@@ -9,5 +9,6 @@ export function setAxiosApiHost() {
     Axios.defaults.baseURL = API_HOST
     Axios.defaults.headers = {
         'X-API-KEY': API_KEY,
+        Accept: 'application/json',
     }
 }
