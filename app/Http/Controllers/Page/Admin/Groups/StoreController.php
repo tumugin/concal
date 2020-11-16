@@ -10,6 +10,6 @@ class StoreController extends Controller
 {
     public function create(StoreGroup $store_group)
     {
-        return SPAPageUtils::renderSPAPage();
+        return SPAPageUtils::renderAdminSPAPage();
     }
 }

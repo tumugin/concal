@@ -10,16 +10,16 @@ class UserController extends Controller
 {
     public function show(User $user)
     {
-        return SPAPageUtils::renderSPAPage();
+        return SPAPageUtils::renderAdminSPAPage();
     }
 
     public function index()
     {
-        return SPAPageUtils::renderSPAPage();
+        return SPAPageUtils::renderAdminSPAPage();
     }
 
     public function create()
     {
-        return SPAPageUtils::renderSPAPage();
+        return SPAPageUtils::renderAdminSPAPage();
     }
 }
