@@ -10,21 +10,27 @@ import { responsiveMobileMaxWidth } from 'styles/responsive'
 
 export function CastAttendCalendar({
     attends,
-    onYearMonthChange,
+    onYearMonthDateChange,
     year,
     month,
+    date,
 }: {
     attends: StoreAttendData[]
-    onYearMonthChange: (yearMonth: { year: number; month: number }) => void
+    onYearMonthDateChange: (yearMonth: { year: number; month: number; date: number }) => void
     year: number
     month: number
+    date: number
 }) {
     const localizer = getCalendarLocalizer()
     const onNavigate = useCallback(
         (newDate: Date) => {
-            onYearMonthChange({ year: newDate.getFullYear(), month: newDate.getMonth() + 1 })
+            onYearMonthDateChange({
+                year: newDate.getFullYear(),
+                month: newDate.getMonth() + 1,
+                date: newDate.getDate(),
+            })
         },
-        [onYearMonthChange]
+        [onYearMonthDateChange]
     )
     const events = useMemo(
         () =>
@@ -46,6 +52,7 @@ export function CastAttendCalendar({
     const calenderDate = dayjs()
         .year(year)
         .month(month - 1)
+        .date(date)
         .toDate()
 
     return (
@@ -63,7 +70,7 @@ export function CastAttendCalendar({
 }
 
 const CalenderWrapper = styled(Box)`
-    height: calc(100vh - 300px);
+    height: calc(100vh - 200px);
 
     @media screen and (max-width: ${responsiveMobileMaxWidth}) {
         height: 110vh;
