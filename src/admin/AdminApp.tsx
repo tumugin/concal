@@ -13,6 +13,7 @@ import '@sweetalert2/theme-dark/dark.scss'
 import 'toastr/build/toastr.css'
 import AdminPageRouter from 'admin/AdminPageRouter'
 import { AdminStoreProvider } from 'admin/store'
+import { GlobalStyle } from 'components/GlobalStyle'
 
 export function AdminApp() {
     return (
@@ -36,6 +37,7 @@ function AppWithStore() {
     return (
         <>
             <Normalize />
+            <GlobalStyle />
             <ThemeProvider theme={{ ...preset, ...deep }}>
                 <WrapperBox
                     sx={{
