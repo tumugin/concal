@@ -17,9 +17,10 @@ class CheckAdminHost
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->getHost() === Config::get('host.production_host')) {
-            abort(404);
+        if ($request->getHost() === Config::get('host.admin_host')) {
+            return $next($request);
         }
-        return $next($request);
+        abort(404);
+        return false;
     }
 }
