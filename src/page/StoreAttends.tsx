@@ -18,17 +18,23 @@ export default function StoreAttends() {
     const year = yearString ? parseInt(yearString) : dayjs().year()
     const monthString = query.get('month')
     const month = monthString ? parseInt(monthString) : dayjs().month() + 1
+    const dateString = query.get('date')
+    const date = dateString ? parseInt(dateString) : dayjs().date()
 
     const loadStoreAttends = useLoadStoreAttends({ storeId, year, month })
     const storeAttends = useStoreAttends({ storeId, year, month })
     const store = useStore(storeId)
     const loadStore = useLoadStore(storeId)
 
-    const onYearMonthChange = useCallback(
-        (yearMonth: { year: number; month: number }) => {
+    const onYearMonthDateChange = useCallback(
+        (yearMonth: { year: number; month: number; date: number }) => {
             history.push({
                 ...location,
-                search: new URLSearchParams({ year: `${yearMonth.year}`, month: `${yearMonth.month}` }).toString(),
+                search: new URLSearchParams({
+                    year: `${yearMonth.year}`,
+                    month: `${yearMonth.month}`,
+                    date: `${yearMonth.date}`,
+                }).toString(),
             })
         },
         [history, location]
@@ -55,9 +61,10 @@ export default function StoreAttends() {
             <PageWrapperForCalendar paddingTop={3}>
                 <CastAttendCalendar
                     attends={storeAttends ?? []}
-                    onYearMonthChange={onYearMonthChange}
+                    onYearMonthDateChange={onYearMonthDateChange}
                     year={year}
                     month={month}
+                    date={date}
                 />
             </PageWrapperForCalendar>
         </>

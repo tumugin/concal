@@ -27,26 +27,28 @@ Route::resource('login', '\App\Http\Controllers\Page\LoginController')
     ->only('index');
 
 // admin
-Route::resource('admin', '\App\Http\Controllers\Page\AdminController')
-    ->only(['index']);
-Route::group(['prefix' => 'admin'], function () {
-    Route::resource('login', '\App\Http\Controllers\Page\Admin\LoginController')
+Route::group(['middleware' => ['admin.allowed.host']], function () {
+    Route::resource('admin', '\App\Http\Controllers\Page\AdminController')
         ->only(['index']);
-    Route::resource('users', '\App\Http\Controllers\Page\Admin\UserController')
-        ->only(['show', 'index', 'create']);
-    Route::resource('groups', '\App\Http\Controllers\Page\Admin\StoreGroupController')
-        ->only(['show', 'index', 'create']);
-    Route::resource('groups.stores', '\App\Http\Controllers\Page\Admin\Groups\StoreController')
-        ->shallow()
-        ->only(['create']);
-    Route::resource('stores', '\App\Http\Controllers\Page\Admin\StoreController')
-        ->only(['show', 'index', 'create']);
-    Route::resource('casts', '\App\Http\Controllers\Page\Admin\CastController')
-        ->only(['show', 'index', 'create']);
-    Route::resource('casts.attends', '\App\Http\Controllers\Page\Admin\Casts\AttendController')
-        ->shallow()
-        ->only(['index']);
-    Route::resource('casts.stores', '\App\Http\Controllers\Page\Admin\Casts\StoreController')
-        ->shallow()
-        ->only(['index']);
+    Route::group(['prefix' => 'admin'], function () {
+        Route::resource('login', '\App\Http\Controllers\Page\Admin\LoginController')
+            ->only(['index']);
+        Route::resource('users', '\App\Http\Controllers\Page\Admin\UserController')
+            ->only(['show', 'index', 'create']);
+        Route::resource('groups', '\App\Http\Controllers\Page\Admin\StoreGroupController')
+            ->only(['show', 'index', 'create']);
+        Route::resource('groups.stores', '\App\Http\Controllers\Page\Admin\Groups\StoreController')
+            ->shallow()
+            ->only(['create']);
+        Route::resource('stores', '\App\Http\Controllers\Page\Admin\StoreController')
+            ->only(['show', 'index', 'create']);
+        Route::resource('casts', '\App\Http\Controllers\Page\Admin\CastController')
+            ->only(['show', 'index', 'create']);
+        Route::resource('casts.attends', '\App\Http\Controllers\Page\Admin\Casts\AttendController')
+            ->shallow()
+            ->only(['index']);
+        Route::resource('casts.stores', '\App\Http\Controllers\Page\Admin\Casts\StoreController')
+            ->shallow()
+            ->only(['index']);
+    });
 });
