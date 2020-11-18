@@ -7,7 +7,7 @@ import { PageWrapper } from 'components/PageWrapper'
 import { Box, Button, Heading } from 'rebass/styled-components'
 import { AdminInfoBoxWrapper } from 'admin/components/AdminInfoBoxWrapper'
 import { AdminInfoBox } from 'admin/components/AdminInfoBox'
-import { AdminInfoGrid } from 'admin/components/AdminInfoGrid'
+import { InfoGrid } from 'components/InfoGrid'
 import { Input, Label } from '@rebass/forms/styled-components'
 import { BootstrapLikeColors } from 'utils/bootstrapLike'
 import toastr from 'toastr'
@@ -120,7 +120,7 @@ export default function ManageStore() {
             <Heading>店舗管理</Heading>
             <AdminInfoBoxWrapper>
                 <AdminInfoBox header="店舗情報">
-                    <AdminInfoGrid
+                    <InfoGrid
                         data={[
                             {
                                 name: '店舗名',

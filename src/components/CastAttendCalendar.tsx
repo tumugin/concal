@@ -7,6 +7,8 @@ import styled from 'styled-components'
 import { Box } from 'rebass/styled-components'
 import 'styles/react-big-calendar-dark.scss'
 import { responsiveMobileMaxWidth } from 'styles/responsive'
+import { ReactSwal } from 'components/swal'
+import { InfoGrid } from 'components/InfoGrid'
 
 export function CastAttendCalendar({
     attends,
@@ -35,6 +37,7 @@ export function CastAttendCalendar({
     const events = useMemo(
         () =>
             attends.map((attend) => ({
+                rawAttendData: attend,
                 title: attend.cast.castShortName ?? attend.cast.castName,
                 start: dayjs(attend.startTime).toDate(),
                 end: dayjs(attend.endTime).toDate(),
@@ -49,6 +52,41 @@ export function CastAttendCalendar({
             },
         }
     }, [])
+    const onSelectEvent = useCallback((event: typeof events[0]) => {
+        ReactSwal.fire({
+            title: 'キャスト出勤情報',
+            html: (
+                <InfoGrid
+                    data={[
+                        {
+                            name: 'キャスト名',
+                            value: (
+                                <DialogLink
+                                    href={`/casts/${event.rawAttendData.cast.id}`}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    {event.rawAttendData.cast.castName}
+                                </DialogLink>
+                            ),
+                        },
+                        {
+                            name: '出勤開始時間',
+                            value: dayjs(event.rawAttendData.startTime).format('YYYY/MM/DD HH:mm'),
+                        },
+                        { name: '出勤終了時間', value: dayjs(event.rawAttendData.endTime).format('YYYY/MM/DD HH:mm') },
+                        {
+                            name: '出勤情報',
+                            value: event.rawAttendData.attendInfo === '' ? '(未設定)' : event.rawAttendData.attendInfo,
+                        },
+                    ]}
+                />
+            ),
+            showCloseButton: true,
+            showConfirmButton: false,
+        })
+    }, [])
+
     const calenderDate = dayjs()
         .year(year)
         .month(month - 1)
@@ -63,11 +101,16 @@ export function CastAttendCalendar({
                 onNavigate={onNavigate}
                 eventPropGetter={eventStyleGetter}
                 date={calenderDate}
+                onSelectEvent={onSelectEvent}
                 popup
             />
         </CalenderWrapper>
     )
 }
+
+const DialogLink = styled.a`
+    color: inherit;
+`
 
 const CalenderWrapper = styled(Box)`
     height: calc(100vh - 200px);

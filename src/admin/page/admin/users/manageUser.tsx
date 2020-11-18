@@ -5,7 +5,7 @@ import { useHistory, useParams } from 'react-router-dom'
 import { deleteUser, getUser, updateUser, UserData } from 'admin/api/users'
 import { useApiToken } from 'admin/store/user'
 import { unreachableCode } from 'types/util'
-import { AdminInfoGrid } from 'admin/components/AdminInfoGrid'
+import { InfoGrid } from 'components/InfoGrid'
 import { Badge } from 'components/Badge'
 import { AdminInfoBox } from 'admin/components/AdminInfoBox'
 import { AdminInfoBoxWrapper } from 'admin/components/AdminInfoBoxWrapper'
@@ -146,7 +146,7 @@ export default function ManageUser() {
             <Heading>ユーザ管理</Heading>
             <AdminInfoBoxWrapper>
                 <AdminInfoBox header="ユーザ情報">
-                    <AdminInfoGrid
+                    <InfoGrid
                         data={[
                             {
                                 name: 'DB上のID',
