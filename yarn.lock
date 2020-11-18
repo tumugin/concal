@@ -7628,6 +7628,7 @@ __metadata:
     styled-components: ^5.2.1
     styled-normalize: ^8.0.7
     sweetalert2: ^10.9.0
+    sweetalert2-react-content: ^3.2.1
     thread-loader: ^3.0.1
     toastr: ^2.1.4
     ts-jest: ^26.4.3
@@ -20661,6 +20662,17 @@ fsevents@^1.2.7:
   bin:
     svgo: ./bin/svgo
   checksum: e1659738423f625561fa23769d0a010f5ba08e83926ce697491153fa29a8cb2452fa5abb14c1bb489aa186718856f8768d4da870210a79302d47535c57c30d30
+  languageName: node
+  linkType: hard
+
+"sweetalert2-react-content@npm:^3.2.1":
+  version: 3.2.1
+  resolution: "sweetalert2-react-content@npm:3.2.1"
+  peerDependencies:
+    react: ^16.0.0
+    react-dom: ^16.0.0
+    sweetalert2: ^9.7.0 || ^10.0.0
+  checksum: de4ca222be4137a119e63b8f9aaa0dd127bc9426e38222f3c5619a2e4b6a5f2136d9e409d8ca086120256d7272390a5137a17014f75658119120f65ce5f2f8cd
   languageName: node
   linkType: hard
 

@@ -1,4 +1,4 @@
-import { AdminInfoGrid } from 'admin/components/AdminInfoGrid'
+import { InfoGrid } from 'components/InfoGrid'
 import { Input, Select } from '@rebass/forms/styled-components'
 import { Box, Button, Flex } from 'rebass/styled-components'
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
@@ -103,7 +103,7 @@ export function CastAttendAddEditor({
 
     return (
         <Box>
-            <AdminInfoGrid
+            <InfoGrid
                 data={[
                     {
                         name: '出勤店舗',

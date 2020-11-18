@@ -3,9 +3,11 @@ import React from 'react'
 import styled from 'styled-components'
 import { responsiveMobileMaxWidth } from 'styles/responsive'
 
+const pageMaxWidth = '1600px'
+
 export function PageWrapper({ children }: { children: React.ReactNode }) {
     return (
-        <ResponsiveBox p={4} sx={{ marginLeft: 'auto', marginRight: 'auto', maxWidth: '1600px' }}>
+        <ResponsiveBox p={4} sx={{ marginLeft: 'auto', marginRight: 'auto', maxWidth: pageMaxWidth }}>
             {children}
         </ResponsiveBox>
     )
@@ -30,7 +32,7 @@ export const PageWrapperForCalendar = styled(Box)`
     padding: ${({ theme }) => theme.space[4]}px;
     margin-left: auto;
     margin-right: auto;
-    max-width: 1600px;
+    max-width: ${pageMaxWidth};
 
     @media screen and (max-width: ${responsiveMobileMaxWidth}) {
         padding-left: 0;

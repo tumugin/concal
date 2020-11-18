@@ -38,6 +38,7 @@ function AppWithStore() {
             <ThemeProvider theme={{ ...preset, ...deep }}>
                 <WrapperBox
                     sx={{
+                        'font-family': 'sans-serif, system-ui',
                         color: 'text',
                         bg: 'background',
                         fontWeight: 'body',

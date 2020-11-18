@@ -6,7 +6,7 @@ import { useCast, useLoadCast } from 'store/cast'
 import { Grid250 } from 'components/Grid250'
 import styled from 'styled-components'
 import { StoreLinkBox } from 'components/StoreLinkBox'
-import { AdminInfoGrid } from 'admin/components/AdminInfoGrid'
+import { InfoGrid } from 'components/InfoGrid'
 import { Link as RebassLink } from 'rebass/styled-components'
 import { CastColorBlock } from 'components/CastColorBlock'
 import { AttendInfoBox } from 'components/AttendInfoBox'
@@ -36,7 +36,7 @@ export default function Cast() {
                 キャストプロフィール
             </Heading>
             {cast.castDisabled && <Note color={BootstrapLikeColors.alert}>このキャストは既に卒業しています</Note>}
-            <AdminInfoGrid
+            <InfoGrid
                 data={[
                     {
                         name: '在籍店舗グループ',

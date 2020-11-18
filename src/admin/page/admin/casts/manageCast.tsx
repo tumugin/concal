@@ -6,7 +6,7 @@ import { useApiToken } from 'admin/store/user'
 import { CastData, deleteCast, getCast, updateCast } from 'admin/api/casts'
 import { useHistory, useParams } from 'react-router-dom'
 import { AdminInfoBox } from 'admin/components/AdminInfoBox'
-import { AdminInfoGrid } from 'admin/components/AdminInfoGrid'
+import { InfoGrid } from 'components/InfoGrid'
 import { AdminInfoBoxWrapper, AdminVerticalButtonLink, AdminVerticalButtons } from 'admin/components/AdminInfoBoxWrapper'
 import { Badge } from 'components/Badge'
 import { Input, Label } from '@rebass/forms/styled-components'
@@ -110,7 +110,7 @@ export default function ManageCast() {
             <Heading>キャスト管理</Heading>
             <AdminInfoBoxWrapper>
                 <AdminInfoBox header="キャスト情報">
-                    <AdminInfoGrid
+                    <InfoGrid
                         data={[
                             {
                                 name: 'ID',
