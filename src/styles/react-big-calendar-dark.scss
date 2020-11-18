@@ -9,9 +9,8 @@ $border-color: rgb(187, 153, 255);
 $segment-width: percentage(1 / 7);
 
 $time-selection-color: white;
-$time-selection-bg-color: rgba(0, 0, 0, .50);
-$date-selection-bg-color: rgba(0, 0, 0, .10);
-
+$time-selection-bg-color: rgba(0, 0, 0, 0.5);
+$date-selection-bg-color: rgba(0, 0, 0, 0.1);
 
 $event-bg: darken(hsl(260, 100%, 80%), 10%);
 $event-border: darken(hsl(260, 100%, 80%), 20%);
@@ -29,8 +28,8 @@ $current-time-color: #74ad31;
 
 $rbc-css-prefix: rbc-i;
 
-$today-highlight-bg: rgba(0, 0, 0, .50);
-$out-of-range-bg-color: rgba(0, 0, 0, .20);
+$today-highlight-bg: rgba(0, 0, 0, 0.5);
+$out-of-range-bg-color: rgba(0, 0, 0, 0.2);
 
 @import 'node_modules/react-big-calendar/lib/sass/styles';
 
@@ -40,15 +39,16 @@ $out-of-range-bg-color: rgba(0, 0, 0, .20);
     }
 }
 
-.rbc-time-view{
+.rbc-time-view {
     overflow: auto;
 }
 
-.rbc-time-content, .rbc-time-header {
+.rbc-time-content,
+.rbc-time-header {
     min-width: 1000px;
 }
 
-.rbc-toolbar{
+.rbc-toolbar {
     @media screen and (max-width: 600px) {
         display: grid;
         grid-auto-flow: row;
