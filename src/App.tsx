@@ -12,6 +12,7 @@ import { Box } from 'rebass/styled-components'
 import { Normalize } from 'styled-normalize'
 import { useSavedUserLogin } from 'store/user'
 import '@sweetalert2/theme-dark/dark.scss'
+import { GlobalStyle } from 'components/GlobalStyle'
 
 export function App() {
     return (
@@ -35,10 +36,10 @@ function AppWithStore() {
     return (
         <>
             <Normalize />
+            <GlobalStyle />
             <ThemeProvider theme={{ ...preset, ...deep }}>
                 <WrapperBox
                     sx={{
-                        'font-family': 'sans-serif, system-ui',
                         color: 'text',
                         bg: 'background',
                         fontWeight: 'body',
