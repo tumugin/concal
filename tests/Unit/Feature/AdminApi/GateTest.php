@@ -14,8 +14,27 @@ class GateTest extends TestCase
     {
         parent::setUp();
         $this->setupAdminUserAndLogin();
+        $this->setupSuperAdminUserAndLogin();
         $this->setupNormalUserAndLogin();
         $this->setupApiKey();
+    }
+
+    public function testSuperAdminUserCanUse()
+    {
+        $result = $this
+            ->withHeaders($this->apiKeyHeader)
+            ->withToken($this->superAdminApiKey)
+            ->getJson(URL::route('api.admin.admin_users.index'));
+        $result->assertStatus(200);
+    }
+
+    public function testNormalAdminUserCanNotUse()
+    {
+        $result = $this
+            ->withHeaders($this->apiKeyHeader)
+            ->withToken($this->adminApiKey)
+            ->getJson(URL::route('api.admin.admin_users.index'));
+        $result->assertStatus(403);
     }
 
     public function testAdminUserCanUse()

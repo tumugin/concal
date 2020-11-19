@@ -12,15 +12,24 @@ abstract class TestCase extends BaseTestCase
     use CreatesApplication;
 
     protected ?string $adminApiKey = null;
+    protected ?string $superAdminApiKey = null;
     protected ?string $userApiKey = null;
     protected array $apiKeyHeader = [];
 
     public function setupAdminUserAndLogin(): void
     {
         $user = factory(AdminUser::class)->create();
-        $user->user_privilege = AdminUser::USER_PRIVILEGE_SUPER_ADMIN;
+        $user->user_privilege = AdminUser::USER_PRIVILEGE_ADMIN;
         $user->save();
         $this->adminApiKey = $user->createApiToken();
+    }
+
+    public function setupSuperAdminUserAndLogin(): void
+    {
+        $user = factory(AdminUser::class)->create();
+        $user->user_privilege = AdminUser::USER_PRIVILEGE_SUPER_ADMIN;
+        $user->save();
+        $this->superAdminApiKey = $user->createApiToken();
     }
 
     public function setupNormalUserAndLogin(): void

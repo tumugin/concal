@@ -12,11 +12,11 @@ class AdminGateProvider extends ServiceProvider
     public function boot()
     {
         Gate::define('has-admin-privilege', function ($user) {
-            return $user instanceof AdminUser ? Response::allow() : Response::deny(null, 404);
+            return $user instanceof AdminUser ? Response::allow() : Response::deny(null, 403);
         });
         Gate::define('has-super-admin-privilege', function ($user) {
             return $user instanceof AdminUser && $user->user_privilege === AdminUser::USER_PRIVILEGE_SUPER_ADMIN ?
-                Response::allow() : Response::deny(null, 404);
+                Response::allow() : Response::deny(null, 403);
         });
     }
 }
