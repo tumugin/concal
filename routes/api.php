@@ -53,5 +53,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin.allowed.host'], functi
             ->shallow();
         // self
         Route::get('/self', 'Api\Admin\AdminAuthController@userInfo');
+        // only for super_admin
+        Route::group(['middleware' => ['can:has-super-admin-privilege']], function () {
+            // admin_users
+            Route::apiResource('admin_users', 'Api\Admin\AdminAdminUserController', ['as' => 'api.admin']);
+        });
     });
 });
