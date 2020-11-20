@@ -35,6 +35,8 @@ Route::group(['middleware' => ['admin.allowed.host']], function () {
             ->only(['index']);
         Route::resource('users', '\App\Http\Controllers\Page\Admin\UserController')
             ->only(['show', 'index', 'create']);
+        Route::resource('admin_users', '\App\Http\Controllers\Page\Admin\AdminUserController')
+            ->only(['show', 'index', 'create']);
         Route::resource('groups', '\App\Http\Controllers\Page\Admin\StoreGroupController')
             ->only(['show', 'index', 'create']);
         Route::resource('groups.stores', '\App\Http\Controllers\Page\Admin\Groups\StoreController')
