@@ -143,7 +143,7 @@ export default function ManageAdminUser() {
 
     return (
         <PageWrapper>
-            <Heading>ユーザ管理</Heading>
+            <Heading>管理者ユーザ管理</Heading>
             <AdminInfoBoxWrapper>
                 <AdminInfoBox header="ユーザ情報">
                     <InfoGrid
