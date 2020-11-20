@@ -126,13 +126,13 @@ export default function CreateAdminUser() {
                             />
                             一般管理者ユーザ
                         </Label>
-                        <Label>
+                        <Label ml={2}>
                             <Radio
                                 name="userPrivilege"
                                 onChange={() => setUserPrivilege('super_admin')}
                                 checked={userPrivilege === 'super_admin'}
                             />
-                            特権管理者ユーザ(ユーザ管理などが可能)
+                            特権管理者ユーザ
                         </Label>
                     </Flex>
                 </Box>
