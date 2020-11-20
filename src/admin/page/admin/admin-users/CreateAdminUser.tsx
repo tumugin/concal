@@ -121,8 +121,8 @@ export default function CreateAdminUser() {
                         <Label>
                             <Radio
                                 name="userPrivilege"
-                                onChange={() => setUserPrivilege('super_admin')}
-                                checked={userPrivilege === 'super_admin'}
+                                onChange={() => setUserPrivilege('admin')}
+                                checked={userPrivilege === 'admin'}
                             />
                             一般管理者ユーザ
                         </Label>
