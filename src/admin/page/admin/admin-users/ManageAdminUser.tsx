@@ -166,7 +166,12 @@ export default function ManageAdminUser() {
                             },
                             {
                                 name: 'ユーザ権限',
-                                value: <Badge type="success">一般ユーザ</Badge>,
+                                value:
+                                    userData.userPrivilege === 'super_admin' ? (
+                                        <Badge type="danger">特権管理者ユーザ</Badge>
+                                    ) : (
+                                        <Badge type="success">管理者ユーザ</Badge>
+                                    ),
                             },
                         ]}
                     />
@@ -221,8 +226,8 @@ export default function ManageAdminUser() {
                     <Button onClick={updateUserAuthInfo}>変更を反映する</Button>
                 </AdminInfoBox>
                 <AdminInfoBox header="ユーザレベル変更" type="danger">
-                    <Flex css={{ width: 'fit-content' }}>
-                        <Label>
+                    <Flex>
+                        <Label css={{ width: 'fit-content' }}>
                             <Radio
                                 name="userPrivilege"
                                 onChange={() => setUserPrivilege('admin')}
@@ -230,7 +235,7 @@ export default function ManageAdminUser() {
                             />
                             一般ユーザ
                         </Label>
-                        <Label>
+                        <Label css={{ width: 'fit-content' }} ml={2}>
                             <Radio
                                 name="userPrivilege"
                                 onChange={() => setUserPrivilege('super_admin')}
