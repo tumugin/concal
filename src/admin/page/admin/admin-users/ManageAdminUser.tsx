@@ -122,7 +122,7 @@ export default function ManageAdminUser() {
                     { apiToken: apiToken ?? unreachableCode() },
                     { userId: userData?.id ?? unreachableCode() }
                 )
-                history.push('/admin/users')
+                history.push('/admin/admin_users')
                 toastr.success('ユーザを削除しました')
             } catch {
                 await Swal.fire('エラー', 'APIエラーが発生しました', 'error')
