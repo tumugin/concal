@@ -3,9 +3,13 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { Forbidden } from 'page/Forbidden'
 import { useUser } from 'admin/store/user'
 import { AdminNavBar } from 'admin/components/AdminNavBar'
+import AdminAdminUsers from 'admin/page/admin/admin-users'
+import CreateAdminUser from 'admin/page/admin/admin-users/CreateAdminUser'
+import ManageAdminUser from 'admin/page/admin/admin-users/ManageAdminUser'
 
 export default function AdminPageRouter() {
     const isAdmin = useUser().self?.userPrivilege !== undefined
+    const isSuperAdmin = useUser().self?.userPrivilege === 'super_admin'
     const AdminCasts = React.lazy(() => import('admin/page/admin/casts'))
     const AdminGroups = React.lazy(() => import('admin/page/admin/groups'))
     const AdminStores = React.lazy(() => import('admin/page/admin/stores'))
@@ -33,6 +37,13 @@ export default function AdminPageRouter() {
                     <Route path="/admin/users" component={isAdmin ? AdminUsers : Forbidden} exact />
                     <Route path="/admin/users/create" component={isAdmin ? CreateUser : Forbidden} exact />
                     <Route path="/admin/users/:id" component={isAdmin ? ManageUser : Forbidden} exact />
+                    <Route path="/admin/admin_users" component={isSuperAdmin ? AdminAdminUsers : Forbidden} exact />
+                    <Route
+                        path="/admin/admin_users/create"
+                        component={isSuperAdmin ? CreateAdminUser : Forbidden}
+                        exact
+                    />
+                    <Route path="/admin/admin_users/:id" component={isSuperAdmin ? ManageAdminUser : Forbidden} exact />
                     <Route path="/admin/casts" component={isAdmin ? AdminCasts : Forbidden} exact />
                     <Route path="/admin/casts/create" component={isAdmin ? CreateCast : Forbidden} exact />
                     <Route path="/admin/casts/:id" component={isAdmin ? ManageCast : Forbidden} exact />

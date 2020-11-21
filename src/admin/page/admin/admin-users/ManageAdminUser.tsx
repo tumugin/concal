@@ -1,34 +1,34 @@
+import { useHistory, useParams } from 'react-router-dom'
+import { useApiToken } from 'admin/store/user'
+import React, { useCallback, useEffect, useState } from 'react'
+import Generate from 'generate-password'
+import { unreachableCode } from 'types/util'
+import toastr from 'toastr'
+import Swal from 'sweetalert2'
 import { PageWrapper } from 'components/PageWrapper'
 import { Button, Flex, Heading } from 'rebass/styled-components'
-import React, { useCallback, useEffect, useState } from 'react'
-import { useHistory, useParams } from 'react-router-dom'
-import { deleteUser, getUser, updateUser, UserData } from 'admin/api/users'
-import { useApiToken } from 'admin/store/user'
-import { unreachableCode } from 'types/util'
+import { AdminInfoBoxWrapper } from 'admin/components/AdminInfoBoxWrapper'
+import { AdminInfoBox } from 'admin/components/AdminInfoBox'
 import { InfoGrid } from 'components/InfoGrid'
 import { Badge } from 'components/Badge'
-import { AdminInfoBox } from 'admin/components/AdminInfoBox'
-import { AdminInfoBoxWrapper } from 'admin/components/AdminInfoBoxWrapper'
 import { Input, Label } from '@rebass/forms/styled-components'
 import { Note } from 'components/Note'
 import { Radio } from '@rebass/forms'
-import Generate from 'generate-password'
 import { BootstrapLikeColors } from 'utils/bootstrapLike'
-import toastr from 'toastr'
-import Swal from 'sweetalert2'
+import { AdminUserData, deleteAdminUser, getAdminUser, updateAdminUser } from 'admin/api/admin-users'
 
-export default function ManageUser() {
+export default function ManageAdminUser() {
     const history = useHistory()
     const apiToken = useApiToken()
     const { id } = useParams<{ id: string }>()
-    const [userData, setUserData] = useState<UserData | null>(null)
+    const [userData, setUserData] = useState<AdminUserData | null>(null)
 
     const [isLoading, setIsLoading] = useState(false)
     const [email, setEmail] = useState('')
     const [userName, setUserName] = useState('')
     const [name, setName] = useState('')
     const [password, setPassword] = useState('')
-    const [userPrivilege, setUserPrivilege] = useState<'user'>('user')
+    const [userPrivilege, setUserPrivilege] = useState<'admin' | 'super_admin'>('admin')
 
     const onGeneratePassword = useCallback(() => {
         setPassword(
@@ -44,7 +44,7 @@ export default function ManageUser() {
 
     const fetchPageData = useCallback(
         async (id: string) => {
-            const result = await getUser({ apiToken: apiToken ?? unreachableCode() }, { userId: parseInt(id) })
+            const result = await getAdminUser({ apiToken: apiToken ?? unreachableCode() }, { userId: parseInt(id) })
             setUserData(result.user)
             setEmail(result.user.email)
             setUserName(result.user.userName)
@@ -57,7 +57,7 @@ export default function ManageUser() {
     const updateUserBasicInfo = useCallback(async () => {
         setIsLoading(true)
         try {
-            await updateUser(
+            await updateAdminUser(
                 { apiToken: apiToken ?? unreachableCode() },
                 {
                     userId: userData?.id ?? unreachableCode(),
@@ -76,7 +76,7 @@ export default function ManageUser() {
     const updateUserAuthInfo = useCallback(async () => {
         setIsLoading(true)
         try {
-            await updateUser(
+            await updateAdminUser(
                 { apiToken: apiToken ?? unreachableCode() },
                 {
                     userId: userData?.id ?? unreachableCode(),
@@ -93,7 +93,7 @@ export default function ManageUser() {
     const updateUserPrivilege = useCallback(async () => {
         setIsLoading(true)
         try {
-            await updateUser(
+            await updateAdminUser(
                 { apiToken: apiToken ?? unreachableCode() },
                 {
                     userId: userData?.id ?? unreachableCode(),
@@ -118,11 +118,11 @@ export default function ManageUser() {
         })
         if (dialogResult.isConfirmed) {
             try {
-                await deleteUser(
+                await deleteAdminUser(
                     { apiToken: apiToken ?? unreachableCode() },
                     { userId: userData?.id ?? unreachableCode() }
                 )
-                history.push('/admin/users')
+                history.push('/admin/admin_users')
                 toastr.success('ユーザを削除しました')
             } catch {
                 await Swal.fire('エラー', 'APIエラーが発生しました', 'error')
@@ -143,7 +143,7 @@ export default function ManageUser() {
 
     return (
         <PageWrapper>
-            <Heading>ユーザ管理</Heading>
+            <Heading>管理者ユーザ管理</Heading>
             <AdminInfoBoxWrapper>
                 <AdminInfoBox header="ユーザ情報">
                     <InfoGrid
@@ -166,7 +166,12 @@ export default function ManageUser() {
                             },
                             {
                                 name: 'ユーザ権限',
-                                value: <Badge type="success">一般ユーザ</Badge>,
+                                value:
+                                    userData.userPrivilege === 'super_admin' ? (
+                                        <Badge type="danger">特権管理者ユーザ</Badge>
+                                    ) : (
+                                        <Badge type="success">管理者ユーザ</Badge>
+                                    ),
                             },
                         ]}
                     />
@@ -221,17 +226,25 @@ export default function ManageUser() {
                     <Button onClick={updateUserAuthInfo}>変更を反映する</Button>
                 </AdminInfoBox>
                 <AdminInfoBox header="ユーザレベル変更" type="danger">
-                    <Flex css={{ width: 'fit-content' }}>
-                        <Label>
+                    <Flex>
+                        <Label css={{ width: 'fit-content' }}>
                             <Radio
                                 name="userPrivilege"
-                                onChange={() => setUserPrivilege('user')}
-                                checked={userPrivilege === 'user'}
+                                onChange={() => setUserPrivilege('admin')}
+                                checked={userPrivilege === 'admin'}
                             />
                             一般ユーザ
                         </Label>
+                        <Label css={{ width: 'fit-content' }} ml={2}>
+                            <Radio
+                                name="userPrivilege"
+                                onChange={() => setUserPrivilege('super_admin')}
+                                checked={userPrivilege === 'super_admin'}
+                            />
+                            特権管理者ユーザ
+                        </Label>
                     </Flex>
-                    <Note tight>現状は一般ユーザしかない</Note>
+                    <Note tight>特権管理者ユーザーはユーザの管理などが出来る</Note>
                     <Button bg={BootstrapLikeColors.danger} onClick={updateUserPrivilege}>
                         変更を反映する
                     </Button>

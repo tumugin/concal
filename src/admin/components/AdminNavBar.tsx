@@ -10,6 +10,7 @@ export function AdminNavBar() {
     const history = useHistory()
     const logout = useUserLogout()
     const user = useUser()
+    const isSuperAdmin = user.self?.userPrivilege === 'super_admin'
     const isLoggedIn = user.isLoggedIn
     const userName = user?.self?.name
 
@@ -65,6 +66,11 @@ export function AdminNavBar() {
                     <AdminMenuText p={2} fontWeight="bold">
                         管理者メニュー
                     </AdminMenuText>
+                    {isSuperAdmin && (
+                        <TitleLink to="/admin/admin_users">
+                            <AdminMenuText p={2}>管理者ユーザ管理</AdminMenuText>
+                        </TitleLink>
+                    )}
                     <TitleLink to="/admin/users">
                         <AdminMenuText p={2}>ユーザ管理</AdminMenuText>
                     </TitleLink>

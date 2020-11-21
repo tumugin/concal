@@ -44,20 +44,20 @@ class AdminAdminUserController extends Controller
         ];
     }
 
-    public function destroy(AdminUser $user)
+    public function destroy(AdminUser $admin_user)
     {
-        if ($user === null) {
+        if ($admin_user === null) {
             return response([
                 'error' => 'User not found.',
             ])->setStatusCode(404);
         }
-        $user->delete();
+        $admin_user->delete();
         return [
             'success' => true,
         ];
     }
 
-    public function update(Request $request, AdminUser $user)
+    public function update(Request $request, AdminUser $admin_user)
     {
         $request->validate([
             'userName' => 'string',
@@ -66,12 +66,12 @@ class AdminAdminUserController extends Controller
             'email' => 'email:rfc',
             'user_privilege' => 'string',
         ]);
-        if ($user === null) {
+        if ($admin_user === null) {
             return response([
                 'error' => 'User not found.',
             ])->setStatusCode(404);
         }
-        $user->updateUserInfo([
+        $admin_user->updateUserInfo([
             'user_name' => $request->post('userName'),
             'name' => $request->post('name'),
             'password' => $request->post('password'),
@@ -83,16 +83,16 @@ class AdminAdminUserController extends Controller
         ];
     }
 
-    public function show(AdminUser $user)
+    public function show(AdminUser $admin_user)
     {
-        if ($user === null) {
+        if ($admin_user === null) {
             return response([
                 'error' => 'User not found.',
             ])->setStatusCode(404);
         }
         return [
             'success' => true,
-            'user' => $user->getAdminAttributes(),
+            'user' => $admin_user->getAdminAttributes(),
         ];
     }
 }
