@@ -44,6 +44,16 @@ class StoreGroup extends Model
         return $this->getAdminAttributes();
     }
 
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleting(function ($model) {
+            foreach ($model->stores->get() as $child) {
+                $child->delete();
+            }
+        });
+    }
+
     public function stores(): HasMany
     {
         return $this->hasMany(Store::class);

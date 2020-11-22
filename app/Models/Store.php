@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
 use Webmozart\Assert\Assert;
@@ -71,6 +72,16 @@ class Store extends Model
         return $this->getAdminAttributes();
     }
 
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleting(function ($model) {
+            foreach ($model->castAttends->get() as $child) {
+                $child->delete();
+            }
+        });
+    }
+
     /**
      * キャストをこの店舗に在籍させる
      *
@@ -85,6 +96,14 @@ class Store extends Model
     }
 
     /**
+     * この店舗への出勤を取得する
+     */
+    public function castAttends(): HasMany
+    {
+        return $this->hasMany(CastAttend::class);
+    }
+
+    /**
      * 在籍しているキャストを取得する
      */
     public function casts(): BelongsToMany
@@ -94,8 +113,6 @@ class Store extends Model
 
     /**
      * 所属している店舗のグループを取得する
-     *
-     * @return BelongsTo
      */
     public function storeGroup(): BelongsTo
     {
