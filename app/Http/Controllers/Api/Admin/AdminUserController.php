@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreUser;
+use App\Http\Requests\Admin\UpdateUser;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AdminUserController extends Controller
 {
@@ -23,22 +25,17 @@ class AdminUserController extends Controller
         ];
     }
 
-    public function store(Request $request)
+    public function store(StoreUser $request)
     {
-        $request->validate([
-            'userName' => 'required|string',
-            'name' => 'required|string',
-            'password' => 'required|string',
-            'email' => 'required|email:rfc',
-            'userPrivilege' => 'required|string',
+        $request->validate();
+        $user = new User([
+            'user_name' => $request->post('userName'),
+            'name' => $request->post('name'),
+            'password' => Hash::make($request->post('password')),
+            'email' => $request->post('email'),
+            'user_privilege' => $request->post('userPrivilege'),
         ]);
-        $user = User::createUser(
-            $request->post('userName'),
-            $request->post('name'),
-            $request->post('password'),
-            $request->post('email'),
-            $request->post('userPrivilege')
-        );
+        $user->save();
         return [
             'success' => true,
             'id' => $user->id,
@@ -47,38 +44,31 @@ class AdminUserController extends Controller
 
     public function destroy(User $user)
     {
-        if ($user === null) {
-            return response([
-                'error' => 'User not found.',
-            ])->setStatusCode(404);
-        }
         $user->delete();
         return [
             'success' => true,
         ];
     }
 
-    public function update(Request $request, User $user)
+    public function update(UpdateUser $request, User $user)
     {
-        $request->validate([
-            'userName' => 'string',
-            'name' => 'string',
-            'password' => 'string',
-            'email' => 'email:rfc',
-            'user_privilege' => 'string',
-        ]);
-        if ($user === null) {
-            return response([
-                'error' => 'User not found.',
-            ])->setStatusCode(404);
+        $request->validate();
+        if ($request->post('userName') !== null) {
+            $user->user_name = $request->post('userName');
         }
-        $user->updateUserInfo([
-            'user_name' => $request->post('userName'),
-            'name' => $request->post('name'),
-            'password' => $request->post('password'),
-            'email' => $request->post('email'),
-            'user_privilege' => $request->post('userPrivilege')
-        ]);
+        if ($request->post('name') !== null) {
+            $user->name = $request->post('name');
+        }
+        if ($request->post('password') !== null) {
+            $user->password = Hash::make($request->post('password'));
+        }
+        if ($request->post('email') !== null) {
+            $user->email = $request->post('email');
+        }
+        if ($request->post('userPrivilege') !== null) {
+            $user->user_privilege = $request->post('userPrivilege');
+        }
+        $user->save();
         return [
             'success' => true,
         ];

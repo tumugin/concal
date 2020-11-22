@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreAdminUser;
+use App\Http\Requests\Admin\UpdateAdminUser;
 use App\Models\AdminUser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class AdminAdminUserController extends Controller
 {
@@ -23,22 +27,17 @@ class AdminAdminUserController extends Controller
         ];
     }
 
-    public function store(Request $request)
+    public function store(StoreAdminUser $request)
     {
-        $request->validate([
-            'userName' => 'required|string',
-            'name' => 'required|string',
-            'password' => 'required|string',
-            'email' => 'required|email:rfc',
-            'userPrivilege' => 'required|string',
+        $request->validate();
+        $user = new AdminUser([
+            'user_name' => $request->post('userName'),
+            'name' => $request->post('name'),
+            'password' => Hash::make($request->post('password')),
+            'email' => $request->post('email'),
+            'user_privilege' => $request->post('userPrivilege'),
         ]);
-        $user = AdminUser::createUser(
-            $request->post('userName'),
-            $request->post('name'),
-            $request->post('password'),
-            $request->post('email'),
-            $request->post('userPrivilege')
-        );
+        $user->save();
         return [
             'success' => true,
             'id' => $user->id,
@@ -47,38 +46,31 @@ class AdminAdminUserController extends Controller
 
     public function destroy(AdminUser $admin_user)
     {
-        if ($admin_user === null) {
-            return response([
-                'error' => 'User not found.',
-            ])->setStatusCode(404);
-        }
         $admin_user->delete();
         return [
             'success' => true,
         ];
     }
 
-    public function update(Request $request, AdminUser $admin_user)
+    public function update(UpdateAdminUser $request, AdminUser $admin_user)
     {
-        $request->validate([
-            'userName' => 'string',
-            'name' => 'string',
-            'password' => 'string',
-            'email' => 'email:rfc',
-            'user_privilege' => 'string',
-        ]);
-        if ($admin_user === null) {
-            return response([
-                'error' => 'User not found.',
-            ])->setStatusCode(404);
+        $request->validate();
+        if ($request->post('userName') !== null) {
+            $admin_user->user_name = $request->post('userName');
         }
-        $admin_user->updateUserInfo([
-            'user_name' => $request->post('userName'),
-            'name' => $request->post('name'),
-            'password' => $request->post('password'),
-            'email' => $request->post('email'),
-            'user_privilege' => $request->post('userPrivilege')
-        ]);
+        if ($request->post('name') !== null) {
+            $admin_user->name = $request->post('name');
+        }
+        if ($request->post('password') !== null) {
+            $admin_user->password = Hash::make($request->post('password'));
+        }
+        if ($request->post('email') !== null) {
+            $admin_user->email = $request->post('email');
+        }
+        if ($request->post('userPrivilege') !== null) {
+            $admin_user->user_privilege = $request->post('userPrivilege');
+        }
+        $admin_user->save();
         return [
             'success' => true,
         ];
