@@ -40,9 +40,10 @@ class AdminStoreGroupController
         $request->validate([
             'groupName' => 'required|string',
         ]);
-        StoreGroup::addStoreGroup($request->post('groupName'));
+        $store_group = StoreGroup::addStoreGroup($request->post('groupName'));
         return [
             'success' => true,
+            'id' => $store_group->id,
         ];
     }
 

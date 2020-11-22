@@ -1,5 +1,6 @@
 import { ApiKeyParam, getAuthHeader } from 'api/authUtils'
 import Axios from 'axios'
+import { AddAPIBasicResponse } from 'admin/api/types'
 
 export interface StoreGroupData {
     id: number
@@ -23,7 +24,7 @@ export async function getStoreGroup({ apiToken }: ApiKeyParam, { storeGroupId }:
     return result.data
 }
 
-export function addStoreGroup(
+export async function addStoreGroup(
     { apiToken }: ApiKeyParam,
     {
         groupName,
@@ -31,7 +32,7 @@ export function addStoreGroup(
         groupName: string
     }
 ) {
-    return Axios.post(
+    const result = await Axios.post<AddAPIBasicResponse>(
         `/api/admin/groups`,
         {
             groupName,
@@ -40,6 +41,7 @@ export function addStoreGroup(
             headers: getAuthHeader(apiToken),
         }
     )
+    return result.data
 }
 
 export function updateStoreGroup(

@@ -32,7 +32,7 @@ class AdminAdminUserController extends Controller
             'email' => 'required|email:rfc',
             'userPrivilege' => 'required|string',
         ]);
-        AdminUser::createUser(
+        $user = AdminUser::createUser(
             $request->post('userName'),
             $request->post('name'),
             $request->post('password'),
@@ -41,6 +41,7 @@ class AdminAdminUserController extends Controller
         );
         return [
             'success' => true,
+            'id' => $user->id,
         ];
     }
 

@@ -50,7 +50,7 @@ class AdminCastController extends Controller
             'castDescription' => 'nullable|string',
             'castColor' => 'nullable|string',
         ]);
-        Cast::addCast([
+        $cast = Cast::addCast([
             'cast_name' => $request->post('castName'),
             'cast_short_name' => $request->post('castShortName'),
             'cast_twitter_id' => $request->post('castTwitterId'),
@@ -59,6 +59,7 @@ class AdminCastController extends Controller
         ]);
         return [
             'success' => true,
+            'id' => $cast->id,
         ];
     }
 

@@ -1,6 +1,7 @@
 import Axios from 'axios'
 import { ApiKeyParam, getAuthHeader } from 'api/authUtils'
 import { StoreData } from 'admin/api/store'
+import { AddAPIBasicResponse } from 'admin/api/types'
 
 interface AttendData {
     id: number
@@ -40,7 +41,7 @@ export async function getAttend({ apiToken }: ApiKeyParam, { attendId }: { atten
     return result.data
 }
 
-export function addAttend(
+export async function addAttend(
     { apiToken }: ApiKeyParam,
     {
         castId,
@@ -50,7 +51,7 @@ export function addAttend(
         attendInfo,
     }: { castId: number; storeId: number; startTime: string; endTime: string; attendInfo: string }
 ) {
-    return Axios.post(
+    const result = await Axios.post<AddAPIBasicResponse>(
         `/api/admin/casts/${castId}/attends`,
         {
             storeId,
@@ -62,6 +63,7 @@ export function addAttend(
             headers: getAuthHeader(apiToken),
         }
     )
+    return result.data
 }
 
 export function updateAttend(

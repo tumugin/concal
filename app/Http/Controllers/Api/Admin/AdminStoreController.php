@@ -35,12 +35,13 @@ class AdminStoreController extends Controller
             'storeGroupId' => 'required|integer',
         ]);
         $store_group = StoreGroup::whereId($request->post('storeGroupId'))->firstOrFail();
-        Store::createStore(
+        $store = Store::createStore(
             $request->post('storeName'),
             $store_group
         );
         return [
             'success' => true,
+            'id' => $store->id,
         ];
     }
 

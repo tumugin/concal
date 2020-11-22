@@ -1,6 +1,7 @@
 import { ApiKeyParam, getAuthHeader } from 'api/authUtils'
 import Axios from 'axios'
 import { StoreData } from 'admin/api/store'
+import { AddAPIBasicResponse } from 'admin/api/types'
 
 export interface CastData {
     id: number
@@ -30,7 +31,7 @@ export async function getCast({ apiToken }: ApiKeyParam, { castId }: { castId: n
     return result.data
 }
 
-export function addCast(
+export async function addCast(
     { apiToken }: ApiKeyParam,
     {
         castName,
@@ -46,7 +47,7 @@ export function addCast(
         castColor: string | null
     }
 ) {
-    return Axios.post(
+    const result = await Axios.post<AddAPIBasicResponse>(
         `/api/admin/casts`,
         {
             castName,
@@ -59,6 +60,7 @@ export function addCast(
             headers: getAuthHeader(apiToken),
         }
     )
+    return result.data
 }
 
 export function updateCast(

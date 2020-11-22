@@ -1,5 +1,6 @@
 import { ApiKeyParam, getAuthHeader } from 'api/authUtils'
 import Axios from 'axios'
+import { AddAPIBasicResponse } from 'admin/api/types'
 
 export interface AdminUserData {
     id: number
@@ -26,7 +27,7 @@ export async function getAdminUser({ apiToken }: ApiKeyParam, { userId }: { user
     return result.data
 }
 
-export function addAdminUser(
+export async function addAdminUser(
     { apiToken }: ApiKeyParam,
     {
         userName,
@@ -42,7 +43,7 @@ export function addAdminUser(
         userPrivilege: string
     }
 ) {
-    return Axios.post(
+    const result = await Axios.post<AddAPIBasicResponse>(
         `/api/admin/admin_users`,
         {
             userName,
@@ -55,6 +56,7 @@ export function addAdminUser(
             headers: getAuthHeader(apiToken),
         }
     )
+    return result.data
 }
 
 export function updateAdminUser(

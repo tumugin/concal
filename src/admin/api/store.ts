@@ -1,6 +1,7 @@
 import { ApiKeyParam, getAuthHeader } from 'api/authUtils'
 import Axios from 'axios'
 import { StoreGroupData } from 'admin/api/storeGroup'
+import { AddAPIBasicResponse } from 'admin/api/types'
 
 export interface StoreData {
     id: number
@@ -27,7 +28,7 @@ export async function getStore({ apiToken }: ApiKeyParam, { storeId }: { storeId
     return result.data
 }
 
-export function addStore(
+export async function addStore(
     { apiToken }: ApiKeyParam,
     {
         storeName,
@@ -37,7 +38,7 @@ export function addStore(
         storeGroupId: number
     }
 ) {
-    return Axios.post(
+    const result = await Axios.post<AddAPIBasicResponse>(
         `/api/admin/stores`,
         {
             storeName,
@@ -47,6 +48,7 @@ export function addStore(
             headers: getAuthHeader(apiToken),
         }
     )
+    return result.data
 }
 
 export function updateStore(
