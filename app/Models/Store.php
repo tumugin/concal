@@ -34,6 +34,8 @@ use Webmozart\Assert\Assert;
  * @property-read int|null $casts_count
  * @property-read \App\Models\StoreGroup $storeGroup
  * @method static Builder|Store active()
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CastAttend[] $castAttends
+ * @property-read int|null $cast_attends_count
  */
 class Store extends Model
 {

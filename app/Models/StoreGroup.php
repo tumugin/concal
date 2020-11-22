@@ -23,6 +23,7 @@ use Illuminate\Support\Str;
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Store[] $stores
  * @property-read int|null $stores_count
+ * @property string $group_name
  */
 class StoreGroup extends Model
 {
