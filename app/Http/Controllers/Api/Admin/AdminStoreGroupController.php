@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Api\Admin;
 
+use App\Http\Requests\Admin\StoreStoreGroup;
+use App\Http\Requests\Admin\UpdateStoreGroup;
 use App\Models\StoreGroup;
-use Illuminate\Http\Request;
 
 class AdminStoreGroupController
 {
@@ -24,40 +25,32 @@ class AdminStoreGroupController
 
     public function show(StoreGroup $group)
     {
-        if ($group === null) {
-            return response([
-                'error' => 'Store group not found.',
-            ])->setStatusCode(404);
-        }
         return [
             'success' => true,
             'storeGroup' => $group->getAdminAttributes(),
         ];
     }
 
-    public function store(Request $request)
+    public function store(StoreStoreGroup $request)
     {
-        $request->validate([
-            'groupName' => 'required|string',
+        $request->validate();
+        $store_group = new StoreGroup([
+            'group_name' => $request->post('groupName'),
         ]);
-        $store_group = StoreGroup::addStoreGroup($request->post('groupName'));
+        $store_group->save();
         return [
             'success' => true,
             'id' => $store_group->id,
         ];
     }
 
-    public function update(Request $request, StoreGroup $group)
+    public function update(UpdateStoreGroup $request, StoreGroup $group)
     {
-        $request->validate([
-            'groupName' => 'required|string',
+        $request->validate();
+        $group->update([
+            'group_name' => $request->post('groupName'),
         ]);
-        if ($group === null) {
-            return response([
-                'error' => 'Store group not found.',
-            ])->setStatusCode(404);
-        }
-        $group->updateStoreInfo($request->post('groupName'));
+        $group->save();
         return [
             'success' => true,
         ];
@@ -65,12 +58,7 @@ class AdminStoreGroupController
 
     public function destroy(StoreGroup $group)
     {
-        if ($group === null) {
-            return response([
-                'error' => 'Store group not found.',
-            ])->setStatusCode(404);
-        }
-        $group->deleteStoreGroup();
+        $group->delete();
         return [
             'success' => true,
         ];
