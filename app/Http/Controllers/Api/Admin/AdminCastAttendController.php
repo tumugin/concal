@@ -71,7 +71,7 @@ class AdminCastAttendController extends Controller
             'endTime' => 'required|date',
             'attendInfo' => 'nullable|string',
         ]);
-        CastAttend::addAttendance(
+        $cast_attend = CastAttend::addAttendance(
             $cast->id,
             (int)$request->post('storeId'),
             AdminUserAuthService::getCurrentUser()->id,
@@ -81,6 +81,7 @@ class AdminCastAttendController extends Controller
         );
         return [
             'success' => true,
+            'id' => $cast_attend->id,
         ];
     }
 
