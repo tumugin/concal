@@ -3,6 +3,7 @@
 namespace Tests\Unit\User;
 
 use App\Models\User;
+use App\Utils\PasswordAssertUtil;
 use Tests\TestCase;
 
 class AssertParamTest extends TestCase
@@ -12,8 +13,7 @@ class AssertParamTest extends TestCase
      */
     public function testAssertStrongPasswordSuccessPattern(string $test_password): void
     {
-        User::assertStrongPassword($test_password);
-        $this->assertTrue(true);
+        $this->assertTrue(PasswordAssertUtil::isStrongPassword($test_password));
     }
 
     public function dataProviderSuccessCase(): array
@@ -31,8 +31,7 @@ class AssertParamTest extends TestCase
      */
     public function testAssertStrongPasswordFailPattern(string $test_password): void
     {
-        $this->expectException('InvalidArgumentException');
-        User::assertStrongPassword($test_password);
+        $this->assertFalse(PasswordAssertUtil::isStrongPassword($test_password));
     }
 
     public function dataProviderFailCase(): array

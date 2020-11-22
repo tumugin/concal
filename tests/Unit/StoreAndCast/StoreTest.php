@@ -36,15 +36,6 @@ class StoreTest extends TestCase
         );
     }
 
-    public function testSetStoreClosed(): void
-    {
-        $store = factory(Store::class)->create();
-        $store->setStoreClosed(true);
-        $this->assertDatabaseHas('stores', [
-            'store_disabled' => 1,
-        ]);
-    }
-
     public function testGetBelongingStoreGroup(): void
     {
         $store_group = factory(StoreGroup::class)->create();
@@ -55,28 +46,5 @@ class StoreTest extends TestCase
             $store_group->getAttributes(),
             $store->storeGroup()->first()->getAttributes(),
         );
-    }
-
-    public function testCreateStore(): void
-    {
-        $store_group = factory(StoreGroup::class)->create();
-        $store_name = '王立アフィリア・クロニクルS';
-        Store::createStore($store_name, $store_group);
-        $this->assertDatabaseHas('stores', [
-            'store_group_id' => $store_group->id,
-            'store_name' => $store_name,
-        ]);
-    }
-
-    public function testUpdateStore(): void
-    {
-        $store = factory(Store::class)->create();
-        $store_group = factory(StoreGroup::class)->create();
-        $new_store_name = '都立アフィリア・グランド都庁S';
-        $store->updateStore($new_store_name, $store_group);
-        $this->assertDatabaseHas('stores', [
-            'store_group_id' => $store_group->id,
-            'store_name' => $new_store_name,
-        ]);
     }
 }
