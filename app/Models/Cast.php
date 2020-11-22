@@ -46,6 +46,8 @@ use Webmozart\Assert\Assert;
  */
 class Cast extends Model
 {
+    const CAST_COLOR_REGEX = '/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/';
+
     /**
      * 現役のキャストを返す
      *
@@ -84,60 +86,6 @@ class Cast extends Model
         return $this->getAdminAttributes();
     }
 
-    private static function assertCastInfo(array $cast_info): void
-    {
-        Assert::stringNotEmpty($cast_info['cast_name']);
-        Assert::nullOrStringNotEmpty($cast_info['cast_short_name'] ?? null);
-        Assert::nullOrStringNotEmpty($cast_info['cast_twitter_id'] ?? null);
-        Assert::string($cast_info['cast_description']);
-        Assert::nullOrBoolean($cast_info['cast_disabled'] ?? null);
-        if (isset($cast_info['cast_color'])) {
-            Assert::regex($cast_info['cast_color'], '/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/');
-        }
-    }
-
-    /**
-     * キャストを追加する
-     *
-     * @param array $cast_info
-     * @return Cast 追加されたキャスト
-     */
-    public static function addCast(array $cast_info): Cast
-    {
-        self::assertCastInfo($cast_info);
-
-        $cast = new Cast();
-        $cast->cast_name = $cast_info['cast_name'];
-        $cast->cast_short_name = $cast_info['cast_short_name'] ?? null;
-        $cast->cast_twitter_id = $cast_info['cast_twitter_id'] ?? null;
-        $cast->cast_description = $cast_info['cast_description'];
-        $cast->cast_color = $cast_info['cast_color'] ?? null;
-        $cast->cast_disabled = 0;
-        $cast->save();
-
-        return $cast;
-    }
-
-    /**
-     * キャスト情報を更新する
-     *
-     * @param array $cast_info
-     */
-    public function updateCast(array $cast_info): void
-    {
-        self::assertCastInfo($cast_info);
-
-        $this->cast_name = $cast_info['cast_name'];
-        $this->cast_short_name = $cast_info['cast_short_name'] ?? null;
-        $this->cast_twitter_id = $cast_info['cast_twitter_id'] ?? null;
-        $this->cast_description = $cast_info['cast_description'];
-        $this->cast_color = $cast_info['cast_color'] ?? null;
-        if (isset($cast_info['cast_disabled'])) {
-            $this->cast_disabled = $cast_info['cast_disabled'];
-        }
-        $this->save();
-    }
-
     public function castAttends(): HasMany
     {
         return $this->hasMany(CastAttend::class);
@@ -151,37 +99,6 @@ class Cast extends Model
     public function stores(): BelongsToMany
     {
         return $this->belongsToMany(Store::class, StoreCast::class);
-    }
-
-    /**
-     * キャストを永久追放(物理削除)する
-     */
-    public function deleteCast(): void
-    {
-        DB::transaction(function () {
-            $this->castAttends()->delete();
-            $this->storeCasts()->delete();
-            $this->delete();
-        });
-    }
-
-    /**
-     * キャストを卒業させる
-     */
-    public function graduateCast(): void
-    {
-        $this->cast_disabled = 1;
-        $this->save();
-    }
-
-    /**
-     * キャストを店舗に在籍させる
-     *
-     * @param Store $store 在籍させる店舗
-     */
-    public function enrollToStore(Store $store): void
-    {
-        $store->enrollCast($this);
     }
 
     /**
@@ -200,29 +117,5 @@ class Cast extends Model
             Store::whereIn('id', $store_ids)
                 ->each(fn(Store $store) => $store->enrollCast($this));
         });
-    }
-
-    /**
-     * キャストの出勤情報を登録する
-     *
-     * @param Store $store
-     * @param User $added_by_user
-     * @param Carbon $start_time
-     * @param Carbon $end_time
-     * @param string $attend_info
-     * @return CastAttend 出勤情報
-     */
-    public function addAttendance(
-        Store $store, User $added_by_user, Carbon $start_time, Carbon $end_time, string $attend_info
-    ): CastAttend
-    {
-        return CastAttend::addAttendance(
-            $this->id,
-            $store->id,
-            $added_by_user->id,
-            $start_time,
-            $end_time,
-            $attend_info
-        );
     }
 }
