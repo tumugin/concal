@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreStore;
+use App\Http\Requests\Admin\UpdateStore;
 use App\Models\Cast;
 use App\Models\Store;
 use App\Models\StoreGroup;
@@ -28,33 +30,29 @@ class AdminStoreController extends Controller
         ];
     }
 
-    public function store(Request $request)
+    public function store(StoreStore $request)
     {
-        $request->validate([
-            'storeName' => 'required|string',
-            'storeGroupId' => 'required|integer',
+        $request->validate();
+        $store = new Store([
+            'store_name' => $request->post('storeName'),
+            'store_group_id' => $request->post('storeGroupId'),
+            'store_disabled' => false,
         ]);
-        $store_group = StoreGroup::whereId($request->post('storeGroupId'))->firstOrFail();
-        $store = Store::createStore(
-            $request->post('storeName'),
-            $store_group
-        );
+        $store->save();
         return [
             'success' => true,
             'id' => $store->id,
         ];
     }
 
-    public function update(Request $request, Store $store)
+    public function update(UpdateStore $request, Store $store)
     {
-        $request->validate([
-            'storeName' => 'required|string',
-            'storeGroupId' => 'required|integer',
-            'storeDisabled' => 'required|string'
+        $request->validate();
+        $store->update([
+            'store_name' => $request->post('storeName'),
+            'store_group_id' => $request->post('storeGroupId'),
+            'store_disabled' => $request->post('storeDisabled') === 'true',
         ]);
-        $store_group = StoreGroup::whereId($request->post('storeGroupId'))->firstOrFail();
-        $store->updateStore($request->post('storeName'), $store_group);
-        $store->setStoreClosed($request->post('storeDisabled') === 'true');
         return [
             'success' => true,
         ];

@@ -93,17 +93,6 @@ class Store extends Model
     }
 
     /**
-     * 店舗を閉店/開店させる
-     *
-     * @param bool $is_store_closed 店舗が閉店しているかどうか
-     */
-    public function setStoreClosed(bool $is_store_closed): void
-    {
-        $this->store_disabled = $is_store_closed;
-        $this->save();
-    }
-
-    /**
      * 所属している店舗のグループを取得する
      *
      * @return BelongsTo
@@ -111,40 +100,5 @@ class Store extends Model
     public function storeGroup(): BelongsTo
     {
         return $this->belongsTo(StoreGroup::class);
-    }
-
-    /**
-     * 店舗を新しく作る
-     *
-     * @param string $store_name 店舗名
-     * @param StoreGroup $store_group 店舗グループ
-     * @return Store
-     */
-    public static function createStore(string $store_name, StoreGroup $store_group): Store
-    {
-        Assert::stringNotEmpty($store_name);
-
-        $store = new Store();
-        $store->store_name = $store_name;
-        $store->store_group_id = $store_group->id;
-        $store->store_disabled = 0;
-        $store->save();
-
-        return $store;
-    }
-
-    /**
-     * 店舗情報を更新する
-     *
-     * @param string $store_name
-     * @param StoreGroup $store_group
-     */
-    public function updateStore(string $store_name, StoreGroup $store_group): void
-    {
-        Assert::stringNotEmpty($store_name);
-
-        $this->store_name = $store_name;
-        $this->store_group_id = $store_group->id;
-        $this->save();
     }
 }
