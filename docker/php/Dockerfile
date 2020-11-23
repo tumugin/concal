@@ -1,14 +1,10 @@
-FROM node:15.1.0-stretch
+FROM php:7.4-alpine
+
+ARG TZ
 
 WORKDIR /code
 
 ADD . .
-
-RUN yarn
-
-FROM php:7.4-alpine
-
-ARG TZ
 
 COPY ./docker/php/php.ini /usr/local/etc/php/php.ini
 
