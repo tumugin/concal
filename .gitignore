@@ -12,8 +12,6 @@
 /storage/*.key
 /storage/app/manifest.json
 /vendor
-/docker/db/data/*
-!/docker/db/data/.gitkeep
 .env
 .env.backup
 .phpunit.result.cache
