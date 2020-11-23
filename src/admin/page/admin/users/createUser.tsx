@@ -47,7 +47,7 @@ export default function CreateUser() {
         async (moveToUsersPage: boolean) => {
             setIsLoading(true)
             try {
-                await addUser(
+                const result = await addUser(
                     { apiToken: apiToken ?? unreachableCode() },
                     {
                         userName,
@@ -58,13 +58,13 @@ export default function CreateUser() {
                     }
                 )
                 toastr.success('ユーザを登録しました')
+                if (moveToUsersPage) {
+                    history.push(`/admin/users/${result.id}`)
+                }
             } catch {
                 await Swal.fire('エラー', 'ユーザを登録できませんでした。', 'error')
-                return
-            }
-            setIsLoading(false)
-            if (moveToUsersPage) {
-                history.push('/admin/users')
+            } finally {
+                setIsLoading(false)
             }
         },
         [apiToken, email, history, name, password, userName, userPrivilege]

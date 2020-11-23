@@ -24,20 +24,21 @@ export default function CreateGroup() {
         async (moveToGroupsPage: boolean) => {
             setIsLoading(true)
             try {
-                await addStoreGroup(
+                const result = await addStoreGroup(
                     { apiToken: apiToken ?? unreachableCode() },
                     {
                         groupName,
                     }
                 )
                 toastr.success('店舗グループを登録しました')
+                if (moveToGroupsPage) {
+                    history.push(`/admin/groups/${result.id}`)
+                }
             } catch {
                 await Swal.fire('エラー', '店舗グループを登録できませんでした。', 'error')
                 return
-            }
-            setIsLoading(false)
-            if (moveToGroupsPage) {
-                history.push('/admin/groups')
+            } finally {
+                setIsLoading(false)
             }
         },
         [apiToken, groupName, history]

@@ -34,7 +34,7 @@ export default function CreateCast() {
         async (moveToGroupsPage: boolean) => {
             setIsLoading(true)
             try {
-                await addCast(
+                const result = await addCast(
                     { apiToken: apiToken ?? unreachableCode() },
                     {
                         castName,
@@ -45,13 +45,13 @@ export default function CreateCast() {
                     }
                 )
                 toastr.success('キャストを登録しました')
+                if (moveToGroupsPage) {
+                    history.push(`/admin/casts/${result.id}`)
+                }
             } catch {
                 await Swal.fire('エラー', 'キャストを登録できませんでした。', 'error')
-                return
-            }
-            setIsLoading(false)
-            if (moveToGroupsPage) {
-                history.push('/admin/casts')
+            } finally {
+                setIsLoading(false)
             }
         },
         [apiToken, castColor, castDescription, castName, castShortName, castTwitterId, history]
