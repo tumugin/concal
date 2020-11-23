@@ -1,4 +1,4 @@
-FROM php:7.4-fpm-alpine
+FROM php:7.4-alpine
 
 ARG TZ
 
@@ -16,4 +16,4 @@ RUN set -eux && \
   docker-php-ext-install opcache bcmath pdo_mysql && \
   chmod +x /root/startup.sh
 
-CMD ["/root/startup.sh","php-fpm", "-F"]
+CMD ["/root/startup.sh"]
