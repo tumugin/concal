@@ -1,18 +1,18 @@
 FROM php:7.4-alpine
 
+RUN apk --no-cache add tzdata zip unzip composer autoconf build-base
+RUN docker-php-ext-configure opcache --enable-opcache
+RUN docker-php-ext-install opcache bcmath pdo_mysql
+RUN pecl install xdebug
+RUN docker-php-ext-enable xdebug
+
 ARG TZ
+RUN cp /usr/share/zoneinfo/${TZ} /etc/localtime
 
 COPY ./docker/php/php.ini /usr/local/etc/php/php.ini
 
 COPY ./docker/php/startup.sh /root
-
-RUN set -eux && \
-  apk add --update-cache --no-cache --virtual=.build-dependencies tzdata && \
-  apk --no-cache add zip unzip composer npm && \
-  cp /usr/share/zoneinfo/${TZ} /etc/localtime && \
-  docker-php-ext-configure opcache --enable-opcache && \
-  docker-php-ext-install opcache bcmath pdo_mysql && \
-  chmod +x /root/startup.sh
+RUN chmod +x /root/startup.sh
 
 WORKDIR /code
 
