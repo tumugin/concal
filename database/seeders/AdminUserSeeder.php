@@ -20,7 +20,7 @@ class AdminUserSeeder extends Seeder
             'name' => 'admin',
             'password' => Hash::make('admin'),
             'email' => 'myskng@myskng.xyz',
-            'user_privilege' => 'admin',
+            'user_privilege' => 'super_admin',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
