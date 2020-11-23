@@ -2,10 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\AdminUser;
-use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 class AdminUserSeeder extends Seeder
 {
@@ -16,14 +14,14 @@ class AdminUserSeeder extends Seeder
      */
     public function run()
     {
-        $random_admin_password = Str::random(100);
-        (new AdminUser([
+        DB::table('admin_users')->insert([
             'user_name' => 'admin',
             'name' => 'admin',
-            'password' => $random_admin_password,
+            'password' => Hash::make('admin'),
             'email' => 'myskng@myskng.xyz',
-            'user_privilege' => AdminUser::USER_PRIVILEGE_SUPER_ADMIN,
-        ]))->save();
-        $this->command->info("Admin user added with screen name 'admin' and password '${random_admin_password}'.");
+            'user_privilege' => 'admin',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 }
