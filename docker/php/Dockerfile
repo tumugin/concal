@@ -8,10 +8,11 @@ COPY ./docker/php/startup.sh /root
 
 RUN set -eux && \
   apk add --update-cache --no-cache --virtual=.build-dependencies tzdata && \
-  apk --no-cache add zip unzip composer npm && \
+  apk --no-cache add zip unzip composer autoconf build-base && \
   cp /usr/share/zoneinfo/${TZ} /etc/localtime && \
   docker-php-ext-configure opcache --enable-opcache && \
   docker-php-ext-install opcache bcmath pdo_mysql && \
+  pecl install xdebug && docker-php-ext-enable xdebug && \
   chmod +x /root/startup.sh
 
 WORKDIR /code

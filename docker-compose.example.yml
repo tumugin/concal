@@ -9,6 +9,7 @@ services:
     tty: true
     volumes:
       - .:/code:cached
+      - /code/vendor
       - ./docker/php/php.ini:/usr/local/etc/php/php.ini
     depends_on:
       - db
@@ -21,7 +22,9 @@ services:
       dockerfile: ./docker/js/Dockerfile
     volumes:
       - .:/code:cached
-      - ./public:/code/public
+      - /code/node_modules
+      - /code/.yarn
+      - ./.yarn/releases:/code/.yarn/releases
   web:
     image: nginx:latest
     volumes:
