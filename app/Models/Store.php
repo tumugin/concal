@@ -39,6 +39,8 @@ use Webmozart\Assert\Assert;
  */
 class Store extends Model
 {
+    protected $guarded = ['id'];
+
     /**
      * 閉店していない営業中の店舗を返す
      *

@@ -46,6 +46,8 @@ use Webmozart\Assert\Assert;
  */
 class Cast extends Model
 {
+    protected $guarded = ['id'];
+
     const CAST_COLOR_REGEX = '/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/';
 
     /**

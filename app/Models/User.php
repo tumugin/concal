@@ -47,6 +47,8 @@ class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
+    protected $guarded = ['id'];
+
     protected $hidden = [
         'password',
     ];

@@ -38,6 +38,8 @@ use Webmozart\Assert\Assert;
  */
 class CastAttend extends Model
 {
+    protected $guarded = ['id'];
+
     public function getAdminAttributes(): array
     {
         return collect($this->getAttributes())

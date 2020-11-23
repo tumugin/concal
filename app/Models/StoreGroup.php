@@ -27,6 +27,8 @@ use Illuminate\Support\Str;
  */
 class StoreGroup extends Model
 {
+    protected $guarded = ['id'];
+
     public function getAdminAttributes(): array
     {
         return collect($this->getAttributes())
