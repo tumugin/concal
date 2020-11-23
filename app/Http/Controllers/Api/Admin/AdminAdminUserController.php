@@ -29,7 +29,6 @@ class AdminAdminUserController extends Controller
 
     public function store(StoreAdminUser $request)
     {
-        $request->validate();
         $user = new AdminUser([
             'user_name' => $request->post('userName'),
             'name' => $request->post('name'),
@@ -54,7 +53,6 @@ class AdminAdminUserController extends Controller
 
     public function update(UpdateAdminUser $request, AdminUser $admin_user)
     {
-        $request->validate();
         if ($request->post('userName') !== null) {
             $admin_user->user_name = $request->post('userName');
         }
@@ -78,11 +76,6 @@ class AdminAdminUserController extends Controller
 
     public function show(AdminUser $admin_user)
     {
-        if ($admin_user === null) {
-            return response([
-                'error' => 'User not found.',
-            ])->setStatusCode(404);
-        }
         return [
             'success' => true,
             'user' => $admin_user->getAdminAttributes(),

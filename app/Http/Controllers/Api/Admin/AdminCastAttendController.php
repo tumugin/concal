@@ -48,11 +48,6 @@ class AdminCastAttendController extends Controller
 
     public function show(CastAttend $cast_attend)
     {
-        if ($cast_attend === null) {
-            return response([
-                'error' => 'Cast attend not found.',
-            ])->setStatusCode(404);
-        }
         $store = $cast_attend->store()->first();
         return [
             'success' => true,
@@ -67,7 +62,6 @@ class AdminCastAttendController extends Controller
 
     public function store(Cast $cast, StoreCastAttend $request)
     {
-        $request->validate();
         $cast_attend = new CastAttend([
             'cast_id' => $cast->id,
             'store_id' => $request->post('storeId'),
@@ -83,9 +77,8 @@ class AdminCastAttendController extends Controller
         ];
     }
 
-    public function update(Request $request, UpdateCastAttend $cast_attend)
+    public function update(UpdateCastAttend $request, CastAttend $cast_attend)
     {
-        $request->validate();
         $cast_attend->update([
             'store_id' => $request->post('storeId'),
             'added_by_user_id' => AdminUserAuthService::getCurrentUser()->id,

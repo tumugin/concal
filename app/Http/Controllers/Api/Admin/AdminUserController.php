@@ -27,7 +27,6 @@ class AdminUserController extends Controller
 
     public function store(StoreUser $request)
     {
-        $request->validate();
         $user = new User([
             'user_name' => $request->post('userName'),
             'name' => $request->post('name'),
@@ -52,7 +51,6 @@ class AdminUserController extends Controller
 
     public function update(UpdateUser $request, User $user)
     {
-        $request->validate();
         if ($request->post('userName') !== null) {
             $user->user_name = $request->post('userName');
         }

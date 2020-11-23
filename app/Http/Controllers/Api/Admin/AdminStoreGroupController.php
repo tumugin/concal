@@ -33,7 +33,6 @@ class AdminStoreGroupController
 
     public function store(StoreStoreGroup $request)
     {
-        $request->validate();
         $store_group = new StoreGroup([
             'group_name' => $request->post('groupName'),
         ]);
@@ -46,7 +45,6 @@ class AdminStoreGroupController
 
     public function update(UpdateStoreGroup $request, StoreGroup $group)
     {
-        $request->validate();
         $group->update([
             'group_name' => $request->post('groupName'),
         ]);
