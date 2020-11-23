@@ -51,6 +51,7 @@ class AdminCastController extends Controller
             'cast_twitter_id' => $request->post('castTwitterId'),
             'cast_description' => $request->post('castDescription') ?? '',
             'cast_color' => $request->post('castColor'),
+            'cast_disabled' => false,
         ]);
         $cast->save();
         return [
