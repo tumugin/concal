@@ -8,7 +8,7 @@ services:
         - TZ=${TZ}
     tty: true
     volumes:
-      - .:/code
+      - .:/code:cached
       - ./docker/php/php.ini:/usr/local/etc/php/php.ini
     depends_on:
       - db
@@ -18,8 +18,7 @@ services:
       context: .
       dockerfile: ./docker/js/Dockerfile
     volumes:
-      - .:/code
-      - /code/node_modules
+      - .:/code:cached
       - ./public:/code/public
   web:
     image: nginx:latest
@@ -30,15 +29,16 @@ services:
     ports:
       - 80:80
   db:
-    image: mysql:5.7
+    image: mariadb:10.5.7
     volumes:
       - db-store:/var/lib/mysql
     environment:
       - MYSQL_DATABASE=${DB_DATABASE}
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
       - TZ=${TZ}
     ports:
       - 3306:3306
-
 volumes:
   db-store:
