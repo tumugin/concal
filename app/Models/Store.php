@@ -80,7 +80,7 @@ class Store extends Model
     {
         parent::boot();
         static::deleting(function ($model) {
-            foreach ($model->castAttends->get() as $child) {
+            foreach ($model->castAttends as $child) {
                 $child->delete();
             }
         });

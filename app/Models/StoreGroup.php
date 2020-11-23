@@ -51,7 +51,7 @@ class StoreGroup extends Model
     {
         parent::boot();
         static::deleting(function ($model) {
-            foreach ($model->stores->get() as $child) {
+            foreach ($model->stores as $child) {
                 $child->delete();
             }
         });
