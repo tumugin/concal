@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
 use Webmozart\Assert\Assert;
@@ -33,9 +34,17 @@ use Webmozart\Assert\Assert;
  * @property-read int|null $casts_count
  * @property-read \App\Models\StoreGroup $storeGroup
  * @method static Builder|Store active()
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CastAttend[] $castAttends
+ * @property-read int|null $cast_attends_count
  */
 class Store extends Model
 {
+    protected $guarded = ['id'];
+
+    protected $casts = [
+        'store_disabled' => 'boolean',
+    ];
+
     /**
      * 閉店していない営業中の店舗を返す
      *
@@ -54,10 +63,9 @@ class Store extends Model
                 'id',
                 'store_name',
                 'store_group_id',
-                'store_disabled',
             ])
             ->merge([
-                'store_disabled' => $this->store_disabled === 1,
+                'store_disabled' => $this->store_disabled,
             ])
             ->mapWithKeys(fn($value, string $key) => [
                 Str::camel($key) => $value
@@ -71,17 +79,22 @@ class Store extends Model
         return $this->getAdminAttributes();
     }
 
-    /**
-     * キャストをこの店舗に在籍させる
-     *
-     * @param Cast $cast
-     */
-    public function enrollCast(Cast $cast): void
+    protected static function boot()
     {
-        $store_cast = new StoreCast();
-        $store_cast->cast_id = $cast->id;
-        $store_cast->store_id = $this->id;
-        $store_cast->save();
+        parent::boot();
+        static::deleting(function ($model) {
+            foreach ($model->castAttends as $child) {
+                $child->delete();
+            }
+        });
+    }
+
+    /**
+     * この店舗への出勤を取得する
+     */
+    public function castAttends(): HasMany
+    {
+        return $this->hasMany(CastAttend::class);
     }
 
     /**
@@ -93,58 +106,10 @@ class Store extends Model
     }
 
     /**
-     * 店舗を閉店/開店させる
-     *
-     * @param bool $is_store_closed 店舗が閉店しているかどうか
-     */
-    public function setStoreClosed(bool $is_store_closed): void
-    {
-        $this->store_disabled = $is_store_closed;
-        $this->save();
-    }
-
-    /**
      * 所属している店舗のグループを取得する
-     *
-     * @return BelongsTo
      */
     public function storeGroup(): BelongsTo
     {
         return $this->belongsTo(StoreGroup::class);
-    }
-
-    /**
-     * 店舗を新しく作る
-     *
-     * @param string $store_name 店舗名
-     * @param StoreGroup $store_group 店舗グループ
-     * @return Store
-     */
-    public static function createStore(string $store_name, StoreGroup $store_group): Store
-    {
-        Assert::stringNotEmpty($store_name);
-
-        $store = new Store();
-        $store->store_name = $store_name;
-        $store->store_group_id = $store_group->id;
-        $store->store_disabled = 0;
-        $store->save();
-
-        return $store;
-    }
-
-    /**
-     * 店舗情報を更新する
-     *
-     * @param string $store_name
-     * @param StoreGroup $store_group
-     */
-    public function updateStore(string $store_name, StoreGroup $store_group): void
-    {
-        Assert::stringNotEmpty($store_name);
-
-        $this->store_name = $store_name;
-        $this->store_group_id = $store_group->id;
-        $this->save();
     }
 }

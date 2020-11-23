@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class AdminGateTest extends TestCase
@@ -20,13 +21,13 @@ class AdminGateTest extends TestCase
      */
     public function testAdminGate(array $test_user_data, bool $is_admin): void
     {
-        $created_user = AdminUser::createUser(
-            $test_user_data['user_name'],
-            $test_user_data['name'],
-            $test_user_data['password'],
-            $test_user_data['email'],
-            $test_user_data['user_privilege']
-        );
+        $created_user = factory(AdminUser::class)->create([
+            'user_name' => $test_user_data['user_name'],
+            'name' => $test_user_data['name'],
+            'password' => Hash::make($test_user_data['password']),
+            'email' => $test_user_data['email'],
+            'user_privilege' => $test_user_data['user_privilege'],
+        ]);
         Auth::login($created_user);
         $this->assertEquals(Gate::allows('has-admin-privilege'), $is_admin);
     }

@@ -5,6 +5,7 @@ namespace Tests\Unit\Feature\AdminApi;
 use App\Models\AdminUser;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class LoginTest extends TestCase
@@ -24,15 +25,29 @@ class LoginTest extends TestCase
         'email' => 'erusa@example.com',
     ];
 
+    private function prepareAdminUser(){
+        factory(AdminUser::class)->create([
+            'user_name' => self::_TEST_USER_DATA['user_name'],
+            'name' => self::_TEST_USER_DATA['name'],
+            'password' => Hash::make(self::_TEST_USER_DATA['password']),
+            'email' => self::_TEST_USER_DATA['email'],
+            'user_privilege' => AdminUser::USER_PRIVILEGE_ADMIN,
+        ]);
+    }
+
+    private function prepareNormalUser(){
+        factory(User::class)->create([
+            'user_name' => self::_TEST_USER_DATA['user_name'],
+            'name' => self::_TEST_USER_DATA['name'],
+            'password' => Hash::make(self::_TEST_USER_DATA['password']),
+            'email' => self::_TEST_USER_DATA['email'],
+            'user_privilege' => AdminUser::USER_PRIVILEGE_ADMIN,
+        ]);
+    }
+
     public function testLoginWithEMail(): void
     {
-        AdminUser::createUser(
-            self::_TEST_USER_DATA['user_name'],
-            self::_TEST_USER_DATA['name'],
-            self::_TEST_USER_DATA['password'],
-            self::_TEST_USER_DATA['email'],
-            AdminUser::USER_PRIVILEGE_ADMIN
-        );
+        self::prepareAdminUser();
         $response = $this
             ->withHeaders($this->apiKeyHeader)
             ->postJson(
@@ -50,13 +65,7 @@ class LoginTest extends TestCase
 
     public function testLoginWithUserName(): void
     {
-        AdminUser::createUser(
-            self::_TEST_USER_DATA['user_name'],
-            self::_TEST_USER_DATA['name'],
-            self::_TEST_USER_DATA['password'],
-            self::_TEST_USER_DATA['email'],
-            AdminUser::USER_PRIVILEGE_ADMIN
-        );
+        self::prepareAdminUser();
         $response = $this
             ->withHeaders($this->apiKeyHeader)
             ->postJson(
@@ -74,13 +83,7 @@ class LoginTest extends TestCase
 
     public function testCanNotLoginWithNormalUser(): void
     {
-        User::createUser(
-            self::_TEST_USER_DATA['user_name'],
-            self::_TEST_USER_DATA['name'],
-            self::_TEST_USER_DATA['password'],
-            self::_TEST_USER_DATA['email'],
-            User::USER_PRIVILEGE_USER
-        );
+        self::prepareNormalUser();
         $response = $this
             ->withHeaders($this->apiKeyHeader)
             ->postJson(

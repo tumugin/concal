@@ -4,6 +4,7 @@ namespace Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class ApiAuthControllerTest extends TestCase
@@ -23,15 +24,19 @@ class ApiAuthControllerTest extends TestCase
         'email' => 'erusa@example.com',
     ];
 
+    private function prepareNormalUser(){
+        factory(User::class)->create([
+            'user_name' => self::_TEST_USER_DATA['user_name'],
+            'name' => self::_TEST_USER_DATA['name'],
+            'password' => Hash::make(self::_TEST_USER_DATA['password']),
+            'email' => self::_TEST_USER_DATA['email'],
+            'user_privilege' => User::USER_PRIVILEGE_USER,
+        ]);
+    }
+
     public function testLoginWithEMail(): void
     {
-        User::createUser(
-            self::_TEST_USER_DATA['user_name'],
-            self::_TEST_USER_DATA['name'],
-            self::_TEST_USER_DATA['password'],
-            self::_TEST_USER_DATA['email'],
-            User::USER_PRIVILEGE_USER
-        );
+        self::prepareNormalUser();
         $response = $this
             ->withHeaders($this->apiKeyHeader)
             ->postJson(
@@ -49,13 +54,7 @@ class ApiAuthControllerTest extends TestCase
 
     public function testLoginWithUserName(): void
     {
-        User::createUser(
-            self::_TEST_USER_DATA['user_name'],
-            self::_TEST_USER_DATA['name'],
-            self::_TEST_USER_DATA['password'],
-            self::_TEST_USER_DATA['email'],
-            User::USER_PRIVILEGE_USER
-        );
+        self::prepareNormalUser();
         $response = $this
             ->withHeaders($this->apiKeyHeader)
             ->postJson(
