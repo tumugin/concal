@@ -25,7 +25,7 @@ export default function CreateStore() {
         async (moveToGroupsPage: boolean) => {
             setIsLoading(true)
             try {
-                await addStore(
+                const result = await addStore(
                     { apiToken: apiToken ?? unreachableCode() },
                     {
                         storeName,
@@ -33,13 +33,13 @@ export default function CreateStore() {
                     }
                 )
                 toastr.success('店舗を登録しました')
+                if (moveToGroupsPage) {
+                    history.push(`/admin/stores/${result.id}`)
+                }
             } catch {
                 await Swal.fire('エラー', '店舗を登録できませんでした。', 'error')
-                return
-            }
-            setIsLoading(false)
-            if (moveToGroupsPage) {
-                history.push('/admin/stores')
+            } finally {
+                setIsLoading(false)
             }
         },
         [apiToken, history, id, storeName]
