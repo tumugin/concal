@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreCastAttend;
+use App\Http\Requests\Admin\UpdateCastAttend;
 use App\Models\Cast;
 use App\Models\CastAttend;
 use App\Services\AdminUserAuthService;
@@ -46,11 +48,6 @@ class AdminCastAttendController extends Controller
 
     public function show(CastAttend $cast_attend)
     {
-        if ($cast_attend === null) {
-            return response([
-                'error' => 'Cast attend not found.',
-            ])->setStatusCode(404);
-        }
         $store = $cast_attend->store()->first();
         return [
             'success' => true,
@@ -63,43 +60,32 @@ class AdminCastAttendController extends Controller
         ];
     }
 
-    public function store(Cast $cast, Request $request)
+    public function store(Cast $cast, StoreCastAttend $request)
     {
-        $request->validate([
-            'storeId' => 'required|integer',
-            'startTime' => 'required|date',
-            'endTime' => 'required|date',
-            'attendInfo' => 'nullable|string',
+        $cast_attend = new CastAttend([
+            'cast_id' => $cast->id,
+            'store_id' => $request->post('storeId'),
+            'added_by_user_id' => AdminUserAuthService::getCurrentUser()->id,
+            'start_time' => $request->post('startTime'),
+            'end_time' => $request->post('endTime'),
+            'attend_info' => $request->post('attendInfo') ?? '',
         ]);
-        $cast_attend = CastAttend::addAttendance(
-            $cast->id,
-            (int)$request->post('storeId'),
-            AdminUserAuthService::getCurrentUser()->id,
-            Carbon::parse($request->post('startTime')),
-            Carbon::parse($request->post('endTime')),
-            $request->post('attendInfo') ?? ''
-        );
+        $cast_attend->save();
         return [
             'success' => true,
             'id' => $cast_attend->id,
         ];
     }
 
-    public function update(Request $request, CastAttend $cast_attend)
+    public function update(UpdateCastAttend $request, CastAttend $cast_attend)
     {
-        $request->validate([
-            'storeId' => 'required|integer',
-            'startTime' => 'required|date',
-            'endTime' => 'required|date',
-            'attendInfo' => 'nullable|string',
+        $cast_attend->update([
+            'store_id' => $request->post('storeId'),
+            'added_by_user_id' => AdminUserAuthService::getCurrentUser()->id,
+            'start_time' => $request->post('startTime'),
+            'end_time' => $request->post('endTime'),
+            'attend_info' => $request->post('attendInfo') ?? '',
         ]);
-        $cast_attend->updateAttendance(
-            (int)$request->post('storeId'),
-            AdminUserAuthService::getCurrentUser()->id,
-            Carbon::parse($request->post('startTime')),
-            Carbon::parse($request->post('endTime')),
-            $request->post('attendInfo') ?? ''
-        );
         return [
             'success' => true,
         ];

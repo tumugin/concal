@@ -5,13 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
-use Webmozart\Assert\Assert;
 
 /**
  * App\Models\StoreGroup
  *
  * @property int $id
- * @property string $group_name
+ * @property string $group_names
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\StoreGroup newModelQuery()
@@ -24,9 +23,12 @@ use Webmozart\Assert\Assert;
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Store[] $stores
  * @property-read int|null $stores_count
+ * @property string $group_name
  */
 class StoreGroup extends Model
 {
+    protected $guarded = ['id'];
+
     public function getAdminAttributes(): array
     {
         return collect($this->getAttributes())
@@ -45,48 +47,18 @@ class StoreGroup extends Model
         return $this->getAdminAttributes();
     }
 
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleting(function ($model) {
+            foreach ($model->stores as $child) {
+                $child->delete();
+            }
+        });
+    }
+
     public function stores(): HasMany
     {
         return $this->hasMany(Store::class);
-    }
-
-    /**
-     * 店舗グループを作成する
-     *
-     * @param string $group_name 店舗グループ名
-     */
-    public static function addStoreGroup(string $group_name): StoreGroup
-    {
-        Assert::stringNotEmpty($group_name);
-
-        $store_group = new StoreGroup();
-        $store_group->group_name = $group_name;
-        $store_group->save();
-
-        return $store_group;
-    }
-
-    /**
-     * 店舗グループ情報を更新する
-     *
-     * @param string $group_name 店舗グループ名
-     */
-    public function updateStoreInfo(string $group_name): void
-    {
-        Assert::stringNotEmpty($group_name);
-
-        $this->group_name = $group_name;
-        $this->save();
-    }
-
-    /**
-     * 店舗グループを削除する
-     *
-     * 所属している店舗が無い時のみ削除が行える
-     */
-    public function deleteStoreGroup(): void
-    {
-        Assert::eq(Store::whereStoreGroupId($this->id)->count(), 0);
-        $this->delete();
     }
 }

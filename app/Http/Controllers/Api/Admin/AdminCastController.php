@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreCast;
+use App\Http\Requests\Admin\UpdateCast;
 use App\Models\Cast;
 use App\Models\Store;
 use Illuminate\Http\Request;
@@ -41,40 +43,26 @@ class AdminCastController extends Controller
         ];
     }
 
-    public function store(Request $request)
+    public function store(StoreCast $request)
     {
-        $request->validate([
-            'castName' => 'required|string',
-            'castShortName' => 'nullable|string',
-            'castTwitterId' => 'nullable|string',
-            'castDescription' => 'nullable|string',
-            'castColor' => 'nullable|string',
-        ]);
-        $cast = Cast::addCast([
+        $cast = new Cast([
             'cast_name' => $request->post('castName'),
             'cast_short_name' => $request->post('castShortName'),
             'cast_twitter_id' => $request->post('castTwitterId'),
             'cast_description' => $request->post('castDescription') ?? '',
             'cast_color' => $request->post('castColor'),
+            'cast_disabled' => false,
         ]);
+        $cast->save();
         return [
             'success' => true,
             'id' => $cast->id,
         ];
     }
 
-    public function update(Request $request, Cast $cast)
+    public function update(UpdateCast $request, Cast $cast)
     {
-        $request->validate([
-            'castName' => 'required|string',
-            'castShortName' => 'nullable|string',
-            'castTwitterId' => 'nullable|string',
-            'castDescription' => 'nullable|string',
-            'castColor' => 'nullable|string',
-            'storeIds' => 'nullable|string',
-            'castDisabled' => 'nullable|string',
-        ]);
-        $cast->updateCast([
+        $cast->update([
             'cast_name' => $request->post('castName'),
             'cast_short_name' => $request->post('castShortName'),
             'cast_twitter_id' => $request->post('castTwitterId'),
@@ -83,14 +71,7 @@ class AdminCastController extends Controller
             'cast_disabled' => $request->post('castDisabled') === 'true',
         ]);
         if ($request->has('storeIds')) {
-            $comma_separated_store_ids = $request->post('storeIds');
-            $store_ids = collect(
-                $comma_separated_store_ids !== null ? explode(',', $comma_separated_store_ids) : []
-            )
-                ->filter(fn($value) => is_numeric($value))
-                ->map(fn($value) => (int)$value)
-                ->all();
-            $cast->updateEnrolledStoresByIds($store_ids);
+            $cast->stores()->sync($request->storeIds);
         }
         return [
             'success' => true,
