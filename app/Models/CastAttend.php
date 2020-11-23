@@ -40,6 +40,11 @@ class CastAttend extends Model
 {
     protected $guarded = ['id'];
 
+    protected $dates = [
+        'start_time',
+        'end_time',
+    ];
+
     public function getAdminAttributes(): array
     {
         return collect($this->getAttributes())

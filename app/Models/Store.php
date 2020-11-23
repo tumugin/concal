@@ -41,6 +41,10 @@ class Store extends Model
 {
     protected $guarded = ['id'];
 
+    protected $casts = [
+        'store_disabled' => 'boolean',
+    ];
+
     /**
      * 閉店していない営業中の店舗を返す
      *
@@ -59,10 +63,9 @@ class Store extends Model
                 'id',
                 'store_name',
                 'store_group_id',
-                'store_disabled',
             ])
             ->merge([
-                'store_disabled' => $this->store_disabled === 1,
+                'store_disabled' => $this->store_disabled,
             ])
             ->mapWithKeys(fn($value, string $key) => [
                 Str::camel($key) => $value

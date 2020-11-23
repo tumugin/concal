@@ -48,6 +48,10 @@ class Cast extends Model
 {
     protected $guarded = ['id'];
 
+    protected $casts = [
+        'cast_disabled' => 'boolean',
+    ];
+
     const CAST_COLOR_REGEX = '/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/';
 
     /**
@@ -71,10 +75,9 @@ class Cast extends Model
                 'cast_twitter_id',
                 'cast_description',
                 'cast_color',
-                'cast_disabled',
             ])
             ->merge([
-                'cast_disabled' => $this->cast_disabled === 1,
+                'cast_disabled' => $this->cast_disabled,
             ])
             ->mapWithKeys(fn($value, string $key) => [
                 Str::camel($key) => $value
