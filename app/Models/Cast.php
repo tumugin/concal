@@ -100,22 +100,4 @@ class Cast extends Model
     {
         return $this->belongsToMany(Store::class, StoreCast::class);
     }
-
-    /**
-     * キャストの所属店舗情報を更新する
-     *
-     * @param int[] $store_ids
-     */
-    public function updateEnrolledStoresByIds(array $store_ids): void
-    {
-        Assert::allInteger($store_ids);
-
-        DB::transaction(function () use ($store_ids) {
-            // 一旦全ての所属情報を消す
-            self::storeCasts()->delete();
-            // 新たに所属情報を登録する
-            Store::whereIn('id', $store_ids)
-                ->each(fn(Store $store) => $store->enrollCast($this));
-        });
-    }
 }

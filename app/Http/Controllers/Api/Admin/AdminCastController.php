@@ -72,11 +72,7 @@ class AdminCastController extends Controller
             'cast_disabled' => $request->post('castDisabled') === 'true',
         ]);
         if ($request->has('storeIds')) {
-            $store_ids = collect($request->storeIds)
-                ->filter(fn($value) => is_numeric($value))
-                ->map(fn($value) => (int)$value)
-                ->all();
-            $cast->updateEnrolledStoresByIds($store_ids);
+            $cast->stores()->sync($request->storeIds);
         }
         return [
             'success' => true,

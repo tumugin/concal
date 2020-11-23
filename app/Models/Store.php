@@ -85,19 +85,6 @@ class Store extends Model
     }
 
     /**
-     * キャストをこの店舗に在籍させる
-     *
-     * @param Cast $cast
-     */
-    public function enrollCast(Cast $cast): void
-    {
-        $store_cast = new StoreCast();
-        $store_cast->cast_id = $cast->id;
-        $store_cast->store_id = $this->id;
-        $store_cast->save();
-    }
-
-    /**
      * この店舗への出勤を取得する
      */
     public function castAttends(): HasMany
