@@ -13,6 +13,8 @@ services:
     depends_on:
       - db
       - js
+    ports:
+      - 9000:9000
   js:
     build:
       context: .
