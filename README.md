@@ -16,9 +16,12 @@ ln -s docker-compose.example.yml docker-compose.yml
 docker-compose up -d
 ```
 
-DBなどのセットアップ
+DBなどのセットアップ(実行前にコンテナ内でcomposer installは必要なので注意)
 
 ```shell script
+# composer install
+docker-compose run --rm app sh -c 'composer install'
+
 # migration
 docker-compose run --rm app sh -c 'php artisan migrate'
 
