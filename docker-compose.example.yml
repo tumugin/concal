@@ -9,11 +9,10 @@ services:
     tty: true
     volumes:
       - .:/code:cached
-      - /code/vendor
+      - php-vendor:/code/vendor
       - ./docker/php/php.ini:/usr/local/etc/php/php.ini
     depends_on:
       - db
-      - js
     ports:
       - 9000:9000
   js:
@@ -22,8 +21,8 @@ services:
       dockerfile: ./docker/js/Dockerfile
     volumes:
       - .:/code:cached
-      - /code/node_modules
-      - /code/.yarn
+      - node-modules:/code/node_modules
+      - yarn-cache:/code/.yarn
       - ./.yarn/releases:/code/.yarn/releases
   web:
     image: nginx:latest
@@ -46,4 +45,7 @@ services:
     ports:
       - 3306:3306
 volumes:
+  php-vendor:
+  node-modules:
+  yarn-cache:
   db-store:
