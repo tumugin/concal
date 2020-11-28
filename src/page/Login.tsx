@@ -35,7 +35,7 @@ export default function Login() {
         setIsLoading(false)
     }, [history, login, password, userIdentifier])
     const onKeyPressHandler = useCallback(
-        (e: KeyboardEvent) => {
+        (e: KeyboardEvent<HTMLInputElement>) => {
             if (e.key === 'Enter') {
                 e.preventDefault()
                 void onLogin()
