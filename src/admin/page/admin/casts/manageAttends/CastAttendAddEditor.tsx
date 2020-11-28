@@ -1,25 +1,20 @@
 import { InfoGrid } from 'components/InfoGrid'
 import { Input, Select } from '@rebass/forms/styled-components'
-import { Box, Button, Flex } from 'rebass/styled-components'
+import { Box, Button } from 'rebass/styled-components'
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { StoreData } from 'admin/api/store'
-import { AdminHorizontalButtons } from 'admin/components/AdminInfoBoxWrapper'
-import { Note } from 'components/Note'
 import styled from 'styled-components'
 import dayjs from 'dayjs'
 import { addAttend } from 'admin/api/attends'
 import { useApiToken } from 'admin/store/user'
 import toastr from 'toastr'
+import { unreachableCode } from 'types/util'
 
 export function CastAttendAddEditor({
-    selectedYear,
-    selectedMonth,
     castId,
     stores,
     onCastAttendAdd,
 }: {
-    selectedYear: number
-    selectedMonth: number
     castId: number
     stores: StoreData[]
     onCastAttendAdd: () => void
@@ -27,11 +22,9 @@ export function CastAttendAddEditor({
     const apiToken = useApiToken()
 
     const [selectedStore, setSelectedStore] = useState<StoreData | null>(null)
-    const [selectedStartDate, setSelectedStartDate] = useState('1')
-    const [selectedStartHour, setSelectedStartHour] = useState('0')
-    const [selectedStartMin, setSelectedStartMin] = useState('0')
-    const [selectedEndHour, setSelectedEndHour] = useState('0')
-    const [selectedEndMin, setSelectedEndMin] = useState('0')
+    const [selectedStoreId, setSelectedStoreId] = useState('')
+    const [selectedStartDateTime, setSelectedStartDateTime] = useState('')
+    const [selectedEndDateTime, setSelectedEndDateTime] = useState('')
     const [attendComment, setAttendComment] = useState('')
 
     const onSelectStore = useCallback(
@@ -41,35 +34,19 @@ export function CastAttendAddEditor({
         [stores]
     )
 
-    const onSetTimes = useCallback((startTime: string, endTime: string) => {
-        const startTimeDayJs = dayjs(`2020/01/01 ${startTime}`)
-        const endTimeDayJs = dayjs(`2020/01/01 ${endTime}`)
-        setSelectedStartHour(startTimeDayJs.hour().toString())
-        setSelectedStartMin(startTimeDayJs.minute().toString())
-        setSelectedEndHour(endTimeDayJs.hour().toString())
-        setSelectedEndMin(endTimeDayJs.minute().toString())
-    }, [])
-
     const onAddAttend = useCallback(async () => {
-        if (!apiToken || !selectedStore) {
+        if (!apiToken) {
             return
         }
-        const startTime = dayjs()
-            .year(selectedYear)
-            .month(selectedMonth)
-            .date(parseInt(selectedStartDate))
-            .hour(parseInt(selectedStartHour))
-            .minute(parseInt(selectedStartMin))
-        let endTime = startTime.hour(parseInt(selectedEndHour)).minute(parseInt(selectedEndMin))
-        if (startTime.isAfter(endTime)) {
-            endTime = endTime.add(1, 'day')
-        }
+        const startTime = dayjs(selectedStartDateTime)
+        const endTime = dayjs(selectedEndDateTime)
         try {
             await addAttend(
                 { apiToken },
                 {
                     castId,
-                    storeId: selectedStore.id,
+                    storeId:
+                        (selectedStoreId ? parseInt(selectedStoreId) : null) || selectedStore?.id || unreachableCode(),
                     startTime: startTime.toISOString(),
                     endTime: endTime.toISOString(),
                     attendInfo: attendComment,
@@ -85,14 +62,10 @@ export function CastAttendAddEditor({
         attendComment,
         castId,
         onCastAttendAdd,
-        selectedEndHour,
-        selectedEndMin,
-        selectedMonth,
-        selectedStartDate,
-        selectedStartHour,
-        selectedStartMin,
-        selectedStore,
-        selectedYear,
+        selectedEndDateTime,
+        selectedStartDateTime,
+        selectedStore?.id,
+        selectedStoreId,
     ])
 
     useEffect(() => {
@@ -118,55 +91,34 @@ export function CastAttendAddEditor({
                         ),
                     },
                     {
+                        name: 'or 出勤店舗ID',
+                        value: (
+                            <Input
+                                type="number"
+                                value={selectedStoreId}
+                                placeholder="指定する店舗のIDを直接指定(例:10)"
+                                onChange={(event) => setSelectedStoreId(event.target.value)}
+                            />
+                        ),
+                    },
+                    {
                         name: '出勤開始日時',
                         value: (
-                            <Flex sx={{ alignItems: 'center' }}>
-                                <Input
-                                    sx={{ width: '100px' }}
-                                    type="number"
-                                    value={selectedStartDate}
-                                    onChange={(event) => setSelectedStartDate(event.target.value)}
-                                />
-                                <Box marginLeft={1}>日</Box>
-                                <Input
-                                    sx={{ width: '100px' }}
-                                    marginLeft={3}
-                                    type="number"
-                                    value={selectedStartHour}
-                                    onChange={(event) => setSelectedStartHour(event.target.value)}
-                                />
-                                <Box marginLeft={1}>時</Box>
-                                <Input
-                                    sx={{ width: '100px' }}
-                                    marginLeft={1}
-                                    type="number"
-                                    value={selectedStartMin}
-                                    onChange={(event) => setSelectedStartMin(event.target.value)}
-                                />
-                                <Box marginLeft={1}>分</Box>
-                            </Flex>
+                            <Input
+                                type="datetime-local"
+                                value={selectedStartDateTime}
+                                onChange={(event) => setSelectedStartDateTime(event.target.value)}
+                            />
                         ),
                     },
                     {
                         name: '出勤終了日時',
                         value: (
-                            <Flex sx={{ alignItems: 'center' }}>
-                                <Input
-                                    sx={{ width: '100px' }}
-                                    type="number"
-                                    value={selectedEndHour}
-                                    onChange={(event) => setSelectedEndHour(event.target.value)}
-                                />
-                                <Box marginLeft={1}>時</Box>
-                                <Input
-                                    sx={{ width: '100px' }}
-                                    marginLeft={1}
-                                    type="number"
-                                    value={selectedEndMin}
-                                    onChange={(event) => setSelectedEndMin(event.target.value)}
-                                />
-                                <Box marginLeft={1}>分</Box>
-                            </Flex>
+                            <Input
+                                type="datetime-local"
+                                value={selectedEndDateTime}
+                                onChange={(event) => setSelectedEndDateTime(event.target.value)}
+                            />
                         ),
                     },
                     {
@@ -177,35 +129,9 @@ export function CastAttendAddEditor({
                     },
                 ]}
             />
-            <Box marginTop={3} fontSize={3}>
-                アフィリア用プリセット
-            </Box>
-            <AdminHorizontalButtons marginTop={3}>
-                <Button variant="outline" onClick={() => onSetTimes('18:00', '23:00')}>
-                    カフェ店舗平日
-                </Button>
-                <Button variant="outline" onClick={() => onSetTimes('15:00', '19:00')}>
-                    カフェ店舗早番休日
-                </Button>
-                <Button variant="outline" onClick={() => onSetTimes('19:00', '23:00')}>
-                    カフェ店舗遅番休日
-                </Button>
-                <Button variant="outline" onClick={() => onSetTimes('15:00', '23:00')}>
-                    カフェ店舗通し休日
-                </Button>
-                <Button variant="outline" onClick={() => onSetTimes('18:00', '23:00')}>
-                    バー店舗早番
-                </Button>
-                <Button variant="outline" onClick={() => onSetTimes('23:00', '19:00')}>
-                    バー店舗遅番
-                </Button>
-            </AdminHorizontalButtons>
             <Button marginTop={3} onClick={onAddAttend}>
                 追加する
             </Button>
-            <Box>
-                <Note tight>終了時間が開始時間より前の場合、翌日の扱いで登録されます</Note>
-            </Box>
         </Box>
     )
 }

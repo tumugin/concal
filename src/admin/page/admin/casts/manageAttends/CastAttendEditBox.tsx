@@ -15,7 +15,7 @@ export function CastAttendEditBox({
 
     return (
         <Flex sx={{ alignItems: 'center' }}>
-            <Button onClick={() => onDelete(attendData)}>削除</Button>
+            <Button onClick={() => onDelete(attendData)}>🗑️</Button>
             <Box marginLeft={2} sx={{ fontWeight: 'bold' }}>
                 {attendStartDate} ～ {attendEndDate}
             </Box>
