@@ -27,11 +27,8 @@ export function CastAttendAddEditor({
     const apiToken = useApiToken()
 
     const [selectedStore, setSelectedStore] = useState<StoreData | null>(null)
-    const [selectedStartDate, setSelectedStartDate] = useState('1')
-    const [selectedStartHour, setSelectedStartHour] = useState('0')
-    const [selectedStartMin, setSelectedStartMin] = useState('0')
-    const [selectedEndHour, setSelectedEndHour] = useState('0')
-    const [selectedEndMin, setSelectedEndMin] = useState('0')
+    const [selectedStartDateTime, setSelectedStartDateTime] = useState('')
+    const [selectedEndDateTime, setSelectedEndDateTime] = useState('')
     const [attendComment, setAttendComment] = useState('')
 
     const onSelectStore = useCallback(
@@ -42,28 +39,18 @@ export function CastAttendAddEditor({
     )
 
     const onSetTimes = useCallback((startTime: string, endTime: string) => {
-        const startTimeDayJs = dayjs(`2020/01/01 ${startTime}`)
-        const endTimeDayJs = dayjs(`2020/01/01 ${endTime}`)
-        setSelectedStartHour(startTimeDayJs.hour().toString())
-        setSelectedStartMin(startTimeDayJs.minute().toString())
-        setSelectedEndHour(endTimeDayJs.hour().toString())
-        setSelectedEndMin(endTimeDayJs.minute().toString())
+        const startTimeDayJs = dayjs(startTime)
+        const endTimeDayJs = dayjs(endTime)
+        setSelectedStartDateTime(startTimeDayJs.toISOString())
+        setSelectedEndDateTime(endTimeDayJs.toISOString())
     }, [])
 
     const onAddAttend = useCallback(async () => {
         if (!apiToken || !selectedStore) {
             return
         }
-        const startTime = dayjs()
-            .year(selectedYear)
-            .month(selectedMonth)
-            .date(parseInt(selectedStartDate))
-            .hour(parseInt(selectedStartHour))
-            .minute(parseInt(selectedStartMin))
-        let endTime = startTime.hour(parseInt(selectedEndHour)).minute(parseInt(selectedEndMin))
-        if (startTime.isAfter(endTime)) {
-            endTime = endTime.add(1, 'day')
-        }
+        const startTime = dayjs(selectedStartDateTime)
+        const endTime = dayjs(selectedEndDateTime)
         try {
             await addAttend(
                 { apiToken },
@@ -80,20 +67,7 @@ export function CastAttendAddEditor({
         } catch {
             toastr.error('エラーが発生しました')
         }
-    }, [
-        apiToken,
-        attendComment,
-        castId,
-        onCastAttendAdd,
-        selectedEndHour,
-        selectedEndMin,
-        selectedMonth,
-        selectedStartDate,
-        selectedStartHour,
-        selectedStartMin,
-        selectedStore,
-        selectedYear,
-    ])
+    }, [apiToken, attendComment, castId, onCastAttendAdd, selectedEndDateTime, selectedStartDateTime, selectedStore])
 
     useEffect(() => {
         if (stores[0]) {
@@ -119,55 +93,11 @@ export function CastAttendAddEditor({
                     },
                     {
                         name: '出勤開始日時',
-                        value: (
-                            <Flex sx={{ alignItems: 'center' }}>
-                                <Input
-                                    sx={{ width: '100px' }}
-                                    type="number"
-                                    value={selectedStartDate}
-                                    onChange={(event) => setSelectedStartDate(event.target.value)}
-                                />
-                                <Box marginLeft={1}>日</Box>
-                                <Input
-                                    sx={{ width: '100px' }}
-                                    marginLeft={3}
-                                    type="number"
-                                    value={selectedStartHour}
-                                    onChange={(event) => setSelectedStartHour(event.target.value)}
-                                />
-                                <Box marginLeft={1}>時</Box>
-                                <Input
-                                    sx={{ width: '100px' }}
-                                    marginLeft={1}
-                                    type="number"
-                                    value={selectedStartMin}
-                                    onChange={(event) => setSelectedStartMin(event.target.value)}
-                                />
-                                <Box marginLeft={1}>分</Box>
-                            </Flex>
-                        ),
+                        value: <Input type="datetime-local" />,
                     },
                     {
                         name: '出勤終了日時',
-                        value: (
-                            <Flex sx={{ alignItems: 'center' }}>
-                                <Input
-                                    sx={{ width: '100px' }}
-                                    type="number"
-                                    value={selectedEndHour}
-                                    onChange={(event) => setSelectedEndHour(event.target.value)}
-                                />
-                                <Box marginLeft={1}>時</Box>
-                                <Input
-                                    sx={{ width: '100px' }}
-                                    marginLeft={1}
-                                    type="number"
-                                    value={selectedEndMin}
-                                    onChange={(event) => setSelectedEndMin(event.target.value)}
-                                />
-                                <Box marginLeft={1}>分</Box>
-                            </Flex>
-                        ),
+                        value: <Input type="datetime-local" />,
                     },
                     {
                         name: '出勤コメント',
