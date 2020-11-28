@@ -1,9 +1,10 @@
 #!/usr/bin/env sh
+set -eux
 
 cd /code
 
 # composer
-composer install
+composer install --ignore-platform-reqs
 
 # cache clear
 php artisan cache:clear

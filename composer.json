@@ -4,7 +4,7 @@
     "description": "Concept cafe calender.",
     "license": "MIT",
     "require": {
-        "php": "^7.4",
+        "php": "^8.0",
         "ext-json": "*",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",

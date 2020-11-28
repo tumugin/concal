@@ -1,4 +1,4 @@
-FROM php:7.4-alpine
+FROM php:8.0-rc-alpine
 
 RUN apk --no-cache add tzdata zip unzip composer autoconf build-base
 RUN docker-php-ext-configure opcache --enable-opcache
