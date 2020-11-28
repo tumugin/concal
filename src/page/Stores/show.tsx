@@ -20,9 +20,10 @@ export default function Store() {
                 if (!cast.recentAttend) {
                     return false
                 }
-                const startTimeDayDiff = Math.abs(dayjs(cast.recentAttend.startTime).diff(dayjs(), 'day'))
-                const endTimeDayDiff = Math.abs(dayjs(cast.recentAttend.endTime).diff(dayjs(), 'day'))
-                return startTimeDayDiff === 0 || endTimeDayDiff === 0
+                return (
+                    dayjs(cast.recentAttend.startTime).date() === dayjs().date() ||
+                    dayjs(cast.recentAttend.endTime).date() === dayjs().date()
+                )
             }) ?? [],
         [store]
     )

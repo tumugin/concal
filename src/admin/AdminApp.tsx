@@ -37,8 +37,8 @@ function AppWithStore() {
     return (
         <>
             <Normalize />
-            <GlobalStyle />
             <ThemeProvider theme={{ ...preset, ...deep }}>
+                <GlobalStyle />
                 <WrapperBox
                     sx={{
                         color: 'text',
