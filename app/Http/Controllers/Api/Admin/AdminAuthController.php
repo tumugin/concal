@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Exceptions\LoginFailedException;
 use App\Http\Controllers\Controller;
+use App\Models\AdminUser;
 use App\Services\AdminUserAuthService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class AdminAuthController extends Controller
 {
@@ -32,11 +34,25 @@ class AdminAuthController extends Controller
         }
     }
 
-    public function revokeTokens()
+    public function proxyLogin(Request $request, AdminUserAuthService $userAuthService)
     {
-        return [
-            'success' => true,
-        ];
+        // 現在Request内に保持されているCookieをoauth2-proxy側のAPIに渡して認証成功すれば該当するユーザで認証する
+        $proxy_response = Http::withCookies(
+            $request->cookies->getIterator()->getArrayCopy(),
+            $request->getHttpHost()
+        )->get(config('host.oauth2_proxy_user_info_endpoint'));
+        if (!$proxy_response->ok()) {
+            return response([
+                'error' => 'Invalid oauth2-proxy cookies.',
+            ])->setStatusCode(401);
+        }
+        $response_json = $proxy_response->json();
+        if ($response_json['email'] ?? false) {
+            $user = AdminUser::whereEmail($response_json['email'])->first();
+        }
+        return response([
+            'error' => 'No admin user found.',
+        ])->setStatusCode(401);
     }
 
     public function userInfo(AdminUserAuthService $userAuthService)
