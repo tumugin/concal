@@ -34,8 +34,13 @@ class AdminAuthController extends Controller
         }
     }
 
-    public function proxyLogin(Request $request, AdminUserAuthService $userAuthService)
+    public function proxyLogin(Request $request)
     {
+        if (!config('host.oauth2_proxy_enabled')) {
+            return response([
+                'error' => 'oauth2-proxy login not enabled.',
+            ])->setStatusCode(403);
+        }
         // 現在Request内に保持されているCookieをoauth2-proxy側のAPIに渡して認証成功すれば該当するユーザで認証する
         $proxy_response = Http::withCookies(
             $request->cookies->getIterator()->getArrayCopy(),
@@ -47,8 +52,17 @@ class AdminAuthController extends Controller
             ])->setStatusCode(401);
         }
         $response_json = $proxy_response->json();
+        $user = null;
         if ($response_json['email'] ?? false) {
             $user = AdminUser::whereEmail($response_json['email'])->first();
+        } else if ($response_json['user'] ?? false) {
+            $user = AdminUser::whereUserName($response_json['user'])->first();
+        }
+        if ($user !== null) {
+            return [
+                'success' => true,
+                'apiToken' => $user->createApiToken(),
+            ];
         }
         return response([
             'error' => 'No admin user found.',
