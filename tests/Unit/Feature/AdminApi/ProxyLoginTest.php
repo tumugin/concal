@@ -18,6 +18,7 @@ class ProxyLoginTest extends TestCase
         parent::setUp();
         $this->setupApiKey();
         self::prepareAdminUser();
+        Config::set('host.oauth2_proxy_enabled', true);
     }
 
     private const _TEST_USER_DATA = [
@@ -40,7 +41,6 @@ class ProxyLoginTest extends TestCase
 
     public function testProxyLogin()
     {
-        Config::set('host.oauth2_proxy_enabled', true);
         Http::fake([
             '*' => Http::response([
                 'email' => self::_TEST_USER_DATA['email'],
@@ -53,5 +53,31 @@ class ProxyLoginTest extends TestCase
         $response->assertJsonStructure([
             'apiToken',
         ]);
+    }
+
+    public function testProxyLoginFailForNotExistingUser()
+    {
+        Http::fake([
+            '*' => Http::response([
+                'email' => 'not_exist@example.com',
+            ], 200),
+        ]);
+        $response = $this
+            ->withHeaders($this->apiKeyHeader)
+            ->post('/api/admin/proxy_login');
+        $response->assertStatus(401);
+    }
+
+    public function testProxyLoginFailForProxyError()
+    {
+        Http::fake([
+            '*' => Http::response([
+                'error' => 'something error.'
+            ], 401),
+        ]);
+        $response = $this
+            ->withHeaders($this->apiKeyHeader)
+            ->post('/api/admin/proxy_login');
+        $response->assertStatus(401);
     }
 }
