@@ -35,6 +35,7 @@ Route::apiResource('casts.attends', 'Api\Casts\AttendsController')
 // admin apis
 Route::group(['prefix' => 'admin', 'middleware' => 'admin.allowed.host'], function () {
     Route::post('/login', 'Api\Admin\AdminAuthController@login');
+    Route::post('/proxy_login', 'Api\Admin\AdminAuthController@proxyLogin');
 
     Route::group(['middleware' => ['auth:admin_api', 'can:has-admin-privilege']], function () {
         // info
