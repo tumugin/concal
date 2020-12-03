@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Tymon\JWTAuth\JWT;
+use Tymon\JWTAuth\JWTGuard;
 use Webmozart\Assert\Assert;
 
 /**
@@ -85,7 +86,10 @@ class AdminUser extends Authenticatable implements JWTSubject
      */
     public function createApiToken(): string
     {
-        return resolve(JWT::class)->fromUser($this);
+        $token_expire_time = 60 * 24 * 14; // 14日間
+        $jwt = resolve(JWT::class);
+        $jwt->factory()->setTTL($token_expire_time);
+        return $jwt->fromUser($this);
     }
 
     /**
