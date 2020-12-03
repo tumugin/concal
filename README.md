@@ -27,5 +27,5 @@ docker-compose run --rm app sh -c 'php artisan migrate'
 docker-compose run --rm app sh -c 'php artisan db:seed'
 
 # keys
-docker-compose run --rm app sh -c 'php artisan key:generate'
+docker-compose run --rm app sh -c 'php artisan key:generate && php artisan jwt:secret'
 ```
