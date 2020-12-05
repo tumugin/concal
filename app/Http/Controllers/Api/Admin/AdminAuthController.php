@@ -42,10 +42,11 @@ class AdminAuthController extends Controller
             ])->setStatusCode(403);
         }
         // 現在Request内に保持されているCookieをoauth2-proxy側のAPIに渡して認証成功すれば該当するユーザで認証する
+        $oauth2_proxy_endpoint = config('host.oauth2_proxy_user_info_endpoint');
         $proxy_response = Http::withCookies(
             $request->cookies->getIterator()->getArrayCopy(),
-            $request->getHttpHost()
-        )->get(config('host.oauth2_proxy_user_info_endpoint'));
+            parse_url($oauth2_proxy_endpoint, PHP_URL_HOST)
+        )->get($oauth2_proxy_endpoint);
         if (!$proxy_response->ok()) {
             return response([
                 'error' => 'Invalid oauth2-proxy cookies.',
