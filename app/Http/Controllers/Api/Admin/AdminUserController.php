@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminUserController extends Controller
 {
-    private const _PAGINATION_COUNT = 10;
+    private const _PAGINATION_COUNT = 20;
 
     public function index()
     {
