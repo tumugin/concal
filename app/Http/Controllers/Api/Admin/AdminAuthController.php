@@ -8,7 +8,6 @@ use App\Models\AdminUser;
 use App\Services\AdminUserAuthService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 
 class AdminAuthController extends Controller
 {
