@@ -8,7 +8,7 @@ use App\Models\StoreGroup;
 
 class AdminStoreGroupController
 {
-    private const _PAGINATION_COUNT = 10;
+    private const _PAGINATION_COUNT = 20;
 
     public function index()
     {

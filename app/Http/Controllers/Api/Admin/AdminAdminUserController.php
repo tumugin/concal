@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Validator;
 
 class AdminAdminUserController extends Controller
 {
-    private const _PAGINATION_COUNT = 10;
+    private const _PAGINATION_COUNT = 20;
 
     public function index()
     {
