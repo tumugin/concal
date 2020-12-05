@@ -29,6 +29,15 @@ export async function login({ email, userName, password }: { email?: string; use
     }
 }
 
+export async function proxyLogin() {
+    try {
+        const response = await Axios.post<LoginResponse>('/api/admin/proxy_login', {})
+        return response.data
+    } catch (e) {
+        throw generateError(e)
+    }
+}
+
 export async function selfInfo({ apiToken }: ApiKeyParam) {
     try {
         const response = await Axios.get<SelfResponse>('/api/admin/self', {

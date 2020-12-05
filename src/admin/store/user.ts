@@ -1,4 +1,4 @@
-import { login, selfInfo } from 'admin/api/auth'
+import { login, proxyLogin, selfInfo } from 'admin/api/auth'
 import { useCallback } from 'react'
 import { deleteLocalStorageToken, getLocalStorageToken, setLocalStorageToken } from 'admin/storage/adminTokenStorage'
 import { LoginException } from 'api/error'
@@ -62,6 +62,21 @@ export function useUserLogin() {
         },
         [fetchUserInfo, setUser]
     )
+}
+
+export function useUserProxyLogin() {
+    const [, setUser] = AdminStoreProvider.useGlobal('user')
+    const fetchUserInfo = useFetchUserInfo()
+    return useCallback(async () => {
+        const apiResult = await proxyLogin()
+        await setUser({
+            isLoggedIn: true,
+            apiToken: apiResult.apiToken,
+            self: null,
+        })
+        setLocalStorageToken(apiResult.apiToken)
+        await fetchUserInfo(apiResult.apiToken)
+    }, [fetchUserInfo, setUser])
 }
 
 export function useSavedUserLogin() {

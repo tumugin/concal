@@ -1,12 +1,13 @@
 import { PageWrapper } from 'components/PageWrapper'
-import { Box, Button, Heading } from 'rebass/styled-components'
+import { Box, Button, Heading, Text } from 'rebass/styled-components'
 import React, { KeyboardEvent, useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { Label, Input } from '@rebass/forms/styled-components'
 import { Note } from 'components/Note'
-import { useUserLogin } from 'admin/store/user'
+import { useUserLogin, useUserProxyLogin } from 'admin/store/user'
 import { LoginException } from 'api/error'
 import { useHistory } from 'react-router-dom'
+import Swal from 'sweetalert2'
 
 export default function AdminLogin() {
     const history = useHistory()
@@ -15,6 +16,7 @@ export default function AdminLogin() {
     const [isAuthFailed, setIsAuthFailed] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const login = useUserLogin()
+    const proxyLogin = useUserProxyLogin()
     const onLogin = useCallback(async () => {
         setIsLoading(true)
         try {
@@ -30,9 +32,28 @@ export default function AdminLogin() {
             } else {
                 throw e
             }
+        } finally {
+            setIsLoading(false)
         }
-        setIsLoading(false)
     }, [history, login, password, userIdentifier])
+    const onProxyLogin = useCallback(async () => {
+        setIsLoading(true)
+        try {
+            await proxyLogin()
+        } catch (e) {
+            if (e instanceof LoginException) {
+                await Swal.fire(
+                    'ログインエラー',
+                    '認証基盤側に登録されているIDが管理画面に連携されていません。',
+                    'error'
+                )
+            } else {
+                throw e
+            }
+        } finally {
+            setIsLoading(false)
+        }
+    }, [proxyLogin])
     const onKeyPressHandler = useCallback(
         (e: KeyboardEvent<HTMLInputElement>) => {
             if (e.key === 'Enter') {
@@ -72,8 +93,12 @@ export default function AdminLogin() {
                         </Box>
                     )}
                     <CenteringGrid mt={4}>
-                        <Button variant="primary" mr={2} onClick={onLogin} disabled={isLoading}>
+                        <Button variant="primary" onClick={onLogin} disabled={isLoading}>
                             ログイン
+                        </Button>
+                        <Text sx={{ textAlign: 'center' }}>or</Text>
+                        <Button variant="primary" onClick={onProxyLogin} disabled={isLoading}>
+                            アカウント認証基盤経由でログインする
                         </Button>
                     </CenteringGrid>
                 </LoginBox>
