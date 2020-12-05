@@ -50,7 +50,7 @@ class AdminAuthController extends Controller
         if (!$proxy_response->ok()) {
             return response([
                 'error' => 'Invalid oauth2-proxy cookies.',
-            ])->setStatusCode(401);
+            ])->setStatusCode(400);
         }
         $response_json = $proxy_response->json();
         $user = null;

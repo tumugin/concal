@@ -78,6 +78,6 @@ class ProxyLoginTest extends TestCase
         $response = $this
             ->withHeaders($this->apiKeyHeader)
             ->post('/api/admin/proxy_login');
-        $response->assertStatus(401);
+        $response->assertStatus(400);
     }
 }
