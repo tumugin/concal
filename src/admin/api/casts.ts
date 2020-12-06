@@ -14,11 +14,12 @@ export interface CastData {
     stores: StoreData[]
 }
 
-export async function getCasts({ apiToken }: ApiKeyParam, { page }: { page: number }) {
+export async function getCasts({ apiToken }: ApiKeyParam, { page, storeId }: { page: number; storeId?: number }) {
     const result = await Axios.get<{ casts: CastData[]; pageCount: number }>(`/api/admin/casts`, {
         headers: getAuthHeader(apiToken),
         params: {
             page,
+            storeId,
         },
     })
     return result.data

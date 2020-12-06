@@ -8,12 +8,14 @@ import { AdminBasicTable } from 'admin/components/AdminBasicTable'
 import { PaginationController } from 'components/PaginationController'
 import { Badge } from 'components/Badge'
 import { RebassRouterLink } from 'components/RebassRouterLink'
+import { useQueryNumber } from 'hooks/queryParam'
 
 export default function AdminCasts() {
     const apiToken = useApiToken()
     const [castData, setCastData] = useState<CastData[]>([])
     const [totalPages, setTotalPages] = useState(0)
-    const [page, setPage] = useState(1)
+    const [page, setPage] = useQueryNumber('page', 1)
+    const [storeId] = useQueryNumber('storeId')
 
     const mappedCastData = castData.map((item) => ({
         id: item.id,
@@ -54,11 +56,11 @@ export default function AdminCasts() {
             return
         }
         ;(async () => {
-            const apiResult = await getCasts({ apiToken }, { page })
+            const apiResult = await getCasts({ apiToken }, { page, storeId })
             setCastData(apiResult.casts)
             setTotalPages(apiResult.pageCount)
         })()
-    }, [apiToken, page])
+    }, [apiToken, page, storeId])
 
     return (
         <PageWrapper>

@@ -6,20 +6,16 @@ import { useHistory, useLocation, useParams } from 'react-router-dom'
 import { useLoadStoreAttends, useStoreAttends } from 'store/storeAttends'
 import { useLoadStore, useStore } from 'store/store'
 import { CastAttendCalendar } from 'components/CastAttendCalendar'
-import { useQuery } from 'utils/query'
+import { useQueryNumber } from 'hooks/queryParam'
 
 export default function StoreAttends() {
     const location = useLocation()
     const history = useHistory()
-    const query = useQuery()
     const { id } = useParams<{ id: string }>()
     const storeId = parseInt(id)
-    const yearString = query.get('year')
-    const year = yearString ? parseInt(yearString) : dayjs().year()
-    const monthString = query.get('month')
-    const month = monthString ? parseInt(monthString) : dayjs().month() + 1
-    const dateString = query.get('date')
-    const date = dateString ? parseInt(dateString) : dayjs().date()
+    const [year] = useQueryNumber('year', dayjs().year())
+    const [month] = useQueryNumber('month', dayjs().month() + 1)
+    const [date] = useQueryNumber('date', dayjs().date())
 
     const loadStoreAttends = useLoadStoreAttends({ storeId, year, month })
     const storeAttends = useStoreAttends({ storeId, year, month })

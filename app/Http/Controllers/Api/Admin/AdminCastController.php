@@ -7,15 +7,19 @@ use App\Http\Requests\Admin\StoreCast;
 use App\Http\Requests\Admin\UpdateCast;
 use App\Models\Cast;
 use App\Models\Store;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class AdminCastController extends Controller
 {
     private const _PAGINATION_COUNT = 20;
 
-    public function index()
+    public function index(Request $request)
     {
-        $casts = Cast::with('stores')->paginate(self::_PAGINATION_COUNT);
+        $store_id = $request->query('storeId');
+        $casts = Cast::with('stores')
+            ->whereHas('stores', fn(Builder $query) => $store_id !== null ? $query->where('id', '=', $store_id) : $query)
+            ->paginate(self::_PAGINATION_COUNT);
         $casts_result = collect($casts->items())->map(fn(Cast $cast) => collect($cast->getAdminAttributes())->merge(
             [
                 'stores' => $cast->stores->map(function (Store $store) {

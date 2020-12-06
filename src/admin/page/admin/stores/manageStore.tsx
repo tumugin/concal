@@ -5,7 +5,11 @@ import { unreachableCode } from 'types/util'
 import { deleteStore, getStore, StoreData, updateStore } from 'admin/api/store'
 import { PageWrapper } from 'components/PageWrapper'
 import { Box, Button, Heading } from 'rebass/styled-components'
-import { AdminInfoBoxWrapper } from 'admin/components/AdminInfoBoxWrapper'
+import {
+    AdminInfoBoxWrapper,
+    AdminVerticalButtonLink,
+    AdminVerticalButtons,
+} from 'admin/components/AdminInfoBoxWrapper'
 import { AdminInfoBox } from 'admin/components/AdminInfoBox'
 import { InfoGrid } from 'components/InfoGrid'
 import { Input, Label } from '@rebass/forms/styled-components'
@@ -148,6 +152,11 @@ export default function ManageStore() {
                             },
                         ]}
                     />
+                    <AdminVerticalButtons mt={3}>
+                        <AdminVerticalButtonLink to={`/admin/casts?storeId=${id}`}>
+                            <Button>この店舗に在籍しているキャストを表示する</Button>
+                        </AdminVerticalButtonLink>
+                    </AdminVerticalButtons>
                 </AdminInfoBox>
                 <AdminInfoBox header="店舗情報変更">
                     <Label>店舗名</Label>

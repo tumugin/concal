@@ -24,47 +24,51 @@ export default function ManageAttends() {
     const [selectedYearMonth, setSelectedYearMonth] = useState(dayjs().format('YYYY-MM'))
     const [attends, setAttends] = useState<AttendDataDetails[]>([])
 
-    const fetchCastData = useCallback(async () => {
-        if (!apiToken) {
-            return
-        }
-        setCastData((await getCast({ apiToken }, { castId })).cast)
-    }, [apiToken, castId])
-    const fetchAttendData = useCallback(async () => {
-        if (!apiToken) {
-            return
-        }
-        const currentDayJs = dayjs(selectedYearMonth).date(1).hour(0).minute(0).second(0).millisecond(0)
-        setAttends(
-            (
-                await getAttends(
-                    { apiToken },
-                    {
-                        castId,
-                        startTime: currentDayJs.toISOString(),
-                        endTime: currentDayJs.add(1, 'month').toISOString(),
-                    }
-                )
-            ).attends
-        )
-        setCurrentDayJsDate(currentDayJs)
-    }, [apiToken, castId, selectedYearMonth])
+    const fetchCastData = useCallback(
+        async (castId: number) => {
+            if (!apiToken) {
+                return
+            }
+            setCastData((await getCast({ apiToken }, { castId })).cast)
+        },
+        [apiToken]
+    )
+    const fetchAttendData = useCallback(
+        async (selectedYearMonth: string) => {
+            if (!apiToken) {
+                return
+            }
+            const currentDayJs = dayjs(selectedYearMonth).date(1).hour(0).minute(0).second(0).millisecond(0)
+            setAttends(
+                (
+                    await getAttends(
+                        { apiToken },
+                        {
+                            castId,
+                            startTime: currentDayJs.toISOString(),
+                            endTime: currentDayJs.add(1, 'month').toISOString(),
+                        }
+                    )
+                ).attends
+            )
+            setCurrentDayJsDate(currentDayJs)
+        },
+        [apiToken, castId]
+    )
     const onAttendDelete = useCallback(
         async (attendData: AttendDataDetails) => {
             await deleteAttend({ apiToken: apiToken ?? unreachableCode() }, { attendId: attendData.id })
-            await fetchAttendData()
+            await fetchAttendData(selectedYearMonth)
             toastr.success('出勤を削除しました')
         },
-        [apiToken, fetchAttendData]
+        [apiToken, fetchAttendData, selectedYearMonth]
     )
 
     useEffect(() => {
-        void fetchCastData()
-    }, [fetchCastData])
-    useEffect(() => {
-        void fetchAttendData()
+        void fetchCastData(castId)
+        void fetchAttendData(selectedYearMonth)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [castId, fetchAttendData, fetchCastData])
 
     if (!castData) {
         return null
@@ -81,7 +85,7 @@ export default function ManageAttends() {
                         value={selectedYearMonth}
                         onChange={(event) => setSelectedYearMonth(event.target.value)}
                     />
-                    <Button ml={2} onClick={fetchAttendData}>
+                    <Button ml={2} onClick={() => fetchAttendData(selectedYearMonth)}>
                         表示
                     </Button>
                 </Flex>
@@ -94,7 +98,11 @@ export default function ManageAttends() {
                     </AttendsGrid>
                 </AdminInfoBox>
                 <AdminInfoBox header="キャスト出勤追加">
-                    <CastAttendAddEditor castId={castId} stores={castData.stores} onCastAttendAdd={fetchAttendData} />
+                    <CastAttendAddEditor
+                        castId={castId}
+                        stores={castData.stores}
+                        onCastAttendAdd={() => fetchAttendData(selectedYearMonth)}
+                    />
                 </AdminInfoBox>
             </AdminInfoBoxWrapper>
         </PageWrapper>
