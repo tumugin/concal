@@ -6,12 +6,13 @@ import { getStoreGroups, StoreGroupData } from 'admin/api/storeGroup'
 import { Link } from 'react-router-dom'
 import { AdminBasicTable } from 'admin/components/AdminBasicTable'
 import { PaginationController } from 'components/PaginationController'
+import { useQueryNumber } from 'hooks/queryParam'
 
 export default function AdminGroups() {
     const apiToken = useApiToken()
     const [storeGroups, setStoreGroups] = useState<StoreGroupData[]>([])
     const [totalPages, setTotalPages] = useState(0)
-    const [page, setPage] = useState(1)
+    const [page, setPage] = useQueryNumber('page', 1)
 
     const mappedStoreGroups = storeGroups.map((item) => ({
         id: item.id,

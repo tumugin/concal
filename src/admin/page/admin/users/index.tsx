@@ -7,12 +7,13 @@ import { PaginationController } from 'components/PaginationController'
 import { AdminBasicTable } from 'admin/components/AdminBasicTable'
 import { Link } from 'react-router-dom'
 import { Badge } from 'components/Badge'
+import { useQueryNumber } from 'hooks/queryParam'
 
 export default function AdminUsers() {
     const apiToken = useApiToken()
     const [userData, setUserData] = useState<UserData[]>([])
     const [totalPages, setTotalPages] = useState(0)
-    const [page, setPage] = useState(1)
+    const [page, setPage] = useQueryNumber('page', 1)
     useDebugValue(userData)
     const mappedUserData = userData.map((item) => ({
         id: item.id,

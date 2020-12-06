@@ -7,12 +7,13 @@ import { PageWrapper } from 'components/PageWrapper'
 import { AdminBasicTable } from 'admin/components/AdminBasicTable'
 import { PaginationController } from 'components/PaginationController'
 import { AdminUserData, getAdminUsers } from 'admin/api/admin-users'
+import { useQueryNumber } from 'hooks/queryParam'
 
 export default function AdminAdminUsers() {
     const apiToken = useApiToken()
     const [userData, setUserData] = useState<AdminUserData[]>([])
     const [totalPages, setTotalPages] = useState(0)
-    const [page, setPage] = useState(1)
+    const [page, setPage] = useQueryNumber('page', 1)
     useDebugValue(userData)
     const mappedUserData = userData.map((item) => ({
         id: item.id,
