@@ -15,6 +15,7 @@ export default function AdminCasts() {
     const [castData, setCastData] = useState<CastData[]>([])
     const [totalPages, setTotalPages] = useState(0)
     const [page, setPage] = useQueryNumber('page', 1)
+    const [storeId] = useQueryNumber('storeId')
 
     const mappedCastData = castData.map((item) => ({
         id: item.id,
@@ -55,11 +56,11 @@ export default function AdminCasts() {
             return
         }
         ;(async () => {
-            const apiResult = await getCasts({ apiToken }, { page })
+            const apiResult = await getCasts({ apiToken }, { page, storeId })
             setCastData(apiResult.casts)
             setTotalPages(apiResult.pageCount)
         })()
-    }, [apiToken, page])
+    }, [apiToken, page, storeId])
 
     return (
         <PageWrapper>
