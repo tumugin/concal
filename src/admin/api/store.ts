@@ -11,11 +11,15 @@ export interface StoreData {
     storeGroup: StoreGroupData
 }
 
-export async function getStores({ apiToken }: ApiKeyParam, { page }: { page: number }) {
+export async function getStores(
+    { apiToken }: ApiKeyParam,
+    { page, storeGroupId }: { page: number; storeGroupId?: number }
+) {
     const result = await Axios.get<{ stores: StoreData[]; pageCount: number }>(`/api/admin/stores`, {
         headers: getAuthHeader(apiToken),
         params: {
             page,
+            storeGroupId,
         },
     })
     return result.data

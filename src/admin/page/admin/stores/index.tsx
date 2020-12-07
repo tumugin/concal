@@ -14,6 +14,7 @@ export default function AdminStores() {
     const [storeData, setStoreData] = useState<StoreData[]>([])
     const [totalPages, setTotalPages] = useState(0)
     const [page, setPage] = useQueryNumber('page', 1)
+    const [storeGroupId] = useQueryNumber('storeGroupId')
 
     const mappedStoreData = storeData.map((item) => ({
         id: item.id,
@@ -35,11 +36,11 @@ export default function AdminStores() {
             return
         }
         ;(async () => {
-            const apiResult = await getStores({ apiToken }, { page })
+            const apiResult = await getStores({ apiToken }, { page, storeGroupId })
             setStoreData(apiResult.stores)
             setTotalPages(apiResult.pageCount)
         })()
-    }, [apiToken, page])
+    }, [apiToken, page, storeGroupId])
 
     return (
         <PageWrapper>

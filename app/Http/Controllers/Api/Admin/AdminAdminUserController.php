@@ -6,9 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreAdminUser;
 use App\Http\Requests\Admin\UpdateAdminUser;
 use App\Models\AdminUser;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 
 class AdminAdminUserController extends Controller
 {
