@@ -4,8 +4,6 @@ namespace Tests\Unit\User;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class UserTest extends TestCase

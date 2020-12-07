@@ -48,7 +48,7 @@ export default function AdminAdminUsers() {
 
     return (
         <PageWrapper>
-            <Heading>管理者ユーザ覧</Heading>
+            <Heading>管理者ユーザ一覧</Heading>
             <Flex mt={4}>
                 <Link to={`/admin/admin_users/create`}>
                     <Button>新規追加</Button>

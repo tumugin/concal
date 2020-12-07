@@ -7,16 +7,19 @@ use App\Http\Requests\Admin\StoreStore;
 use App\Http\Requests\Admin\UpdateStore;
 use App\Models\Cast;
 use App\Models\Store;
-use App\Models\StoreGroup;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class AdminStoreController extends Controller
 {
     private const _PAGINATION_COUNT = 20;
 
-    public function index()
+    public function index(Request $request)
     {
-        $stores = Store::with('storeGroup')->paginate(self::_PAGINATION_COUNT);
+        $store_group_id = $request->query('storeGroupId');
+        $stores = Store::with('storeGroup')
+            ->whereHas('storeGroup', fn(Builder $query) => $store_group_id !== null ? $query->where('id', '=', $store_group_id) : $query)
+            ->paginate(self::_PAGINATION_COUNT);
         $stores_result = collect($stores->items())->map(function (Store $store) {
             return collect($store->getAdminAttributes())
                 ->merge([

@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\User;
 
-use App\Models\User;
 use App\Utils\PasswordAssertUtil;
 use Tests\TestCase;
 

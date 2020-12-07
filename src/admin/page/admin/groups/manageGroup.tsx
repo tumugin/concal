@@ -1,12 +1,16 @@
-import { Link, useHistory, useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import { useApiToken } from 'admin/store/user'
 import React, { useCallback, useEffect, useState } from 'react'
 import { unreachableCode } from 'types/util'
 import toastr from 'toastr'
 import Swal from 'sweetalert2'
 import { PageWrapper } from 'components/PageWrapper'
-import { Box, Button, Heading } from 'rebass/styled-components'
-import { AdminInfoBoxWrapper } from 'admin/components/AdminInfoBoxWrapper'
+import { Button, Heading } from 'rebass/styled-components'
+import {
+    AdminInfoBoxWrapper,
+    AdminVerticalButtonLink,
+    AdminVerticalButtons,
+} from 'admin/components/AdminInfoBoxWrapper'
 import { AdminInfoBox } from 'admin/components/AdminInfoBox'
 import { InfoGrid } from 'components/InfoGrid'
 import { Input, Label } from '@rebass/forms/styled-components'
@@ -96,11 +100,14 @@ export default function ManageGroup() {
                             },
                         ]}
                     />
-                    <Box mt={3}>
-                        <Link to={`/admin/groups/${id}/stores/create`}>
+                    <AdminVerticalButtons mt={3}>
+                        <AdminVerticalButtonLink to={`/admin/groups/${id}/stores/create`}>
                             <Button>このグループに店舗を追加する</Button>
-                        </Link>
-                    </Box>
+                        </AdminVerticalButtonLink>
+                        <AdminVerticalButtonLink to={`/admin/stores?storeGroupId=${id}`}>
+                            <Button>このグループの店舗一覧を表示する</Button>
+                        </AdminVerticalButtonLink>
+                    </AdminVerticalButtons>
                 </AdminInfoBox>
                 <AdminInfoBox header="店舗グループ情報変更">
                     <Label>店舗グループ名</Label>

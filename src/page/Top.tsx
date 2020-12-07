@@ -30,7 +30,7 @@ function TopContentsArea() {
             }}
         >
             <Box>
-                <Heading>グループ・店舗</Heading>
+                <Heading>グループ・店舗一覧</Heading>
                 <Box marginY={3}>
                     <GroupAndStoreList groups={top.storeGroups} />
                 </Box>
