@@ -13,27 +13,27 @@ use Illuminate\Support\Str;
  * @property int $id
  * @property int $cast_id
  * @property int $store_id
- * @property string $start_time
- * @property string $end_time
+ * @property \Illuminate\Support\Carbon $start_time
+ * @property \Illuminate\Support\Carbon $end_time
  * @property string $attend_info
  * @property int $added_by_user_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Store $store
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend whereAddedByUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend whereAttendInfo($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend whereCastId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend whereEndTime($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend whereStartTime($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend whereStoreId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CastAttend whereUpdatedAt($value)
- * @mixin \Eloquent
  * @property-read \App\Models\Cast $cast
+ * @property-read \App\Models\Store $store
+ * @method static \Illuminate\Database\Eloquent\Builder|CastAttend newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|CastAttend newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|CastAttend query()
+ * @method static \Illuminate\Database\Eloquent\Builder|CastAttend whereAddedByUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CastAttend whereAttendInfo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CastAttend whereCastId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CastAttend whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CastAttend whereEndTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CastAttend whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CastAttend whereStartTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CastAttend whereStoreId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CastAttend whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class CastAttend extends Model
 {
