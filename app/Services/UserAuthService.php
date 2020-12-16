@@ -4,8 +4,10 @@ namespace App\Services;
 
 use App\Exceptions\LoginFailedException;
 use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\JWT;
 use Webmozart\Assert\Assert;
 
 class UserAuthService
@@ -14,12 +16,14 @@ class UserAuthService
      * Auth::guardから現在ログイン中のユーザを取得する
      *
      * @return User
+     * @throws AuthorizationException
      */
-    public static function getCurrentUser(): User
+    public function getCurrentUser(): User
     {
+        /** @var $user User */
         $user = Auth::guard('api')->user();
         if ($user === null) {
-            throw new \Exception('Must be logged in to get current user.');
+            throw new AuthorizationException('Must be logged in to get current user.');
         }
         return $user;
     }
@@ -35,7 +39,7 @@ class UserAuthService
      * @return User
      * @throws LoginFailedException
      */
-    public static function attemptLogin(?string $user_name, ?string $mail_address, string $password): User
+    public function attemptLogin(?string $user_name, ?string $mail_address, string $password): User
     {
         Assert::stringNotEmpty($password);
         Assert::nullOrEmail($mail_address);
@@ -57,8 +61,21 @@ class UserAuthService
         ], $credentials_fields);
 
         if (Auth::guard('api')->attempt($credentials)) {
-            return Auth::guard('api')->user();
+            /** @var $user User */
+            $user = Auth::guard('api')->user();
+            return $user;
         }
         throw new LoginFailedException();
+    }
+
+    /**
+     * 新しくAPIトークンを発行して発行されたトークンを返す
+     *
+     * @param User $user 発行する対象のユーザ
+     * @return string
+     */
+    public function createApiToken(User $user): string
+    {
+        return resolve(JWT::class)->fromUser($user);
     }
 }

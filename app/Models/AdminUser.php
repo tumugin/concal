@@ -76,19 +76,6 @@ class AdminUser extends Authenticatable implements JWTSubject
     }
 
     /**
-     * 新しくAPIトークンを発行して発行されたトークンを返す
-     *
-     * @return string
-     */
-    public function createApiToken(): string
-    {
-        $token_expire_time = 60 * 24 * 14; // 14日間
-        $jwt = resolve(JWT::class);
-        $jwt->factory()->setTTL($token_expire_time);
-        return $jwt->fromUser($this);
-    }
-
-    /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
      * @return mixed

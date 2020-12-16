@@ -89,16 +89,6 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
-     * 新しくAPIトークンを発行して発行されたトークンを返す
-     *
-     * @return string
-     */
-    public function createApiToken(): string
-    {
-        return resolve(JWT::class)->fromUser($this);
-    }
-
-    /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
      * @return mixed

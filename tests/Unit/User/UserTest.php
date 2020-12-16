@@ -3,6 +3,7 @@
 namespace Tests\Unit\User;
 
 use App\Models\User;
+use App\Services\UserAuthService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -18,7 +19,7 @@ class UserTest extends TestCase
     public function testCreateApiToken(): void
     {
         $user = factory(User::class)->create();
-        $apiToken = $user->createApiToken();
+        $apiToken = resolve(UserAuthService::class)->createApiToken($user);
         $this->assertNotEmpty($apiToken);
     }
 }

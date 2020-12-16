@@ -14,7 +14,7 @@ class AuthTest extends TestCase
     public function testAttemptLoginWithUserName(): void
     {
         $test_user = factory(User::class)->create();
-        $auth_user = UserAuthService::attemptLogin(
+        $auth_user = resolve(UserAuthService::class)->attemptLogin(
             $test_user->user_name,
             null,
             'uju_macha_milk'
@@ -25,14 +25,14 @@ class AuthTest extends TestCase
         );
         $this->assertEquals(
             $test_user->getAttributes(),
-            UserAuthService::getCurrentUser()->getAttributes()
+            resolve(UserAuthService::class)->getCurrentUser()->getAttributes()
         );
     }
 
     public function testAttemptLoginWithEMail(): void
     {
         $test_user = factory(User::class)->create();
-        $auth_user = UserAuthService::attemptLogin(
+        $auth_user = resolve(UserAuthService::class)->attemptLogin(
             null,
             $test_user->email,
             'uju_macha_milk'
@@ -43,7 +43,7 @@ class AuthTest extends TestCase
         );
         $this->assertEquals(
             $test_user->getAttributes(),
-            UserAuthService::getCurrentUser()->getAttributes()
+            resolve(UserAuthService::class)->getCurrentUser()->getAttributes()
         );
     }
 }
