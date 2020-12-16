@@ -20,12 +20,8 @@ use Tymon\JWTAuth\JWT;
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Client[] $clients
- * @property-read int|null $clients_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Token[] $tokens
- * @property-read int|null $tokens_count
  * @method static \Illuminate\Database\Eloquent\Builder|AdminUser newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AdminUser newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AdminUser query()
@@ -73,19 +69,6 @@ class AdminUser extends Authenticatable implements JWTSubject
                 Str::camel($key) => $value
             ])
             ->all();
-    }
-
-    /**
-     * 新しくAPIトークンを発行して発行されたトークンを返す
-     *
-     * @return string
-     */
-    public function createApiToken(): string
-    {
-        $token_expire_time = 60 * 24 * 14; // 14日間
-        $jwt = resolve(JWT::class);
-        $jwt->factory()->setTTL($token_expire_time);
-        return $jwt->fromUser($this);
     }
 
     /**

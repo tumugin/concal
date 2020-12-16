@@ -4,8 +4,11 @@ namespace App\Services;
 
 use App\Exceptions\LoginFailedException;
 use App\Models\AdminUser;
+use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\JWT;
 use Webmozart\Assert\Assert;
 
 class AdminUserAuthService
@@ -14,12 +17,14 @@ class AdminUserAuthService
      * Auth::guardから現在ログイン中のユーザを取得する
      *
      * @return AdminUser
+     * @throws AuthorizationException
      */
-    public static function getCurrentUser(): AdminUser
+    public function getCurrentUser(): AdminUser
     {
+        /** @var $user AdminUser */
         $user = Auth::guard('admin_api')->user();
         if ($user === null) {
-            throw new \Exception('Must be logged in to get current user.');
+            throw new AuthorizationException('Must be logged in to get current user.');
         }
         return $user;
     }
@@ -35,7 +40,7 @@ class AdminUserAuthService
      * @return AdminUser
      * @throws LoginFailedException
      */
-    public static function attemptLogin(?string $user_name, ?string $mail_address, string $password): AdminUser
+    public function attemptLogin(?string $user_name, ?string $mail_address, string $password): AdminUser
     {
         Assert::stringNotEmpty($password);
         Assert::nullOrEmail($mail_address);
@@ -57,8 +62,26 @@ class AdminUserAuthService
         ], $credentials_fields);
 
         if (Auth::guard('admin_api')->attempt($credentials)) {
-            return Auth::guard('admin_api')->user();
+            /** @var $user AdminUser */
+            $user = Auth::guard('admin_api')->user();
+            return $user;
         }
         throw new LoginFailedException();
+    }
+
+    /**
+     * 新しくAPIトークンを発行して発行されたトークンを返す
+     *
+     * @param AdminUser $admin_user 発行する対象の管理者ユーザ
+     * @return string
+     */
+    public function createApiToken(AdminUser $admin_user): string
+    {
+        // 管理画面は14日間有効のトークンを発行する
+        $token_expire_time = 60 * 24 * 14;
+        /** @var $jwt JWT */
+        $jwt = resolve(JWT::class);
+        $jwt->factory()->setTTL($token_expire_time);
+        return $jwt->fromUser($admin_user);
     }
 }

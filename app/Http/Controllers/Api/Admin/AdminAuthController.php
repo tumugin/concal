@@ -25,7 +25,7 @@ class AdminAuthController extends Controller
             $user = $userAuthService->attemptLogin($user_name, $email, $password);
             return [
                 'success' => true,
-                'apiToken' => $user->createApiToken(),
+                'apiToken' => resolve(AdminUserAuthService::class)->createApiToken($user),
             ];
         } catch (LoginFailedException $ex) {
             return response([
@@ -62,7 +62,7 @@ class AdminAuthController extends Controller
         if ($user !== null) {
             return [
                 'success' => true,
-                'apiToken' => $user->createApiToken(),
+                'apiToken' => resolve(AdminUserAuthService::class)->createApiToken($user),
             ];
         }
         return response([

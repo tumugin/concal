@@ -20,24 +20,20 @@ use Tymon\JWTAuth\JWT;
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Client[] $clients
- * @property-read int|null $clients_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Token[] $tokens
- * @property-read int|null $tokens_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePassword($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRememberToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUserName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUserPrivilege($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|User query()
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereUserName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereUserPrivilege($value)
  * @mixin \Eloquent
  */
 class User extends Authenticatable implements JWTSubject
@@ -86,16 +82,6 @@ class User extends Authenticatable implements JWTSubject
                 Str::camel($key) => $value
             ])
             ->all();
-    }
-
-    /**
-     * 新しくAPIトークンを発行して発行されたトークンを返す
-     *
-     * @return string
-     */
-    public function createApiToken(): string
-    {
-        return resolve(JWT::class)->fromUser($this);
     }
 
     /**

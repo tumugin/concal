@@ -4,6 +4,8 @@ namespace Tests;
 
 use App\Models\AdminUser;
 use App\Models\User;
+use App\Services\AdminUserAuthService;
+use App\Services\UserAuthService;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Config;
 
@@ -21,7 +23,7 @@ abstract class TestCase extends BaseTestCase
         $user = factory(AdminUser::class)->create();
         $user->user_privilege = AdminUser::USER_PRIVILEGE_ADMIN;
         $user->save();
-        $this->adminApiKey = $user->createApiToken();
+        $this->adminApiKey = resolve(AdminUserAuthService::class)->createApiToken($user);
     }
 
     public function setupSuperAdminUserAndLogin(): void
@@ -29,7 +31,7 @@ abstract class TestCase extends BaseTestCase
         $user = factory(AdminUser::class)->create();
         $user->user_privilege = AdminUser::USER_PRIVILEGE_SUPER_ADMIN;
         $user->save();
-        $this->superAdminApiKey = $user->createApiToken();
+        $this->superAdminApiKey = resolve(AdminUserAuthService::class)->createApiToken($user);
     }
 
     public function setupNormalUserAndLogin(): void
@@ -37,7 +39,7 @@ abstract class TestCase extends BaseTestCase
         $user = factory(User::class)->create();
         $user->user_privilege = User::USER_PRIVILEGE_USER;
         $user->save();
-        $this->userApiKey = $user->createApiToken();
+        $this->userApiKey = resolve(UserAuthService::class)->createApiToken($user);
     }
 
     public function setupApiKey(): void

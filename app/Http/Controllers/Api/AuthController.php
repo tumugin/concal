@@ -23,7 +23,7 @@ class AuthController extends Controller
             $user = $userAuthService->attemptLogin($user_name, $email, $password);
             return [
                 'success' => true,
-                'apiToken' => $user->createApiToken(),
+                'apiToken' => $userAuthService->createApiToken($user),
             ];
         } catch (LoginFailedException $ex) {
             return response([
