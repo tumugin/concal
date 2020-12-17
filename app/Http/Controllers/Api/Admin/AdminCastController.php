@@ -18,6 +18,7 @@ class AdminCastController extends Controller
     {
         $store_id = $request->query('storeId');
         $casts = Cast::with('stores')
+            ->with('latestCastAttend')
             ->whereHas('stores', fn(Builder $query) => $store_id !== null ? $query->where('id', '=', $store_id) : $query)
             ->paginate(self::_PAGINATION_COUNT);
         $casts_result = collect($casts->items())->map(fn(Cast $cast) => collect($cast->getAdminAttributes())->merge(

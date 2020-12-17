@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
 
 /**
@@ -101,5 +102,10 @@ class Cast extends Model
     public function stores(): BelongsToMany
     {
         return $this->belongsToMany(Store::class, StoreCast::class);
+    }
+
+    public function latestCastAttend(): HasOne
+    {
+        return $this->hasOne(CastAttend::class)->orderBy('start_date');
     }
 }
