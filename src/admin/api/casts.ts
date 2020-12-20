@@ -2,6 +2,7 @@ import { ApiKeyParam, getAuthHeader } from 'api/authUtils'
 import Axios from 'axios'
 import { StoreData } from 'admin/api/store'
 import { AddAPIBasicResponse } from 'admin/api/types'
+import { AdminAttendData } from 'admin/api/attends'
 
 export interface CastData {
     id: number
@@ -12,6 +13,7 @@ export interface CastData {
     castColor: string
     castDisabled: boolean
     stores: StoreData[]
+    latestCastAttend: AdminAttendData | null
 }
 
 export async function getCasts({ apiToken }: ApiKeyParam, { page, storeId }: { page: number; storeId?: number }) {

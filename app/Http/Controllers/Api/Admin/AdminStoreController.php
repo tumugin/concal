@@ -17,9 +17,11 @@ class AdminStoreController extends Controller
     public function index(Request $request)
     {
         $store_group_id = $request->query('storeGroupId');
-        $stores = Store::with('storeGroup')
-            ->whereHas('storeGroup', fn(Builder $query) => $store_group_id !== null ? $query->where('id', '=', $store_group_id) : $query)
-            ->paginate(self::_PAGINATION_COUNT);
+        $stores = Store::with('storeGroup');
+        if ($store_group_id !== null) {
+            $stores = $stores->whereHas('storeGroup', fn(Builder $query) => $query->where('id', '=', $store_group_id));
+        }
+        $stores = $stores->paginate(self::_PAGINATION_COUNT);
         $stores_result = collect($stores->items())->map(function (Store $store) {
             return collect($store->getAdminAttributes())
                 ->merge([

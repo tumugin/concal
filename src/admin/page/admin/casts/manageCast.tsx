@@ -7,7 +7,11 @@ import { CastData, deleteCast, getCast, updateCast } from 'admin/api/casts'
 import { useHistory, useParams } from 'react-router-dom'
 import { AdminInfoBox } from 'admin/components/AdminInfoBox'
 import { InfoGrid } from 'components/InfoGrid'
-import { AdminInfoBoxWrapper, AdminVerticalButtonLink, AdminVerticalButtons } from 'admin/components/AdminInfoBoxWrapper'
+import {
+    AdminInfoBoxWrapper,
+    AdminVerticalButtonLink,
+    AdminVerticalButtons,
+} from 'admin/components/AdminInfoBoxWrapper'
 import { Badge } from 'components/Badge'
 import { Input, Label } from '@rebass/forms/styled-components'
 import { Textarea } from '@rebass/forms'
@@ -17,6 +21,7 @@ import Swal from 'sweetalert2'
 import { CastColorBlock } from 'components/CastColorBlock'
 import toastr from 'toastr'
 import { RebassRouterLink } from 'components/RebassRouterLink'
+import dayjs from 'dayjs'
 
 export default function ManageCast() {
     const history = useHistory()
@@ -161,6 +166,22 @@ export default function ManageCast() {
                                     <Badge type="alert">卒業済み</Badge>
                                 ) : (
                                     <Badge type="success">現役</Badge>
+                                ),
+                            },
+                            {
+                                name: 'シフト入力状況(最新出勤日)',
+                                value: castData.latestCastAttend ? (
+                                    dayjs(castData.latestCastAttend.startTime).isAfter(dayjs()) ? (
+                                        <Badge type="success">
+                                            入力済({dayjs(castData.latestCastAttend.startTime).format('YYYY/MM/DD')})
+                                        </Badge>
+                                    ) : (
+                                        <Badge type="alert">
+                                            未入力({dayjs(castData.latestCastAttend.startTime).format('YYYY/MM/DD')})
+                                        </Badge>
+                                    )
+                                ) : (
+                                    '-'
                                 ),
                             },
                             {

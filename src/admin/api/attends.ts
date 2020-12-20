@@ -3,7 +3,7 @@ import { ApiKeyParam, getAuthHeader } from 'api/authUtils'
 import { StoreData } from 'admin/api/store'
 import { AddAPIBasicResponse } from 'admin/api/types'
 
-interface AttendData {
+export interface AdminAttendData {
     id: number
     castId: number
     storeId: number
@@ -13,7 +13,7 @@ interface AttendData {
     addedByUserId: number
 }
 
-export interface AttendDataDetails extends AttendData {
+export interface AttendDataDetails extends AdminAttendData {
     store: StoreData
 }
 
