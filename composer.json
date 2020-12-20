@@ -22,7 +22,7 @@
         "webmozart/assert": "^1.9"
     },
     "require-dev": {
-        "barryvdh/laravel-ide-helper": "^2.7",
+        "barryvdh/laravel-ide-helper": "^2.8",
         "beyondcode/laravel-query-detector": "^1.4",
         "doctrine/dbal": "^2.10",
         "facade/ignition": "^2.0",

@@ -17,14 +17,17 @@ class AdminCastController extends Controller
     public function index(Request $request)
     {
         $store_id = $request->query('storeId');
-        $casts = Cast::with('stores')
-            ->whereHas('stores', fn(Builder $query) => $store_id !== null ? $query->where('id', '=', $store_id) : $query)
-            ->paginate(self::_PAGINATION_COUNT);
+        $casts = Cast::with(['stores', 'latestCastAttend']);
+        if ($store_id !== null) {
+            $casts = $casts->whereHas('stores', fn(Builder $query) => $query->where('id', '=', $store_id));
+        }
+        $casts = $casts->paginate(self::_PAGINATION_COUNT);
         $casts_result = collect($casts->items())->map(fn(Cast $cast) => collect($cast->getAdminAttributes())->merge(
             [
                 'stores' => $cast->stores->map(function (Store $store) {
                     return $store->getAdminAttributes();
                 }),
+                'latestCastAttend' => $cast->latestCastAttend?->getAdminAttributes(),
             ])
         );
         return [
@@ -42,7 +45,8 @@ class AdminCastController extends Controller
                 'stores' => $cast
                     ->stores()
                     ->get()
-                    ->map(fn(Store $store) => $store->getAdminAttributes())
+                    ->map(fn(Store $store) => $store->getAdminAttributes()),
+                'latestCastAttend' => $cast->latestCastAttend?->getAdminAttributes(),
             ]),
         ];
     }

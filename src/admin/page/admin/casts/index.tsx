@@ -9,6 +9,7 @@ import { PaginationController } from 'components/PaginationController'
 import { Badge } from 'components/Badge'
 import { RebassRouterLink } from 'components/RebassRouterLink'
 import { useQueryNumber } from 'hooks/queryParam'
+import dayjs from 'dayjs'
 
 export default function AdminCasts() {
     const apiToken = useApiToken()
@@ -34,6 +35,15 @@ export default function AdminCasts() {
                 <RebassRouterLink to={`/admin/stores/${store.id}`}>{store.storeName}</RebassRouterLink>
             </div>
         )),
+        latestCastAttend: item.latestCastAttend ? (
+            dayjs(item.latestCastAttend.startTime).isAfter(dayjs()) ? (
+                <Badge type="success">入力済({dayjs(item.latestCastAttend.startTime).format('YYYY/MM/DD')})</Badge>
+            ) : (
+                <Badge type="alert">未入力({dayjs(item.latestCastAttend.startTime).format('YYYY/MM/DD')})</Badge>
+            )
+        ) : (
+            '-'
+        ),
     }))
 
     const createOperationNode = (item: { id: number }) => {
@@ -81,7 +91,12 @@ export default function AdminCasts() {
                         {
                             Header: 'キャスト省略名称',
                             accessor: 'castShortName',
-                            width: 250,
+                            width: 150,
+                        },
+                        {
+                            Header: 'シフト入力状況(最新出勤日)',
+                            accessor: 'latestCastAttend',
+                            width: 200,
                         },
                         {
                             Header: '在籍店舗',
@@ -96,7 +111,7 @@ export default function AdminCasts() {
                         {
                             Header: '在籍状態',
                             accessor: 'castStatus',
-                            width: 200,
+                            width: 80,
                         },
                     ]}
                     data={mappedCastData}

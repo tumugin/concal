@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
 
 /**
@@ -40,6 +41,7 @@ use Illuminate\Support\Str;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Store[] $stores
  * @property-read int|null $stores_count
  * @method static Builder|Cast active()
+ * @property-read \App\Models\CastAttend|null $latestCastAttend
  */
 class Cast extends Model
 {
@@ -101,5 +103,10 @@ class Cast extends Model
     public function stores(): BelongsToMany
     {
         return $this->belongsToMany(Store::class, StoreCast::class);
+    }
+
+    public function latestCastAttend(): HasOne
+    {
+        return $this->hasOne(CastAttend::class)->orderBy('start_time', 'desc');
     }
 }
