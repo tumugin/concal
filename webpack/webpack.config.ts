@@ -1,8 +1,8 @@
 import baseConfig from './webpack.base.config'
 import * as webpack from 'webpack'
 import WebpackBar from 'webpackbar'
-import ManifestPlugin from 'webpack-manifest-plugin'
 import * as path from 'path'
+import { WebpackManifestPlugin } from 'webpack-manifest-plugin'
 
 export default function config(
     env: { [key: string]: string | undefined },
@@ -20,9 +20,9 @@ export default function config(
                 name: 'frontend client',
             }) as unknown) as webpack.WebpackPluginInstance,
             // FIXME: 型エラーを直す
-            (new ManifestPlugin({
+            new WebpackManifestPlugin({
                 fileName: path.resolve('storage/app/manifest.json'),
-            }) as unknown) as webpack.WebpackPluginInstance,
+            }),
         ],
     }
     return config
