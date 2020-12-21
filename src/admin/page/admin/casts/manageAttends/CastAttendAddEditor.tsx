@@ -68,6 +68,23 @@ export function CastAttendAddEditor({
         selectedStoreId,
     ])
 
+    const onAttendStartDateTimeChange = useCallback(
+        (newDateTime: string) => {
+            setSelectedStartDateTime(newDateTime)
+            // 終了日時の日付だけ開始日からコピーする
+            const startTimeDayJs = dayjs(newDateTime)
+            const endTimeDayJs = dayjs(selectedEndDateTime === '' ? undefined : selectedEndDateTime)
+            setSelectedEndDateTime(
+                endTimeDayJs
+                    .year(startTimeDayJs.year())
+                    .month(startTimeDayJs.month())
+                    .date(startTimeDayJs.date())
+                    .format('YYYY-MM-DDTHH:mm')
+            )
+        },
+        [selectedEndDateTime]
+    )
+
     useEffect(() => {
         if (stores[0]) {
             setSelectedStore(stores[0])
@@ -107,7 +124,7 @@ export function CastAttendAddEditor({
                             <Input
                                 type="datetime-local"
                                 value={selectedStartDateTime}
-                                onChange={(event) => setSelectedStartDateTime(event.target.value)}
+                                onChange={(event) => onAttendStartDateTimeChange(event.target.value)}
                             />
                         ),
                     },
