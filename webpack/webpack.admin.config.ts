@@ -1,7 +1,7 @@
 import baseConfig from './webpack.base.config'
 import * as webpack from 'webpack'
 import WebpackBar from 'webpackbar'
-import ManifestPlugin from 'webpack-manifest-plugin'
+import { WebpackManifestPlugin } from 'webpack-manifest-plugin'
 import * as path from 'path'
 
 export default function config(
@@ -29,9 +29,9 @@ export default function config(
                 name: 'admin frontend',
             }) as unknown) as webpack.WebpackPluginInstance,
             // FIXME: 型エラーを直す
-            (new ManifestPlugin({
+            new WebpackManifestPlugin({
                 fileName: path.resolve('storage/app/admin-manifest.json'),
-            }) as unknown) as webpack.WebpackPluginInstance,
+            }),
         ],
     }
     return config
