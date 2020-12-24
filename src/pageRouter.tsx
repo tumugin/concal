@@ -6,9 +6,10 @@ export default function PageRouter() {
     const Top = React.lazy(() => import('page/Top'))
     const Groups = React.lazy(() => import('page/Groups'))
     const Store = React.lazy(() => import('page/Stores/show'))
-    const StoreAttends = React.lazy(() => import('page/StoreAttends'))
+    const StoreAttendsCalendar = React.lazy(() => import('page/StoreAttendsCalendar'))
     const Cast = React.lazy(() => import('page/Casts/show'))
     const Login = React.lazy(() => import('page/Login'))
+    const StoreAttendsByMonth = React.lazy(() => import('page/Stores/Attends/StoreAttendsByMonth'))
 
     return (
         <BrowserRouter>
@@ -18,7 +19,8 @@ export default function PageRouter() {
                     <Route path="/" component={Top} exact />
                     <Route path="/groups" component={Groups} exact />
                     <Route path="/stores/:id" component={Store} exact />
-                    <Route path="/stores/:id/attends" component={StoreAttends} exact />
+                    <Route path="/stores/:id/attends" component={StoreAttendsCalendar} exact />
+                    <Route path="/stores/:id/attends/:year/:month" component={StoreAttendsByMonth} exact />
                     <Route path="/casts/:id" component={Cast} exact />
                     <Route path="/login" component={Login} exact />
                 </Switch>

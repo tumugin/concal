@@ -19,6 +19,8 @@ Route::resource('stores', '\App\Http\Controllers\Page\StoreController')
     ->only('show');
 Route::resource('stores.attends', '\App\Http\Controllers\Page\Stores\AttendsController')
     ->only('index');
+Route::resource('stores/{store}/attends/{year:slug}/{month:slug}', '\App\Http\Controllers\Page\Stores\Attends\Year\MonthController')
+    ->only('index');
 Route::resource('casts', '\App\Http\Controllers\Page\CastController')
     ->only('show');
 Route::resource('groups', '\App\Http\Controllers\Page\StoreGroupController')
