@@ -53,8 +53,6 @@ export default function StoreAttendsByMonth() {
         return null
     }
 
-    // TODO: 日ごとに出勤データを抽出して渡す
-
     return (
         <PageWrapper>
             <Heading>
