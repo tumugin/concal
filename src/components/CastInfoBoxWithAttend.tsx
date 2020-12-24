@@ -5,7 +5,7 @@ import dayjs from 'dayjs'
 import { Box, Text } from 'rebass/styled-components'
 import { StoreCastData } from 'api/store'
 
-export function CastInfoBoxWithAttend({ cast }: { cast: StoreCastData }) {
+export function CastInfoBoxWithAttend({ cast, hideDate }: { cast: StoreCastData; hideDate?: boolean }) {
     const dayjsStartTime = useMemo(() => dayjs(cast.recentAttend?.startTime), [cast.recentAttend])
     const dayjsEndTime = useMemo(() => dayjs(cast.recentAttend?.endTime), [cast.recentAttend])
 
@@ -25,7 +25,7 @@ export function CastInfoBoxWithAttend({ cast }: { cast: StoreCastData }) {
                 </Text>
                 {cast.recentAttend && (
                     <Text fontSize={2}>
-                        {dayjsStartTime.format('MM/DD HH:mm')}～{dayjsEndTime.format('HH:mm')}
+                        {dayjsStartTime.format(hideDate ? 'HH:mm' : 'MM/DD(dd) HH:mm')}～{dayjsEndTime.format('HH:mm')}
                     </Text>
                 )}
                 {!cast.recentAttend && <Text fontSize={2}>直近の出勤なし</Text>}

@@ -8,7 +8,7 @@ import { useLoadStore, useStore } from 'store/store'
 import { CastAttendCalendar } from 'components/CastAttendCalendar'
 import { useQueryNumber } from 'hooks/queryParam'
 
-export default function StoreAttends() {
+export default function StoreAttendsCalendar() {
     const location = useLocation()
     const history = useHistory()
     const { id } = useParams<{ id: string }>()
