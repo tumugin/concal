@@ -59,7 +59,7 @@ export default function StoreAttendsByMonth() {
                 {store.storeName}の出勤情報({year}年{month}月)
             </Heading>
             {attendsOfDay.map((attend, index) => (
-                <DateAttendInfoBox attends={attend.attends} date={attend.date} key={index} />
+                <DateAttendInfoBox attends={attend.attends} date={attend.date} key={index} storeId={id} />
             ))}
         </PageWrapper>
     )
