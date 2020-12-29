@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Page\Stores\Attends\Year\Month;
+namespace App\Http\Controllers\Page\Stores\Attends\Year;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Page\SPAPageUtils;
