@@ -33,7 +33,7 @@ class AdminStoreGroupController
 
     public function store(StoreStoreGroup $request)
     {
-        $store_group = new StoreGroup($request->validated());
+        $store_group = new StoreGroup($request->toValueObject());
         $store_group->save();
         return [
             'success' => true,
@@ -43,7 +43,7 @@ class AdminStoreGroupController
 
     public function update(UpdateStoreGroup $request, StoreGroup $group)
     {
-        $group->update($request->validated());
+        $group->update($request->toValueObject());
         $group->save();
         return [
             'success' => true,

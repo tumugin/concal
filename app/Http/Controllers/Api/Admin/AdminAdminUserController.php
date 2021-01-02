@@ -26,7 +26,7 @@ class AdminAdminUserController extends Controller
 
     public function store(StoreAdminUser $request)
     {
-        $user = new AdminUser($request->validated());
+        $user = new AdminUser($request->toValueObject());
         $user->save();
         return [
             'success' => true,
@@ -44,7 +44,7 @@ class AdminAdminUserController extends Controller
 
     public function update(UpdateAdminUser $request, AdminUser $admin_user)
     {
-        $admin_user->update($request->validated());
+        $admin_user->update($request->toValueObject());
         return [
             'success' => true,
         ];

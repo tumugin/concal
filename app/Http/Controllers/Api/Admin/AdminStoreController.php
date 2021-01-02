@@ -37,7 +37,7 @@ class AdminStoreController extends Controller
 
     public function store(StoreStore $request)
     {
-        $store = new Store($request->validated());
+        $store = new Store($request->toValueObject());
         $store->save();
         return [
             'success' => true,
@@ -47,7 +47,7 @@ class AdminStoreController extends Controller
 
     public function update(UpdateStore $request, Store $store)
     {
-        $store->update($request->validated());
+        $store->update($request->toValueObject());
         return [
             'success' => true,
         ];

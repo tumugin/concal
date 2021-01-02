@@ -33,13 +33,13 @@ class UpdateCastAttend extends FormRequest
         ];
     }
 
-    protected function passedValidation()
+    public function toValueObject(): array
     {
-        $this->replace([
+        return [
             'store_id' => $this->input('storeId'),
             'start_time' => $this->input('startTime'),
             'end_time' => $this->input('endTime'),
             'attend_info' => $this->input('attendInfo') ?? '',
-        ]);
+        ];
     }
 }

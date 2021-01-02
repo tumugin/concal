@@ -33,15 +33,15 @@ class StoreCast extends FormRequest
         ];
     }
 
-    protected function passedValidation()
+    public function toValueObject(): array
     {
-        $this->replace([
+        return [
             'cast_name' => $this->input('castName'),
             'cast_short_name' => $this->input('castShortName'),
             'cast_twitter_id' => $this->input('castTwitterId'),
             'cast_description' => $this->input('castDescription') ?? '',
             'cast_color' => $this->input('castColor'),
             'cast_disabled' => false,
-        ]);
+        ];
     }
 }

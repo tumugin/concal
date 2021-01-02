@@ -45,14 +45,14 @@ class StoreUser extends FormRequest
         ];
     }
 
-    protected function passedValidation()
+    public function toValueObject(): array
     {
-        $this->replace([
+        return [
             'user_name' => $this->input('userName'),
             'name' => $this->input('name'),
             'password' => Hash::make($this->input('password')),
             'email' => $this->input('email'),
             'user_privilege' => $this->input('userPrivilege'),
-        ]);
+        ];
     }
 }

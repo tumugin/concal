@@ -28,10 +28,10 @@ class StoreStoreGroup extends FormRequest
         ];
     }
 
-    protected function passedValidation()
+    public function toValueObject(): array
     {
-        $this->replace([
+        return [
             'group_name' => $this->input('groupName'),
-        ]);
+        ];
     }
 }

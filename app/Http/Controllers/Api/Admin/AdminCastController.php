@@ -53,7 +53,7 @@ class AdminCastController extends Controller
 
     public function store(StoreCast $request)
     {
-        $cast = new Cast($request->validated());
+        $cast = new Cast($request->toValueObject());
         $cast->save();
         return [
             'success' => true,
@@ -63,9 +63,9 @@ class AdminCastController extends Controller
 
     public function update(UpdateCast $request, Cast $cast)
     {
-        $cast->update($request->validated());
-        if ($request->has('store_ids')) {
-            $cast->stores()->sync($request->store_ids);
+        $cast->update($request->toValueObject());
+        if ($request->has('storeIds')) {
+            $cast->stores()->sync($request->storeIds);
         }
         return [
             'success' => true,

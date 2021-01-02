@@ -51,9 +51,10 @@ class UpdateAdminUser extends FormRequest
         ];
     }
 
-    protected function passedValidation()
+    public function toValueObject(): array
     {
         $validated_values = [];
+
         if ($this->input('userName') !== null) {
             $validated_values['user_name'] = $this->input('userName');
         }
@@ -70,6 +71,6 @@ class UpdateAdminUser extends FormRequest
             $validated_values['user_privilege'] = $this->input('userPrivilege');
         }
 
-        $this->replace($validated_values);
+        return $validated_values;
     }
 }

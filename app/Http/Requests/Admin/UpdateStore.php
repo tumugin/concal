@@ -32,12 +32,12 @@ class UpdateStore extends FormRequest
         ];
     }
 
-    protected function passedValidation()
+    public function toValueObject(): array
     {
-        $this->replace([
+        return [
             'store_name' => $this->input('storeName'),
             'store_group_id' => $this->input('storeGroupId'),
             'store_disabled' => $this->input('storeDisabled') === 'true',
-        ]);
+        ];
     }
 }

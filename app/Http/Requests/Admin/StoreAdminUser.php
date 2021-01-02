@@ -7,6 +7,7 @@ use App\Utils\PasswordAssertUtil;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use JetBrains\PhpStorm\ArrayShape;
 
 class StoreAdminUser extends FormRequest
 {
@@ -45,14 +46,14 @@ class StoreAdminUser extends FormRequest
         ];
     }
 
-    protected function passedValidation()
+    public function toValueObject(): array
     {
-        $this->replace([
-            'user_name' => $this->input('userName'),
-            'name' => $this->input('name'),
-            'password' => Hash::make($this->input('password')),
-            'email' => $this->input('email'),
-            'user_privilege' => $this->input('userPrivilege'),
-        ]);
+        return [
+            'user_name' => $this->post('userName'),
+            'name' => $this->post('name'),
+            'password' => Hash::make($this->post('password')),
+            'email' => $this->post('email'),
+            'user_privilege' => $this->post('userPrivilege'),
+        ];
     }
 }
