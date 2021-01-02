@@ -1,4 +1,4 @@
-import { ApiKeyParam, getAuthHeader } from 'api/authUtils'
+import { ApiKeyParam, getAuthHeader } from 'utils/authUtils'
 import Axios from 'axios'
 import { AddAPIBasicResponse } from 'admin/api/types'
 

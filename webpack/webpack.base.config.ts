@@ -17,7 +17,7 @@ export default function config(
         // ref: https://github.com/webpack/webpack-dev-server/issues/2758
         target: isProduction ? 'browserslist' : 'web',
         entry: {
-            app: path.resolve('src/main.tsx'),
+            app: path.resolve('src/main/main.tsx'),
         },
         output: {
             filename: 'assets/js/[name].[chunkhash].bundle.js',
