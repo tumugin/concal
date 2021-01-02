@@ -5,7 +5,9 @@ namespace App\Http\Requests\Admin;
 use App\Models\AdminUser;
 use App\Utils\PasswordAssertUtil;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use JetBrains\PhpStorm\ArrayShape;
 
 class StoreAdminUser extends FormRequest
 {
@@ -41,6 +43,17 @@ class StoreAdminUser extends FormRequest
             }],
             'email' => ['required', 'email:rfc', Rule::unique(AdminUser::class, 'email')],
             'userPrivilege' => ['required', 'string', Rule::in(AdminUser::USER_PRIVILEGES)],
+        ];
+    }
+
+    public function toValueObject(): array
+    {
+        return [
+            'user_name' => $this->post('userName'),
+            'name' => $this->post('name'),
+            'password' => Hash::make($this->post('password')),
+            'email' => $this->post('email'),
+            'user_privilege' => $this->post('userPrivilege'),
         ];
     }
 }

@@ -31,4 +31,13 @@ class UpdateStore extends FormRequest
             'storeDisabled' => ['required', 'string', Rule::in(['true', 'false'])],
         ];
     }
+
+    public function toValueObject(): array
+    {
+        return [
+            'store_name' => $this->input('storeName'),
+            'store_group_id' => $this->input('storeGroupId'),
+            'store_disabled' => $this->input('storeDisabled') === 'true',
+        ];
+    }
 }

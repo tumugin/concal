@@ -27,13 +27,7 @@ class AdminUserController extends Controller
 
     public function store(StoreUser $request)
     {
-        $user = new User([
-            'user_name' => $request->post('userName'),
-            'name' => $request->post('name'),
-            'password' => Hash::make($request->post('password')),
-            'email' => $request->post('email'),
-            'user_privilege' => $request->post('userPrivilege'),
-        ]);
+        $user = new User($request->toValueObject());
         $user->save();
         return [
             'success' => true,
@@ -51,22 +45,7 @@ class AdminUserController extends Controller
 
     public function update(UpdateUser $request, User $user)
     {
-        if ($request->post('userName') !== null) {
-            $user->user_name = $request->post('userName');
-        }
-        if ($request->post('name') !== null) {
-            $user->name = $request->post('name');
-        }
-        if ($request->post('password') !== null) {
-            $user->password = Hash::make($request->post('password'));
-        }
-        if ($request->post('email') !== null) {
-            $user->email = $request->post('email');
-        }
-        if ($request->post('userPrivilege') !== null) {
-            $user->user_privilege = $request->post('userPrivilege');
-        }
-        $user->save();
+        $user->update($request->toValueObject());
         return [
             'success' => true,
         ];

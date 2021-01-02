@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreAdminUser;
 use App\Http\Requests\Admin\UpdateAdminUser;
 use App\Models\AdminUser;
-use Illuminate\Support\Facades\Hash;
 
 class AdminAdminUserController extends Controller
 {
@@ -27,13 +26,7 @@ class AdminAdminUserController extends Controller
 
     public function store(StoreAdminUser $request)
     {
-        $user = new AdminUser([
-            'user_name' => $request->post('userName'),
-            'name' => $request->post('name'),
-            'password' => Hash::make($request->post('password')),
-            'email' => $request->post('email'),
-            'user_privilege' => $request->post('userPrivilege'),
-        ]);
+        $user = new AdminUser($request->toValueObject());
         $user->save();
         return [
             'success' => true,
@@ -51,22 +44,7 @@ class AdminAdminUserController extends Controller
 
     public function update(UpdateAdminUser $request, AdminUser $admin_user)
     {
-        if ($request->post('userName') !== null) {
-            $admin_user->user_name = $request->post('userName');
-        }
-        if ($request->post('name') !== null) {
-            $admin_user->name = $request->post('name');
-        }
-        if ($request->post('password') !== null) {
-            $admin_user->password = Hash::make($request->post('password'));
-        }
-        if ($request->post('email') !== null) {
-            $admin_user->email = $request->post('email');
-        }
-        if ($request->post('userPrivilege') !== null) {
-            $admin_user->user_privilege = $request->post('userPrivilege');
-        }
-        $admin_user->save();
+        $admin_user->update($request->toValueObject());
         return [
             'success' => true,
         ];

@@ -33,9 +33,7 @@ class AdminStoreGroupController
 
     public function store(StoreStoreGroup $request)
     {
-        $store_group = new StoreGroup([
-            'group_name' => $request->post('groupName'),
-        ]);
+        $store_group = new StoreGroup($request->toValueObject());
         $store_group->save();
         return [
             'success' => true,
@@ -45,9 +43,7 @@ class AdminStoreGroupController
 
     public function update(UpdateStoreGroup $request, StoreGroup $group)
     {
-        $group->update([
-            'group_name' => $request->post('groupName'),
-        ]);
+        $group->update($request->toValueObject());
         $group->save();
         return [
             'success' => true,

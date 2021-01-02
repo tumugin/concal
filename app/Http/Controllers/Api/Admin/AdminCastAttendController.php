@@ -61,14 +61,13 @@ class AdminCastAttendController extends Controller
 
     public function store(Cast $cast, StoreCastAttend $request, AdminUserAuthService $admin_user_auth_service)
     {
-        $cast_attend = new CastAttend([
-            'cast_id' => $cast->id,
-            'store_id' => $request->post('storeId'),
-            'added_by_user_id' => $admin_user_auth_service->getCurrentUser()->id,
-            'start_time' => $request->post('startTime'),
-            'end_time' => $request->post('endTime'),
-            'attend_info' => $request->post('attendInfo') ?? '',
-        ]);
+        $cast_attend = new CastAttend(array_merge(
+            $request->toValueObject(),
+            [
+                'cast_id' => $cast->id,
+                'added_by_user_id' => $admin_user_auth_service->getCurrentUser()->id,
+            ]
+        ));
         $cast_attend->save();
         return [
             'success' => true,
@@ -78,13 +77,12 @@ class AdminCastAttendController extends Controller
 
     public function update(UpdateCastAttend $request, CastAttend $cast_attend, AdminUserAuthService $admin_user_auth_service)
     {
-        $cast_attend->update([
-            'store_id' => $request->post('storeId'),
-            'added_by_user_id' => $admin_user_auth_service->getCurrentUser()->id,
-            'start_time' => $request->post('startTime'),
-            'end_time' => $request->post('endTime'),
-            'attend_info' => $request->post('attendInfo') ?? '',
-        ]);
+        $cast_attend->update(array_merge(
+            $request->toValueObject(),
+            [
+                'added_by_user_id' => $admin_user_auth_service->getCurrentUser()->id,
+            ]
+        ));
         return [
             'success' => true,
         ];

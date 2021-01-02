@@ -27,4 +27,11 @@ class UpdateStoreGroup extends FormRequest
             'groupName' => 'required|string',
         ];
     }
+
+    public function toValueObject(): array
+    {
+        return [
+            'group_name' => $this->input('groupName'),
+        ];
+    }
 }
