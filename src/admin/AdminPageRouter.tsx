@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
-import { Forbidden } from 'page/Forbidden'
+import { Forbidden } from 'admin/page/Forbidden'
 import { useUser } from 'admin/store/user'
 import { AdminNavBar } from 'admin/components/AdminNavBar'
 import AdminAdminUsers from 'admin/page/admin/admin-users'

@@ -12,13 +12,13 @@ interface SelfResponse {
         userName: string
         name: string
         email: string
-        userPrivilege: 'admin' | 'super_admin'
+        userPrivilege: 'admin' | 'user'
     }
 }
 
 export async function login({ email, userName, password }: { email?: string; userName?: string; password: string }) {
     try {
-        const response = await Axios.post<LoginResponse>('/api/admin/login', {
+        const response = await Axios.post<LoginResponse>('/api/login', {
             email: email,
             userName: userName,
             password: password,
@@ -29,22 +29,23 @@ export async function login({ email, userName, password }: { email?: string; use
     }
 }
 
-export async function proxyLogin() {
-    try {
-        const response = await Axios.post<LoginResponse>('/api/admin/proxy_login', {})
-        return response.data
-    } catch (e) {
-        throw generateError(e)
-    }
-}
-
 export async function selfInfo({ apiToken }: ApiKeyParam) {
     try {
-        const response = await Axios.get<SelfResponse>('/api/admin/self', {
+        const response = await Axios.get<SelfResponse>('/api/self', {
             headers: getAuthHeader(apiToken),
         })
         return response.data
     } catch (e) {
         throw generateError(e)
     }
+}
+
+export async function revokeTokens({ apiToken }: ApiKeyParam) {
+    await Axios.post(
+        '/api/token/revoke',
+        {},
+        {
+            headers: getAuthHeader(apiToken),
+        }
+    )
 }
