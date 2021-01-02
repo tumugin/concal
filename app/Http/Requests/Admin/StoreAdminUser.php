@@ -5,6 +5,7 @@ namespace App\Http\Requests\Admin;
 use App\Models\AdminUser;
 use App\Utils\PasswordAssertUtil;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
 class StoreAdminUser extends FormRequest
@@ -42,5 +43,16 @@ class StoreAdminUser extends FormRequest
             'email' => ['required', 'email:rfc', Rule::unique(AdminUser::class, 'email')],
             'userPrivilege' => ['required', 'string', Rule::in(AdminUser::USER_PRIVILEGES)],
         ];
+    }
+
+    protected function passedValidation()
+    {
+        $this->replace([
+            'user_name' => $this->input('userName'),
+            'name' => $this->input('name'),
+            'password' => Hash::make($this->input('password')),
+            'email' => $this->input('email'),
+            'user_privilege' => $this->input('userPrivilege'),
+        ]);
     }
 }

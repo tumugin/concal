@@ -53,14 +53,7 @@ class AdminCastController extends Controller
 
     public function store(StoreCast $request)
     {
-        $cast = new Cast([
-            'cast_name' => $request->post('castName'),
-            'cast_short_name' => $request->post('castShortName'),
-            'cast_twitter_id' => $request->post('castTwitterId'),
-            'cast_description' => $request->post('castDescription') ?? '',
-            'cast_color' => $request->post('castColor'),
-            'cast_disabled' => false,
-        ]);
+        $cast = new Cast($request->validated());
         $cast->save();
         return [
             'success' => true,
@@ -70,16 +63,9 @@ class AdminCastController extends Controller
 
     public function update(UpdateCast $request, Cast $cast)
     {
-        $cast->update([
-            'cast_name' => $request->post('castName'),
-            'cast_short_name' => $request->post('castShortName'),
-            'cast_twitter_id' => $request->post('castTwitterId'),
-            'cast_description' => $request->post('castDescription') ?? '',
-            'cast_color' => $request->post('castColor'),
-            'cast_disabled' => $request->post('castDisabled') === 'true',
-        ]);
-        if ($request->has('storeIds')) {
-            $cast->stores()->sync($request->storeIds);
+        $cast->update($request->validated());
+        if ($request->has('store_ids')) {
+            $cast->stores()->sync($request->store_ids);
         }
         return [
             'success' => true,

@@ -37,11 +37,7 @@ class AdminStoreController extends Controller
 
     public function store(StoreStore $request)
     {
-        $store = new Store([
-            'store_name' => $request->post('storeName'),
-            'store_group_id' => $request->post('storeGroupId'),
-            'store_disabled' => false,
-        ]);
+        $store = new Store($request->validated());
         $store->save();
         return [
             'success' => true,
@@ -51,11 +47,7 @@ class AdminStoreController extends Controller
 
     public function update(UpdateStore $request, Store $store)
     {
-        $store->update([
-            'store_name' => $request->post('storeName'),
-            'store_group_id' => $request->post('storeGroupId'),
-            'store_disabled' => $request->post('storeDisabled') === 'true',
-        ]);
+        $store->update($request->validated());
         return [
             'success' => true,
         ];

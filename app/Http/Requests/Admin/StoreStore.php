@@ -30,4 +30,13 @@ class StoreStore extends FormRequest
             'storeGroupId' => ['required', 'integer', Rule::exists(StoreGroup::class, 'id')],
         ];
     }
+
+    protected function passedValidation()
+    {
+        $this->replace([
+            'store_name' => $this->input('storeName'),
+            'store_group_id' => $this->input('storeGroupId'),
+            'store_disabled' => false,
+        ]);
+    }
 }

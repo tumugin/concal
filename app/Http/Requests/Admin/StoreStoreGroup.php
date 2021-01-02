@@ -27,4 +27,11 @@ class StoreStoreGroup extends FormRequest
             'groupName' => 'required|string',
         ];
     }
+
+    protected function passedValidation()
+    {
+        $this->replace([
+            'group_name' => $this->input('groupName'),
+        ]);
+    }
 }

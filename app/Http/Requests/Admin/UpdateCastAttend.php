@@ -32,4 +32,14 @@ class UpdateCastAttend extends FormRequest
             'attendInfo' => 'nullable|string',
         ];
     }
+
+    protected function passedValidation()
+    {
+        $this->replace([
+            'store_id' => $this->input('storeId'),
+            'start_time' => $this->input('startTime'),
+            'end_time' => $this->input('endTime'),
+            'attend_info' => $this->input('attendInfo') ?? '',
+        ]);
+    }
 }
