@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreAdminUser;
 use App\Http\Requests\Admin\UpdateAdminUser;
+use App\Http\Serializers\DefaultSerializer;
+use App\Http\Transformers\Api\Admin\AdminUserTransformer;
+use App\Http\Transformers\EmptyTransformer;
 use App\Models\AdminUser;
 
 class AdminAdminUserController extends Controller
@@ -14,47 +17,38 @@ class AdminAdminUserController extends Controller
     public function index()
     {
         $users = AdminUser::query()->paginate(self::_PAGINATION_COUNT);
-        $users_result = collect($users->items())->map(function (AdminUser $user) {
-            return $user->getAdminAttributes();
-        })->all();
-        return [
-            'success' => true,
-            'users' => $users_result,
-            'pageCount' => $users->lastPage(),
-        ];
+        return fractal($users, new AdminUserTransformer(), new DefaultSerializer())
+            ->withResourceName('users')
+            ->toArray();
     }
 
     public function store(StoreAdminUser $request)
     {
         $user = new AdminUser($request->toValueObject());
         $user->save();
-        return [
-            'success' => true,
-            'id' => $user->id,
-        ];
+        return fractal($user->id, new EmptyTransformer(), new DefaultSerializer())
+            ->withResourceName('id')
+            ->toArray();
     }
 
     public function destroy(AdminUser $admin_user)
     {
         $admin_user->delete();
-        return [
-            'success' => true,
-        ];
+        return fractal(null, new EmptyTransformer(), new DefaultSerializer())
+            ->toArray();
     }
 
     public function update(UpdateAdminUser $request, AdminUser $admin_user)
     {
         $admin_user->update($request->toValueObject());
-        return [
-            'success' => true,
-        ];
+        return fractal(null, new EmptyTransformer(), new DefaultSerializer())
+            ->toArray();
     }
 
     public function show(AdminUser $admin_user)
     {
-        return [
-            'success' => true,
-            'user' => $admin_user->getAdminAttributes(),
-        ];
+        return fractal($admin_user, new AdminUserTransformer(), new DefaultSerializer())
+            ->withResourceName('user')
+            ->toArray();
     }
 }
