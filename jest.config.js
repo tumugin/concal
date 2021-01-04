@@ -4,9 +4,7 @@ module.exports = {
     moduleFileExtensions: ['js', 'ts', 'tsx', 'json'],
     transform: {
         '^.+\\.tsx?$': 'ts-jest',
-        '^.+\\.js$': 'babel-jest'
+        '^.+\\.js$': 'babel-jest',
     },
-    transformIgnorePatterns: [
-        '/node_modules/(?!(@storybook/.*\\.vue$))',
-    ]
+    transformIgnorePatterns: ['/node_modules/(?!(@storybook/.*\\.vue$))'],
 }
