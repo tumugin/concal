@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreCastAttend;
 use App\Http\Requests\Admin\UpdateCastAttend;
+use App\Http\Serializers\DefaultSerializer;
+use App\Http\Transformers\Api\Admin\CastAttendIndexTransformer;
+use App\Http\Transformers\Api\Admin\CastAttendShowTransformer;
+use App\Http\Transformers\EmptyTransformer;
 use App\Models\Cast;
 use App\Models\CastAttend;
 use App\Services\AdminUserAuthService;
@@ -33,30 +37,16 @@ class AdminCastAttendController extends Controller
             ->with('store')
             ->with('store.storeGroup')
             ->get();
-        $attends_result = $attends->map(function (CastAttend $cast_attend) {
-            $store = $cast_attend->store;
-            return collect($cast_attend->getAdminAttributes())->merge([
-                'store' => $store ? $store->getAdminAttributes() : null,
-            ]);
-        });
-        return [
-            'success' => true,
-            'attends' => $attends_result,
-        ];
+        return fractal($attends, new CastAttendIndexTransformer(), new DefaultSerializer())
+            ->withResourceName('attends')
+            ->toArray();
     }
 
     public function show(CastAttend $cast_attend)
     {
-        $store = $cast_attend->store()->first();
-        return [
-            'success' => true,
-            'attend' => collect($cast_attend->getAdminAttributes())
-                ->merge([
-                    'storeName' => $store->store_name,
-                    'groupId' => $store->store_group_id,
-                    'groupName' => $store->storeGroup()->first()->group_name,
-                ]),
-        ];
+        return fractal($cast_attend, new CastAttendShowTransformer(), new DefaultSerializer())
+            ->withResourceName('attend')
+            ->toArray();
     }
 
     public function store(Cast $cast, StoreCastAttend $request, AdminUserAuthService $admin_user_auth_service)
@@ -69,10 +59,9 @@ class AdminCastAttendController extends Controller
             ]
         ));
         $cast_attend->save();
-        return [
-            'success' => true,
-            'id' => $cast_attend->id,
-        ];
+        return fractal($cast_attend->id, new EmptyTransformer(), new DefaultSerializer())
+            ->withResourceName('id')
+            ->toArray();
     }
 
     public function update(UpdateCastAttend $request, CastAttend $cast_attend, AdminUserAuthService $admin_user_auth_service)
