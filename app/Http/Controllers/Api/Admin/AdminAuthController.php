@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Exceptions\LoginFailedException;
 use App\Http\Controllers\Controller;
+use App\Http\Serializers\DefaultSerializer;
+use App\Http\Transformers\Api\Admin\AdminUserTransformer;
 use App\Models\AdminUser;
 use App\Services\AdminUserAuthService;
 use Illuminate\Http\Request;
@@ -73,9 +75,8 @@ class AdminAuthController extends Controller
     public function userInfo(AdminUserAuthService $userAuthService)
     {
         $user = $userAuthService->getCurrentUser();
-        return [
-            'success' => true,
-            'info' => $user->getAdminAttributes(),
-        ];
+        return fractal($user, new AdminUserTransformer(), new DefaultSerializer())
+            ->withResourceName('info')
+            ->toArray();
     }
 }
