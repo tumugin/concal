@@ -22,7 +22,10 @@ class AdminCastController extends Controller
         $store_id = $request->query('storeId');
         $casts = Cast::with(['stores', 'latestCastAttend']);
         if ($store_id !== null) {
-            $casts = $casts->whereHas('stores', fn(Builder $query) => $query->where('id', '=', $store_id));
+            $casts = $casts->whereHas(
+                'stores',
+                fn(Builder $query) => $query->where('id', '=', $store_id)
+            );
         }
         $casts = $casts->paginate(self::_PAGINATION_COUNT);
         return fractal($casts, new CastIndexTransformer, new DefaultSerializer)

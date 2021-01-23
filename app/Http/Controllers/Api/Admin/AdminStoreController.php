@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreStore;
 use App\Http\Requests\Admin\UpdateStore;
+use App\Http\Serializers\DefaultSerializer;
+use App\Http\Transformers\Api\Admin\StoreIndexTransformer;
 use App\Models\Cast;
 use App\Models\Store;
 use Illuminate\Database\Eloquent\Builder;
@@ -19,20 +21,15 @@ class AdminStoreController extends Controller
         $store_group_id = $request->query('storeGroupId');
         $stores = Store::with('storeGroup');
         if ($store_group_id !== null) {
-            $stores = $stores->whereHas('storeGroup', fn(Builder $query) => $query->where('id', '=', $store_group_id));
+            $stores = $stores->whereHas(
+                'storeGroup',
+                fn(Builder $query) => $query->where('id', '=', $store_group_id)
+            );
         }
         $stores = $stores->paginate(self::_PAGINATION_COUNT);
-        $stores_result = collect($stores->items())->map(function (Store $store) {
-            return collect($store->getAdminAttributes())
-                ->merge([
-                    'storeGroup' => $store->storeGroup->getAdminAttributes()
-                ]);
-        })->all();
-        return [
-            'success' => true,
-            'stores' => $stores_result,
-            'pageCount' => $stores->lastPage(),
-        ];
+        return fractal($stores, new StoreIndexTransformer, new DefaultSerializer)
+            ->withResourceName('stores')
+            ->toArray();
     }
 
     public function store(StoreStore $request)
