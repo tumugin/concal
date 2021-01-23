@@ -41,8 +41,10 @@ class AdminCastController extends Controller
     {
         $cast = new Cast($request->toValueObject());
         $cast->save();
-        return fractal($cast->id, new EmptyTransformer, new DefaultSerializer)
-            ->withResourceName('id')
+        return fractal(null, new EmptyTransformer, new DefaultSerializer)
+            ->addMeta([
+                'id' => $cast->id,
+            ])
             ->toArray();
     }
 

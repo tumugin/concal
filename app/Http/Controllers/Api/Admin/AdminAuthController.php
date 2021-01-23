@@ -27,8 +27,10 @@ class AdminAuthController extends Controller
         try {
             $user = $userAuthService->attemptLogin($user_name, $email, $password);
             $api_token = resolve(AdminUserAuthService::class)->createApiToken($user);
-            return fractal($api_token, new EmptyTransformer, new DefaultSerializer)
-                ->withResourceName('apiToken')
+            return fractal(null, new EmptyTransformer, new DefaultSerializer)
+                ->addMeta([
+                    'apiToken' => $api_token,
+                ])
                 ->toArray();
         } catch (LoginFailedException $ex) {
             return response([
@@ -64,8 +66,10 @@ class AdminAuthController extends Controller
         }
         if ($user !== null) {
             $api_token = resolve(AdminUserAuthService::class)->createApiToken($user);
-            return fractal($api_token, new EmptyTransformer, new DefaultSerializer)
-                ->withResourceName('apiToken')
+            return fractal(null, new EmptyTransformer, new DefaultSerializer)
+                ->addMeta([
+                    'apiToken' => $api_token,
+                ])
                 ->toArray();
         }
         return response([

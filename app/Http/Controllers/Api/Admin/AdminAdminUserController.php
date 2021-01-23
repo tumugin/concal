@@ -26,8 +26,10 @@ class AdminAdminUserController extends Controller
     {
         $user = new AdminUser($request->toValueObject());
         $user->save();
-        return fractal($user->id, new EmptyTransformer, new DefaultSerializer)
-            ->withResourceName('id')
+        return fractal(null, new EmptyTransformer, new DefaultSerializer)
+            ->addMeta([
+                'id' => $user->id,
+            ])
             ->toArray();
     }
 

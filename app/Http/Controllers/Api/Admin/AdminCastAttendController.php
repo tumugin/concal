@@ -59,8 +59,10 @@ class AdminCastAttendController extends Controller
             ]
         ));
         $cast_attend->save();
-        return fractal($cast_attend->id, new EmptyTransformer, new DefaultSerializer)
-            ->withResourceName('id')
+        return fractal(null, new EmptyTransformer, new DefaultSerializer)
+            ->addMeta([
+                'id' => $cast_attend->id,
+            ])
             ->toArray();
     }
 
