@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\StoreCast;
 use App\Http\Requests\Admin\UpdateCast;
 use App\Http\Serializers\DefaultSerializer;
 use App\Http\Transformers\Api\Admin\CastIndexTransformer;
+use App\Http\Transformers\Api\Admin\CastShowTransformer;
 use App\Http\Transformers\EmptyTransformer;
 use App\Models\Cast;
 use Illuminate\Database\Eloquent\Builder;
@@ -31,7 +32,7 @@ class AdminCastController extends Controller
 
     public function show(Cast $cast)
     {
-        return fractal($cast, new CastIndexTransformer, new DefaultSerializer)
+        return fractal($cast, new CastShowTransformer, new DefaultSerializer)
             ->withResourceName('cast')
             ->toArray();
     }
