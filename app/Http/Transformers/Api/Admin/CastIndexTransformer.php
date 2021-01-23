@@ -2,9 +2,11 @@
 
 namespace App\Http\Transformers\Api\Admin;
 
+use App\Http\Serializers\DefaultSerializer;
 use App\Models\Cast;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
+use League\Fractal\Serializer\ArraySerializer;
 
 class CastIndexTransformer extends CastTransformer
 {
@@ -18,8 +20,10 @@ class CastIndexTransformer extends CastTransformer
         return $this->collection($cast->stores, new StoreTransformer);
     }
 
-    public function includeLatestCastAttend(Cast $cast): Item
+    public function includeLatestCastAttend(Cast $cast): Item|null
     {
-        return $this->item($cast->latestCastAttend, new CastAttendTransformer);
+        return $cast->latestCastAttend ?
+            $this->item($cast->latestCastAttend, new CastAttendTransformer)
+            : null;
     }
 }
