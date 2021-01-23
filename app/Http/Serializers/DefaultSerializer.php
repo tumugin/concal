@@ -32,6 +32,14 @@ class DefaultSerializer extends ArraySerializer
 
     public function meta(array $meta): array
     {
-        return array_merge(['success' => true], $meta);
+        return $meta;
+    }
+
+    public function collection($resourceKey, array $data)
+    {
+        if ($resourceKey) {
+            return [$resourceKey => $data];
+        }
+        return $data;
     }
 }

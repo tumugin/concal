@@ -3,6 +3,7 @@
 namespace App\Http\Transformers\Api\Admin;
 
 use App\Models\CastAttend;
+use League\Fractal\Resource\Item;
 
 class CastAttendIndexTransformer extends CastAttendTransformer
 {
@@ -10,7 +11,7 @@ class CastAttendIndexTransformer extends CastAttendTransformer
         'store'
     ];
 
-    public function includeStore(CastAttend $cast_attend): \League\Fractal\Resource\Item
+    public function includeStore(CastAttend $cast_attend): Item
     {
         return $this->item($cast_attend->store, new StoreTransformer);
     }

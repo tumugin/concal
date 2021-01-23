@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreCast;
 use App\Http\Requests\Admin\UpdateCast;
+use App\Http\Serializers\DefaultSerializer;
+use App\Http\Transformers\Api\Admin\CastIndexTransformer;
+use App\Http\Transformers\Api\Admin\CastShowTransformer;
+use App\Http\Transformers\EmptyTransformer;
 use App\Models\Cast;
-use App\Models\Store;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
@@ -22,43 +25,27 @@ class AdminCastController extends Controller
             $casts = $casts->whereHas('stores', fn(Builder $query) => $query->where('id', '=', $store_id));
         }
         $casts = $casts->paginate(self::_PAGINATION_COUNT);
-        $casts_result = collect($casts->items())->map(fn(Cast $cast) => collect($cast->getAdminAttributes())->merge(
-            [
-                'stores' => $cast->stores->map(function (Store $store) {
-                    return $store->getAdminAttributes();
-                }),
-                'latestCastAttend' => $cast->latestCastAttend?->getAdminAttributes(),
-            ])
-        );
-        return [
-            'success' => true,
-            'casts' => $casts_result,
-            'pageCount' => $casts->lastPage(),
-        ];
+        return fractal($casts, new CastIndexTransformer, new DefaultSerializer)
+            ->withResourceName('casts')
+            ->toArray();
     }
 
     public function show(Cast $cast)
     {
-        return [
-            'success' => true,
-            'cast' => collect($cast->getAdminAttributes())->merge([
-                'stores' => $cast
-                    ->stores()
-                    ->get()
-                    ->map(fn(Store $store) => $store->getAdminAttributes()),
-                'latestCastAttend' => $cast->latestCastAttend?->getAdminAttributes(),
-            ]),
-        ];
+        return fractal($cast, new CastShowTransformer, new DefaultSerializer)
+            ->withResourceName('cast')
+            ->toArray();
     }
 
     public function store(StoreCast $request)
     {
         $cast = new Cast($request->toValueObject());
         $cast->save();
-        return [
-            'success' => true,
-            'id' => $cast->id,
-        ];
+        return fractal(null, new EmptyTransformer, new DefaultSerializer)
+            ->addMeta([
+                'id' => $cast->id,
+            ])
+            ->toArray();
     }
 
     public function update(UpdateCast $request, Cast $cast)
@@ -67,16 +54,14 @@ class AdminCastController extends Controller
         if ($request->has('storeIds')) {
             $cast->stores()->sync($request->storeIds);
         }
-        return [
-            'success' => true,
-        ];
+        return fractal(null, new EmptyTransformer, new DefaultSerializer)
+            ->toArray();
     }
 
     public function destroy(Cast $cast)
     {
         $cast->delete();
-        return [
-            'success' => true,
-        ];
+        return fractal(null, new EmptyTransformer, new DefaultSerializer)
+            ->toArray();
     }
 }
