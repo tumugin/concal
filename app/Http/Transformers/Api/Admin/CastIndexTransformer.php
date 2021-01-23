@@ -2,11 +2,9 @@
 
 namespace App\Http\Transformers\Api\Admin;
 
-use App\Http\Serializers\DefaultSerializer;
 use App\Models\Cast;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
-use League\Fractal\Serializer\ArraySerializer;
 
 class CastIndexTransformer extends CastTransformer
 {
