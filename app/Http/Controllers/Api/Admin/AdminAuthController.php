@@ -6,6 +6,7 @@ use App\Exceptions\LoginFailedException;
 use App\Http\Controllers\Controller;
 use App\Http\Serializers\DefaultSerializer;
 use App\Http\Transformers\Api\Admin\AdminUserTransformer;
+use App\Http\Transformers\EmptyTransformer;
 use App\Models\AdminUser;
 use App\Services\AdminUserAuthService;
 use Illuminate\Http\Request;
@@ -25,10 +26,10 @@ class AdminAuthController extends Controller
 
         try {
             $user = $userAuthService->attemptLogin($user_name, $email, $password);
-            return [
-                'success' => true,
-                'apiToken' => resolve(AdminUserAuthService::class)->createApiToken($user),
-            ];
+            $api_token = resolve(AdminUserAuthService::class)->createApiToken($user);
+            return fractal($api_token, new EmptyTransformer, new DefaultSerializer)
+                ->withResourceName('apiToken')
+                ->toArray();
         } catch (LoginFailedException $ex) {
             return response([
                 'error' => 'Invalid password or user.',
@@ -62,10 +63,10 @@ class AdminAuthController extends Controller
             $user = AdminUser::whereUserName($response_json['user'])->first();
         }
         if ($user !== null) {
-            return [
-                'success' => true,
-                'apiToken' => resolve(AdminUserAuthService::class)->createApiToken($user),
-            ];
+            $api_token = resolve(AdminUserAuthService::class)->createApiToken($user);
+            return fractal($api_token, new EmptyTransformer, new DefaultSerializer)
+                ->withResourceName('apiToken')
+                ->toArray();
         }
         return response([
             'error' => 'No admin user found.',
@@ -75,7 +76,7 @@ class AdminAuthController extends Controller
     public function userInfo(AdminUserAuthService $userAuthService)
     {
         $user = $userAuthService->getCurrentUser();
-        return fractal($user, new AdminUserTransformer(), new DefaultSerializer())
+        return fractal($user, new AdminUserTransformer, new DefaultSerializer)
             ->withResourceName('info')
             ->toArray();
     }

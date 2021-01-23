@@ -17,7 +17,7 @@ class AdminAdminUserController extends Controller
     public function index()
     {
         $users = AdminUser::query()->paginate(self::_PAGINATION_COUNT);
-        return fractal($users, new AdminUserTransformer(), new DefaultSerializer())
+        return fractal($users, new AdminUserTransformer, new DefaultSerializer)
             ->withResourceName('users')
             ->toArray();
     }
@@ -26,7 +26,7 @@ class AdminAdminUserController extends Controller
     {
         $user = new AdminUser($request->toValueObject());
         $user->save();
-        return fractal($user->id, new EmptyTransformer(), new DefaultSerializer())
+        return fractal($user->id, new EmptyTransformer, new DefaultSerializer)
             ->withResourceName('id')
             ->toArray();
     }
@@ -34,20 +34,20 @@ class AdminAdminUserController extends Controller
     public function destroy(AdminUser $admin_user)
     {
         $admin_user->delete();
-        return fractal(null, new EmptyTransformer(), new DefaultSerializer())
+        return fractal(null, new EmptyTransformer, new DefaultSerializer)
             ->toArray();
     }
 
     public function update(UpdateAdminUser $request, AdminUser $admin_user)
     {
         $admin_user->update($request->toValueObject());
-        return fractal(null, new EmptyTransformer(), new DefaultSerializer())
+        return fractal(null, new EmptyTransformer, new DefaultSerializer)
             ->toArray();
     }
 
     public function show(AdminUser $admin_user)
     {
-        return fractal($admin_user, new AdminUserTransformer(), new DefaultSerializer())
+        return fractal($admin_user, new AdminUserTransformer, new DefaultSerializer)
             ->withResourceName('user')
             ->toArray();
     }

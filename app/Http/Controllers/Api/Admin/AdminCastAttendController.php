@@ -37,14 +37,14 @@ class AdminCastAttendController extends Controller
             ->with('store')
             ->with('store.storeGroup')
             ->get();
-        return fractal($attends, new CastAttendIndexTransformer(), new DefaultSerializer())
+        return fractal($attends, new CastAttendIndexTransformer, new DefaultSerializer)
             ->withResourceName('attends')
             ->toArray();
     }
 
     public function show(CastAttend $cast_attend)
     {
-        return fractal($cast_attend, new CastAttendShowTransformer(), new DefaultSerializer())
+        return fractal($cast_attend, new CastAttendShowTransformer, new DefaultSerializer)
             ->withResourceName('attend')
             ->toArray();
     }
@@ -59,7 +59,7 @@ class AdminCastAttendController extends Controller
             ]
         ));
         $cast_attend->save();
-        return fractal($cast_attend->id, new EmptyTransformer(), new DefaultSerializer())
+        return fractal($cast_attend->id, new EmptyTransformer, new DefaultSerializer)
             ->withResourceName('id')
             ->toArray();
     }
@@ -72,16 +72,14 @@ class AdminCastAttendController extends Controller
                 'added_by_user_id' => $admin_user_auth_service->getCurrentUser()->id,
             ]
         ));
-        return [
-            'success' => true,
-        ];
+        return fractal(null, new EmptyTransformer, new DefaultSerializer)
+            ->toArray();
     }
 
     public function destroy(CastAttend $attend)
     {
         $attend->delete();
-        return [
-            'success' => true,
-        ];
+        return fractal(null, new EmptyTransformer, new DefaultSerializer)
+            ->toArray();
     }
 }
