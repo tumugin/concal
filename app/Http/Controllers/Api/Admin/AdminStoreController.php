@@ -7,6 +7,8 @@ use App\Http\Requests\Admin\StoreStore;
 use App\Http\Requests\Admin\UpdateStore;
 use App\Http\Serializers\DefaultSerializer;
 use App\Http\Transformers\Api\Admin\StoreIndexTransformer;
+use App\Http\Transformers\Api\Admin\StoreShowTransformer;
+use App\Http\Transformers\EmptyTransformer;
 use App\Models\Cast;
 use App\Models\Store;
 use Illuminate\Database\Eloquent\Builder;
@@ -36,42 +38,31 @@ class AdminStoreController extends Controller
     {
         $store = new Store($request->toValueObject());
         $store->save();
-        return [
-            'success' => true,
-            'id' => $store->id,
-        ];
+        return fractal(null, new EmptyTransformer, new DefaultSerializer)
+            ->addMeta([
+                'id' => $store->id,
+            ])
+            ->toArray();
     }
 
     public function update(UpdateStore $request, Store $store)
     {
         $store->update($request->toValueObject());
-        return [
-            'success' => true,
-        ];
+        return fractal(null, new EmptyTransformer, new DefaultSerializer)
+            ->toArray();
     }
 
     public function show(Store $store)
     {
-        $store_info = collect($store->getAdminAttributes())
-            ->merge(
-                [
-                    'storeGroup' => $store->storeGroup()->first()->getAdminAttributes(),
-                    'casts' => $store->casts()->get()->map(
-                        fn(Cast $cast) => $cast->getAdminAttributes()
-                    )
-                ]
-            );
-        return [
-            'success' => true,
-            'store' => $store_info,
-        ];
+        return fractal($store, new StoreShowTransformer, new DefaultSerializer)
+            ->withResourceName('store')
+            ->toArray();
     }
 
     public function destroy(Store $store)
     {
         $store->delete();
-        return [
-            'success' => true,
-        ];
+        return fractal(null, new EmptyTransformer, new DefaultSerializer)
+            ->toArray();
     }
 }
