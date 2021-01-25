@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreStore;
 use App\Http\Requests\Admin\UpdateStore;
+use App\Http\Serializers\DefaultSerializer;
+use App\Http\Transformers\Api\Admin\StoreIndexTransformer;
+use App\Http\Transformers\Api\Admin\StoreShowTransformer;
+use App\Http\Transformers\EmptyTransformer;
 use App\Models\Cast;
 use App\Models\Store;
 use Illuminate\Database\Eloquent\Builder;
@@ -19,62 +23,46 @@ class AdminStoreController extends Controller
         $store_group_id = $request->query('storeGroupId');
         $stores = Store::with('storeGroup');
         if ($store_group_id !== null) {
-            $stores = $stores->whereHas('storeGroup', fn(Builder $query) => $query->where('id', '=', $store_group_id));
+            $stores = $stores->whereHas(
+                'storeGroup',
+                fn(Builder $query) => $query->where('id', '=', $store_group_id)
+            );
         }
         $stores = $stores->paginate(self::_PAGINATION_COUNT);
-        $stores_result = collect($stores->items())->map(function (Store $store) {
-            return collect($store->getAdminAttributes())
-                ->merge([
-                    'storeGroup' => $store->storeGroup->getAdminAttributes()
-                ]);
-        })->all();
-        return [
-            'success' => true,
-            'stores' => $stores_result,
-            'pageCount' => $stores->lastPage(),
-        ];
+        return fractal($stores, new StoreIndexTransformer, new DefaultSerializer)
+            ->withResourceName('stores')
+            ->toArray();
     }
 
     public function store(StoreStore $request)
     {
         $store = new Store($request->toValueObject());
         $store->save();
-        return [
-            'success' => true,
-            'id' => $store->id,
-        ];
+        return fractal(null, new EmptyTransformer, new DefaultSerializer)
+            ->addMeta([
+                'id' => $store->id,
+            ])
+            ->toArray();
     }
 
     public function update(UpdateStore $request, Store $store)
     {
         $store->update($request->toValueObject());
-        return [
-            'success' => true,
-        ];
+        return fractal(null, new EmptyTransformer, new DefaultSerializer)
+            ->toArray();
     }
 
     public function show(Store $store)
     {
-        $store_info = collect($store->getAdminAttributes())
-            ->merge(
-                [
-                    'storeGroup' => $store->storeGroup()->first()->getAdminAttributes(),
-                    'casts' => $store->casts()->get()->map(
-                        fn(Cast $cast) => $cast->getAdminAttributes()
-                    )
-                ]
-            );
-        return [
-            'success' => true,
-            'store' => $store_info,
-        ];
+        return fractal($store, new StoreShowTransformer, new DefaultSerializer)
+            ->withResourceName('store')
+            ->toArray();
     }
 
     public function destroy(Store $store)
     {
         $store->delete();
-        return [
-            'success' => true,
-        ];
+        return fractal(null, new EmptyTransformer, new DefaultSerializer)
+            ->toArray();
     }
 }
