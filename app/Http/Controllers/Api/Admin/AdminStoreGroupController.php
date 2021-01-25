@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Requests\Admin\StoreStoreGroup;
 use App\Http\Requests\Admin\UpdateStoreGroup;
+use App\Http\Serializers\DefaultSerializer;
+use App\Http\Transformers\Api\Admin\StoreGroupTransformer;
+use App\Http\Transformers\EmptyTransformer;
 use App\Models\StoreGroup;
 
 class AdminStoreGroupController
@@ -13,48 +16,41 @@ class AdminStoreGroupController
     public function index()
     {
         $store_groups = StoreGroup::query()->paginate(self::_PAGINATION_COUNT);
-        $mapped_store_groups = collect($store_groups->items())->map(function (StoreGroup $store_group) {
-            return $store_group->getAdminAttributes();
-        })->all();
-        return [
-            'success' => true,
-            'storeGroups' => $mapped_store_groups,
-            'pageCount' => $store_groups->lastPage(),
-        ];
+        return fractal($store_groups, new StoreGroupTransformer, new DefaultSerializer)
+            ->withResourceName('storeGroups')
+            ->toArray();
     }
 
     public function show(StoreGroup $group)
     {
-        return [
-            'success' => true,
-            'storeGroup' => $group->getAdminAttributes(),
-        ];
+        return fractal($group, new StoreGroupTransformer, new DefaultSerializer)
+            ->withResourceName('storeGroup')
+            ->toArray();
     }
 
     public function store(StoreStoreGroup $request)
     {
         $store_group = new StoreGroup($request->toValueObject());
         $store_group->save();
-        return [
-            'success' => true,
-            'id' => $store_group->id,
-        ];
+        return fractal(null, new EmptyTransformer, new DefaultSerializer)
+            ->addMeta([
+                'id' => $store_group->id,
+            ])
+            ->toArray();
     }
 
     public function update(UpdateStoreGroup $request, StoreGroup $group)
     {
         $group->update($request->toValueObject());
         $group->save();
-        return [
-            'success' => true,
-        ];
+        return fractal(null, new EmptyTransformer, new DefaultSerializer)
+            ->toArray();
     }
 
     public function destroy(StoreGroup $group)
     {
         $group->delete();
-        return [
-            'success' => true,
-        ];
+        return fractal(null, new EmptyTransformer, new DefaultSerializer)
+            ->toArray();
     }
 }
