@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Exceptions\LoginFailedException;
 use App\Http\Controllers\Controller;
+use App\Http\Serializers\DefaultSerializer;
+use App\Http\Transformers\Api\SelfTransformer;
 use App\Services\UserAuthService;
 use Illuminate\Http\Request;
 
@@ -22,7 +24,6 @@ class AuthController extends Controller
         try {
             $user = $userAuthService->attemptLogin($user_name, $email, $password);
             return [
-                'success' => true,
                 'apiToken' => $userAuthService->createApiToken($user),
             ];
         } catch (LoginFailedException $ex) {
@@ -35,10 +36,8 @@ class AuthController extends Controller
     public function userInfo(UserAuthService $userAuthService)
     {
         $user = $userAuthService->getCurrentUser();
-        return [
-            'success' => true,
-            // 自分の情報なのでAdmin用のデータを返してしまう
-            'info' => $user->getAdminAttributes(),
-        ];
+        return fractal($user, new SelfTransformer, new DefaultSerializer)
+            ->withResourceName('info')
+            ->toArray();
     }
 }
