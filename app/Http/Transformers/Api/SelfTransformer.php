@@ -7,7 +7,7 @@ use League\Fractal\TransformerAbstract;
 
 class SelfTransformer extends TransformerAbstract
 {
-    public function transform(User $user)
+    public function transform(User $user): array
     {
         return [
             'id' => $user->id,
