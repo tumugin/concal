@@ -36,7 +36,7 @@ class CastController extends Controller
             [
                 'cast' => $cast,
                 'stores' => $stores,
-                'recent_attends' => $recent_cast_attends
+                'recent_attends' => $recent_cast_attends,
             ],
             new CastShowTransformer,
             new DataSerializer
