@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Serializers\DataSerializer;
+use App\Http\Serializers\DefaultSerializer;
 use App\Http\Transformers\Api\CastIndexTransformer;
 use App\Http\Transformers\Api\CastShowTransformer;
 use App\Models\Cast;
-use Carbon\Carbon;
 
 class CastController extends Controller
 {
@@ -18,28 +17,29 @@ class CastController extends Controller
         $casts = Cast::active()
             ->with('stores')
             ->paginate(self::_PAGINATION_COUNT);
-        return fractal($casts, new CastIndexTransformer, new DataSerializer);
+        $result = fractal(
+            $casts,
+            new CastIndexTransformer,
+            new DefaultSerializer
+        )
+            ->withResourceName('casts')
+            ->toArray();
+        return [
+            'data' => $result,
+        ];
     }
 
     public function show(Cast $cast)
     {
-        $recent_cast_attends = $cast->castAttends
-            ->with('store')
-            ->where('end_time', '>', Carbon::now())
-            ->orderBy('end_time')
-            ->limit(10);
-        $stores = $cast
-            ->stores
-            ->active
-            ->with('storeGroup');
-        return fractal(
-            [
-                'cast' => $cast,
-                'stores' => $stores,
-                'recent_attends' => $recent_cast_attends,
-            ],
+        $result = fractal(
+            $cast,
             new CastShowTransformer,
-            new DataSerializer
-        );
+            new DefaultSerializer
+        )
+            ->withResourceName('cast')
+            ->toArray();
+        return [
+            'data' => $result,
+        ];
     }
 }

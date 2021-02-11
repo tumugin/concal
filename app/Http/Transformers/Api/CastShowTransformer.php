@@ -3,6 +3,7 @@
 namespace App\Http\Transformers\Api;
 
 use App\Models\Cast;
+use Carbon\Carbon;
 use League\Fractal\Resource\Collection;
 
 class CastShowTransformer extends CastTransformer
@@ -12,18 +13,28 @@ class CastShowTransformer extends CastTransformer
         'recentAttends',
     ];
 
-    public function transform(array|Cast $data): array
+    public function transform(Cast $cast): array
     {
-        return parent::transform($data['cast']);
+        return parent::transform($cast);
     }
 
-    public function includeStores(array $data): Collection
+    public function includeStores(Cast $cast): Collection
     {
-        return $this->collection($data['stores'], new CastShowStoreTransformer);
+        $stores = $cast
+            ->stores()
+            ->active()
+            ->with('storeGroup')
+            ->get();
+        return $this->collection($stores, new CastShowStoreTransformer);
     }
 
-    public function includeRecentAttends(array $data): Collection
+    public function includeRecentAttends(Cast $cast): Collection
     {
-        return $this->collection($data['recent_attends'], new CastShowRecentAttendsTransformer);
+        $recent_cast_attends = $cast->castAttends()
+            ->with('store')
+            ->where('end_time', '>', Carbon::now())
+            ->orderBy('end_time')
+            ->limit(10);
+        return $this->collection($recent_cast_attends, new CastShowRecentAttendsTransformer);
     }
 }
