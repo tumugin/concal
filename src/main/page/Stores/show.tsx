@@ -23,8 +23,8 @@ export default function Store() {
                     return false
                 }
                 return (
-                    dayjs(cast.recentAttend.startTime).date() === dayjs().date() ||
-                    dayjs(cast.recentAttend.endTime).date() === dayjs().date()
+                    dayjs(cast.recentAttend.startTime).isSame(dayjs(), 'date') ||
+                    dayjs(cast.recentAttend.endTime).isSame(dayjs(), 'date')
                 )
             }) ?? [],
         [store]
