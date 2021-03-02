@@ -21,7 +21,11 @@ class StoreShowTransformer extends StoreTransformer
     public function includeCasts(Store $store): Collection
     {
         return $this->collection(
-            $store->casts->where('cast_disabled', '=', false),
+            $store
+                ->casts()
+                ->with('latestCastAttend')
+                ->where('cast_disabled', '=', false)
+                ->get(),
             new StoreShowCastTransformer
         );
     }
