@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Cast;
+use App\Http\Serializers\DefaultSerializer;
+use App\Http\Transformers\Api\StoreIndexTransformer;
+use App\Http\Transformers\Api\StoreShowTransformer;
 use App\Models\Store;
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class StoreController extends Controller
 {
@@ -15,48 +15,29 @@ class StoreController extends Controller
     public function index()
     {
         $stores = Store::active()->with('storeGroup')->paginate(self::_PAGINATION_COUNT);
-        $stores_result = collect($stores->items())->map(function (Store $store) {
-            return collect($store->getUserAttributes())
-                ->merge([
-                    'storeGroup' => $store->storeGroup->getUserAttributes()
-                ]);
-        })->all();
+        $result = fractal(
+            $stores,
+            new StoreIndexTransformer,
+            new DefaultSerializer
+        )
+            ->withResourceName('stores')
+            ->toArray();
         return [
-            'success' => true,
-            'data' => [
-                'stores' => $stores_result,
-                'pageCount' => $stores->lastPage(),
-                'nextPage' => $stores->hasMorePages() ? $stores->currentPage() + 1 : null,
-            ],
+            'data' => $result,
         ];
     }
 
     public function show(Store $store)
     {
-        $casts = $store->casts()->active()->with('castAttends', fn(HasMany $query) => $query
-            ->where('store_id', '=', $store->id)
-            ->where('end_time', '>', Carbon::now())
-            ->orderBy('end_time')
-        );
-        $store_info = collect($store->getUserAttributes())
-            ->merge(
-                [
-                    'storeGroup' => $store->storeGroup()->first()->getUserAttributes(),
-                    'casts' => $casts->where('cast_disabled', '=', false)->get()->map(
-                        function (Cast $cast) {
-                            $recent_cast_attend = $cast->castAttends->first();
-                            return collect($cast->getUserAttributes())->merge([
-                                'recentAttend' => $recent_cast_attend ? $recent_cast_attend->getUserAttributes() : null,
-                            ]);
-                        }
-                    )
-                ]
-            );
+        $result = fractal(
+            $store,
+            new StoreShowTransformer,
+            new DefaultSerializer
+        )
+            ->withResourceName('store')
+            ->toArray();
         return [
-            'success' => true,
-            'data' => [
-                'store' => $store_info,
-            ],
+            'data' => $result,
         ];
     }
 }

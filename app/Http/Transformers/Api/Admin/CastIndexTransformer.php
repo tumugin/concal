@@ -5,6 +5,7 @@ namespace App\Http\Transformers\Api\Admin;
 use App\Models\Cast;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
+use League\Fractal\Resource\Primitive;
 
 class CastIndexTransformer extends CastTransformer
 {
@@ -18,10 +19,10 @@ class CastIndexTransformer extends CastTransformer
         return $this->collection($cast->stores, new StoreTransformer);
     }
 
-    public function includeLatestCastAttend(Cast $cast): Item|null
+    public function includeLatestCastAttend(Cast $cast): Item|Primitive
     {
         return $cast->latestCastAttend ?
             $this->item($cast->latestCastAttend, new CastAttendTransformer)
-            : null;
+            : $this->primitive(null);
     }
 }
