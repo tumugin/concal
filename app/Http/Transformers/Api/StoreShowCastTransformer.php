@@ -3,6 +3,8 @@
 namespace App\Http\Transformers\Api;
 
 use App\Models\Cast;
+use League\Fractal\Resource\Item;
+use League\Fractal\Resource\Primitive;
 
 class StoreShowCastTransformer extends CastTransformer
 {
@@ -10,8 +12,12 @@ class StoreShowCastTransformer extends CastTransformer
         'recentAttend',
     ];
 
-    public function includeRecentAttend(Cast $cast)
+    public function includeRecentAttend(Cast $cast): Primitive|Item
     {
-        return $this->item($cast->castAttends->first(), new CastAttendTransformer);
+        $cast_attend = $cast->castAttends->first();
+        if ($cast_attend === null) {
+            return $this->primitive(null);
+        }
+        return $this->item($cast_attend, new CastAttendTransformer);
     }
 }

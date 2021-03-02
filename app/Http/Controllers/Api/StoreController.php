@@ -7,8 +7,6 @@ use App\Http\Serializers\DefaultSerializer;
 use App\Http\Transformers\Api\StoreIndexTransformer;
 use App\Http\Transformers\Api\StoreShowTransformer;
 use App\Models\Store;
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class StoreController extends Controller
 {
@@ -31,13 +29,8 @@ class StoreController extends Controller
 
     public function show(Store $store)
     {
-        $casts = $store->casts()->active()->with('castAttends', fn(HasMany $query) => $query
-            ->where('store_id', '=', $store->id)
-            ->where('end_time', '>', Carbon::now())
-            ->orderBy('end_time')
-        );
         $result = fractal(
-            $casts,
+            $store,
             new StoreShowTransformer,
             new DefaultSerializer
         )
