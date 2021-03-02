@@ -8,7 +8,7 @@ use League\Fractal\Resource\Item;
 class StoreIndexTransformer extends StoreTransformer
 {
     protected $defaultIncludes = [
-        'storeGroup'
+        'storeGroup',
     ];
 
     public function includeStoreGroup(Store $store): Item
