@@ -14,7 +14,7 @@ class StoreShowCastTransformer extends CastTransformer
 
     public function includeRecentAttend(Cast $cast): Primitive|Item
     {
-        $cast_attend = $cast->castAttends->first();
+        $cast_attend = $cast->latestCastAttend;
         if ($cast_attend === null) {
             return $this->primitive(null);
         }
