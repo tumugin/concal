@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Serializers\DefaultSerializer;
+use App\Http\Transformers\Api\StoreGroupIndexTransformer;
+use App\Http\Transformers\Api\StoreGroupShowTransformer;
 use App\Models\StoreGroup;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -13,42 +16,21 @@ class StoreGroupController extends Controller
         $store_groups = StoreGroup::query()
             ->with('stores', fn(HasMany $builder) => $builder->active())
             ->paginate(10);
-        $mapped_store_groups = collect($store_groups->items())
-            ->map(fn($item) => collect($item->getUserAttributes())
-                ->merge([
-                    'stores' => $item
-                        ->stores
-                        ->map(
-                            fn($store) => $store->getUserAttributes()
-                        ),
-                ])
-            );
+        $result = fractal($store_groups, new StoreGroupIndexTransformer, new DefaultSerializer)
+            ->withResourceName('storeGroups')
+            ->toArray();
         return [
-            'success' => true,
-            'data' => [
-                'storeGroups' => $mapped_store_groups,
-                'pageCount' => $store_groups->lastPage(),
-                'nextPage' => $store_groups->hasMorePages() ? $store_groups->currentPage() + 1 : null,
-            ],
+            'data' => $result,
         ];
     }
 
     public function show(StoreGroup $group)
     {
-        if ($group === null) {
-            return response([
-                'error' => 'Store group not found.',
-            ])->setStatusCode(404);
-        }
+        $result = fractal($group, new StoreGroupShowTransformer, new DefaultSerializer)
+            ->withResourceName('storeGroup')
+            ->toArray();
         return [
-            'success' => true,
-            'data' => [
-                'storeGroup' => $group->getUserAttributes(),
-                'stores' => $group
-                    ->stores
-                    ->active()
-                    ->map(fn($store) => $store->getUserAttributes()),
-            ],
+            'data' => $result,
         ];
     }
 }
