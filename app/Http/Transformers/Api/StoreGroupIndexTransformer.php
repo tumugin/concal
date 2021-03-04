@@ -12,6 +12,6 @@ class StoreGroupIndexTransformer extends StoreGroupTransformer
 
     public function includeStores(StoreGroup $store_group)
     {
-        return $this->collection($store_group->stores->active(), new StoreTransformer);
+        return $this->collection($store_group->stores, new StoreTransformer);
     }
 }

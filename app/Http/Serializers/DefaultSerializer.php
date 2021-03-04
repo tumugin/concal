@@ -8,6 +8,8 @@ use League\Fractal\Serializer\ArraySerializer;
 
 class DefaultSerializer extends ArraySerializer
 {
+    private array $paginator_items = [];
+
     public function item($resourceKey, array $data): array
     {
         if ($resourceKey !== null) {
@@ -20,9 +22,12 @@ class DefaultSerializer extends ArraySerializer
 
     public function paginator(PaginatorInterface $paginator): array
     {
-        return [
+        $this->paginator_items = [
             'pageCount' => $paginator->getLastPage(),
+            'nextPage' => $paginator->getLastPage() > $paginator->getCurrentPage() + 1 ? $paginator->getCurrentPage() + 1 : null,
         ];
+        // なぜか最初のキーしか使ってくれないというバグがあるため、これでお茶を濁す
+        return [];
     }
 
     public function cursor(CursorInterface $cursor): array
@@ -32,7 +37,7 @@ class DefaultSerializer extends ArraySerializer
 
     public function meta(array $meta): array
     {
-        return $meta;
+        return array_merge($meta, $this->paginator_items);
     }
 
     public function collection($resourceKey, array $data)
