@@ -3,6 +3,7 @@
 namespace App\Http\Transformers\Api;
 
 use App\Models\StoreGroup;
+use League\Fractal\Resource\Collection;
 
 class StoreGroupShowTransformer extends StoreGroupTransformer
 {
@@ -10,7 +11,7 @@ class StoreGroupShowTransformer extends StoreGroupTransformer
         'stores',
     ];
 
-    public function includeStores(StoreGroup $store_group)
+    public function includeStores(StoreGroup $store_group): Collection
     {
         return $this->collection($store_group->stores()->active(), new StoreTransformer);
     }
