@@ -14,5 +14,4 @@ php artisan view:clear
 
 # roadrunner
 composer server:roadrunner:setup
-chmod +x rr
 composer server:roadrunner:dev
