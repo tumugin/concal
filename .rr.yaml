@@ -5,13 +5,16 @@ server:
   relay: "unix:///tmp/concal-rr-rpc.sock"
 http:
   address: "0.0.0.0:9000"
-  middleware: [ "static" ]
   http2:
     enabled: true
     h2c: true
     maxConcurrentStreams: 128
   static:
-    dir: public
+    dir: "./public/"
+    forbid: [ "" ]
+    allow: [ ".txt", ".js", ".css" ]
+    pattern: "/assets/"
+    weak: false
 reload:
   interval: 1s
   patterns: [ '.php' ]

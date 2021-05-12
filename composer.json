@@ -80,7 +80,7 @@
             "./rr serve"
         ],
         "server:roadrunner:setup": [
-            "yes | rr get-binary -f 2.1.1"
+            "yes | rr get-binary"
         ],
         "gen:docs": [
             "php artisan ide-helper:models --write"
