@@ -12,7 +12,7 @@ http:
   static:
     dir: "./public/"
     forbid: [ "" ]
-    allow: [ ".txt", ".js", ".css" ]
+    allow: [ ".js", ".css" ]
     pattern: "/assets/"
     weak: false
 reload:
