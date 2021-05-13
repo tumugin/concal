@@ -1,7 +1,7 @@
 env:
   APP_REFRESH: true
 server:
-  command: "php ./vendor/bin/rr-worker start --relay-dsn unix:///tmp/concal-rr-rpc.sock"
+  command: "php ./vendor/bin/rr-worker start --refresh-app --relay-dsn unix:///tmp/concal-rr-rpc.sock"
   relay: "unix:///tmp/concal-rr-rpc.sock"
 http:
   address: "0.0.0.0:9000"
