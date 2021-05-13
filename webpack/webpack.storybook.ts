@@ -12,11 +12,11 @@ export default function config(
         plugins: [
             ...(base.plugins || []),
             // FIXME: 型エラーを直す
-            (new WebpackBar({
+            new WebpackBar({
                 color: '#7adad6',
                 profile: true,
                 name: 'storybook',
-            }) as unknown) as webpack.WebpackPluginInstance,
+            }) as unknown as webpack.WebpackPluginInstance,
         ],
     }
     return config

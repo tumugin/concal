@@ -14,15 +14,15 @@ export default function config(
         plugins: [
             ...(base.plugins || []),
             // FIXME: 型エラーを直す
-            (new WebpackBar({
+            new WebpackBar({
                 color: '#7adad6',
                 profile: true,
                 name: 'frontend client',
-            }) as unknown) as webpack.WebpackPluginInstance,
+            }) as unknown as webpack.WebpackPluginInstance,
             // FIXME: 型エラーを直す
             new WebpackManifestPlugin({
                 fileName: path.resolve('storage/app/manifest.json'),
-            }),
+            }) as unknown as webpack.WebpackPluginInstance,
         ],
     }
     return config

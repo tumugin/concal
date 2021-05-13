@@ -132,9 +132,9 @@ export default function config(
         },
         plugins: [
             // FIXME: 型エラーを直す
-            (new MiniCssExtractPlugin({
+            new MiniCssExtractPlugin({
                 filename: cssFileName,
-            }) as unknown) as webpack.WebpackPluginInstance,
+            }) as unknown as webpack.WebpackPluginInstance,
             new ForkTsCheckerWebpackPlugin({
                 typescript: {
                     diagnosticOptions: {
