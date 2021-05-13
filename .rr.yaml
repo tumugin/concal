@@ -1,15 +1,20 @@
 env:
   APP_REFRESH: true
+server:
+  command: "php ./vendor/bin/rr-worker start --relay-dsn unix:///tmp/concal-rr-rpc.sock"
+  relay: "unix:///tmp/concal-rr-rpc.sock"
 http:
-  address: 0.0.0.0:9000
+  address: "0.0.0.0:9000"
   http2:
     enabled: true
     h2c: true
     maxConcurrentStreams: 128
-  workers:
-    command: 'php ./vendor/bin/rr-worker'
-static:
-  dir: public
+  static:
+    dir: "./public/"
+    forbid: [ "" ]
+    allow: [ ".js", ".css" ]
+    pattern: "/assets/"
+    weak: false
 reload:
   interval: 1s
   patterns: [ '.php' ]
