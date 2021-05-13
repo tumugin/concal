@@ -1,4 +1,4 @@
-FROM node:15.1.0-stretch
+FROM node:16.1.0-stretch
 
 WORKDIR /code
 

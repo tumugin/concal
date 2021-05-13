@@ -13,5 +13,4 @@ php artisan route:clear
 php artisan view:clear
 
 # roadrunner
-composer server:roadrunner:setup
 composer server:roadrunner:dev
